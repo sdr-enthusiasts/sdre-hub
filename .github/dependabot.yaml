@@ -1,0 +1,37 @@
+version: 2
+
+updates:
+  # - package-ecosystem: "pip"
+  #   directory: "/rootfs/webapp"
+  #   schedule:
+  #     interval: weekly
+  #   assignees:
+  #     - "fredclausen"
+
+  # - package-ecosystem: "npm"
+  #   directory: "/acarshub-typescript"
+  #   schedule:
+  #     interval: weekly
+  #   assignees:
+  #     - "fredclausen"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: weekly
+    assignees:
+      - "fredclausen"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+    assignees:
+      - "fredclausen"
+
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: weekly
+    assignees:
+      - "fredclausen"
