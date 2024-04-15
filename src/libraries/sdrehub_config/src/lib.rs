@@ -269,30 +269,19 @@ impl ShConfig {
     }
 
     fn get_file_path() -> String {
-        // if we are in a test env (denoted with AH_TEST_ENV_PATH) we will use the test config file
-        // from the env variable. Otherwise, detect the platform and use "./ah_config.toml" for the config file
-
-        if let Ok(path) = std::env::var("AH_TEST_ENV_PATH") {
-            path
-        } else if let Ok(path) = std::env::var("AH_CONFIG_PATH") {
-            // this match arm is for docker specifically
-            path
-        } else {
-            // FIXME: we should use platform specific paths
-            match std::env::consts::OS {
-                "linux" => "./ah_config.toml",
-                "macos" => "./ah_config.toml",
-                "windows" => "./ah_config.toml",
-                _ => "./ah_config.toml",
-            }
-            .to_string()
+        match std::env::consts::OS {
+            "linux" => "./sh_config.toml",
+            "macos" => "./sh_config.toml",
+            "windows" => "./sh_config.toml",
+            _ => "./sh_config.toml",
         }
+        .to_string()
     }
 
     fn get_config(file_path: &str) -> ShConfig {
         match Figment::new()
             .merge(Toml::file(file_path))
-            .merge(Env::prefixed("AH_"))
+            .merge(Env::prefixed("SH_"))
             .extract()
         {
             Ok(config) => config,

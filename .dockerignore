@@ -3,5 +3,6 @@ LICENSE
 README.md
 src/target
 target/
-sdreh_config.toml
-sdreh_config.yaml
+sh_config.toml
+sh_config.yaml
+data/

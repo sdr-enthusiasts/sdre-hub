@@ -258,5 +258,6 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,windows,vscode
 target/
-sdreh_config.toml
-sdreh_config.yaml
+sh_config.toml
+sh_config.yaml
+data/
