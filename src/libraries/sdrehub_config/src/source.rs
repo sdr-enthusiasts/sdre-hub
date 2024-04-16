@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use std::{fmt, marker::PhantomData, str::FromStr};
+use std::{collections::HashMap, fmt, marker::PhantomData, str::FromStr};
 
 use serde::{
     de::{self, MapAccess, SeqAccess, Visitor},
@@ -12,11 +12,11 @@ use serde::{
 use serde_inline_default::serde_inline_default;
 use void::Void;
 
-use crate::address::Address;
+use crate::address::{AcarsRouterAddress};
 
 trait SourceTrait {
     fn new() -> Self;
-    fn insert(&mut self, value: Address);
+    fn insert(&mut self, value: AcarsRouterAddress);
 }
 
 #[serde_inline_default]
@@ -38,7 +38,7 @@ pub struct EnabledDataSources {
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Source {
-    addresses: Vec<Address>,
+    addresses: Vec<AcarsRouterAddress>,
 }
 
 impl FromStr for Source {
@@ -48,7 +48,7 @@ impl FromStr for Source {
         let mut output = Source::new();
 
         for address in s.split(',') {
-            if let Some(address) = Address::new(address.to_string()) {
+            if let Some(address) = AcarsRouterAddress::new(address.to_string()) {
                 output.insert(address);
             }
         }
@@ -64,7 +64,7 @@ impl SourceTrait for Source {
         }
     }
 
-    fn insert(&mut self, value: Address) {
+    fn insert(&mut self, value: AcarsRouterAddress) {
         self.addresses.push(value);
     }
 }
@@ -78,6 +78,15 @@ pub struct DataSources {
     #[serde_inline_default(Source::default())]
     #[serde(deserialize_with = "string_or_struct")]
     pub adsb_sources: Source,
+}
+
+#[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Hash, Clone)]
+#[serde(untagged)]
+enum FieldTypes {
+    #[serde(rename = "address")]
+    Address(String),
+    #[serde(rename = "port")]
+    Port(i32),
 }
 
 fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
@@ -121,22 +130,52 @@ where
             let mut source = T::new();
 
             if let Some(_key) = map.next_key::<String>()? {
-                match map.next_value::<Vec<String>>() {
+                println!("key: {}", _key);
+
+                // loop through the keys and values
+
+                match map.next_value::<Vec<HashMap<String, FieldTypes>>>() {
                     Ok(value) => {
-                        for address in value {
-                            if let Some(address) = Address::new(address) {
-                                source.insert(address);
-                            }
+                        println!("value: {:?}", value);
+
+                        if value.is_empty() {
+                            return Ok(source);
                         }
 
-                        return Ok(source);
+                        for item in value.iter() {
+                            println!("item: {:?}", item);
+
+                            let port = match item.get("port").unwrap().to_owned() {
+                                FieldTypes::Port(port) => {
+                                    if !(0..=65535).contains(&port) {
+                                        return Err(de::Error::custom("Port out of range"));
+                                    } else {
+                                        port as u32
+                                    }
+                                },
+                                _ => {
+                                    return Err(de::Error::custom("Port not found"));
+                                }
+                            };
+
+                            let address = match item.get("address").unwrap().to_owned() {
+                                FieldTypes::Address(address) => address,
+                                _ => {
+                                    return Err(de::Error::custom("Address not found"));
+                                }
+                            };
+
+                            let address = AcarsRouterAddress::new_from_parts(address, port);
+
+                            source.insert(address);
+                        }
                     }
                     Err(e) => {
                         return Err(e);
                     }
                 }
             }
-
+            //return Err(de::Error::custom("error"));
             Ok(source)
         }
 
@@ -155,7 +194,7 @@ where
             let mut source = T::new();
 
             while let Some(value) = seq.next_element::<String>()? {
-                if let Some(address) = Address::new(value) {
+                if let Some(address) = AcarsRouterAddress::new(value) {
                     source.insert(address);
                 }
             }

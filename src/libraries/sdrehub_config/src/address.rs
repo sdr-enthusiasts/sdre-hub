@@ -3,15 +3,20 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize)]
-pub struct Address {
+/// Struct to store the address of an ACARS router
+#[derive(Debug, Deserialize, Serialize)]
+pub struct AcarsRouterAddress {
     address: String,
-    port: u16,
+    port: u32,
 }
 
-impl Address {
+impl AcarsRouterAddress {
+    /// Create a new AcarsRouterAddress from a string
+    /// Input should be in the format "address:port"
+    /// Returns an Option containing the AcarsRouterAddress if successful
+
     pub fn new(input: String) -> Option<Self> {
         let parts: Vec<&str> = input.split(':').collect();
 
@@ -19,25 +24,20 @@ impl Address {
             return None;
         }
 
-        let port = match parts[1].parse::<u16>() {
+        let port = match parts[1].parse::<u32>() {
             Ok(port) => port,
             Err(_) => {
                 return None;
             }
         };
 
-        Some(Address {
+        Some(AcarsRouterAddress {
             address: parts[0].trim().to_string(),
             port,
         })
     }
-}
 
-impl Serialize for Address {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        format!("{}:{}", self.address, self.port).serialize(serializer)
+    pub fn new_from_parts(address: String, port: u32) -> Self {
+        AcarsRouterAddress { address, port }
     }
 }
