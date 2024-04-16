@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
 use source::{DataSources, EnabledDataSources};
 
+pub mod acars_router_source;
 pub mod address;
 pub mod map;
 pub mod sdrehub;
