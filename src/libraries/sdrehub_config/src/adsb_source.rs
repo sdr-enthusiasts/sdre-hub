@@ -11,25 +11,26 @@ use serde::{
 };
 use void::Void;
 
-use crate::address::AcarsRouterAddress;
+use crate::address::AdsbAddress;
 
 pub trait SourceTrait {
     fn new() -> Self;
-    fn insert(&mut self, value: AcarsRouterAddress);
-}
-#[derive(Debug, Serialize, Deserialize, Default)]
-pub struct AcarsRouterSource {
-    addresses: Vec<AcarsRouterAddress>,
+    fn insert(&mut self, value: AdsbAddress);
 }
 
-impl FromStr for AcarsRouterSource {
+#[derive(Debug, Serialize, Deserialize, Default)]
+pub struct AdsbSource {
+    addresses: Vec<AdsbAddress>,
+}
+
+impl FromStr for AdsbSource {
     type Err = Void;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut output = AcarsRouterSource::new();
+        let mut output = AdsbSource::new();
 
         for address in s.split(',') {
-            if let Some(address) = AcarsRouterAddress::new(address.to_string()) {
+            if let Some(address) = AdsbAddress::new(address.to_string()) {
                 output.insert(address);
             }
         }
@@ -38,25 +39,29 @@ impl FromStr for AcarsRouterSource {
     }
 }
 
-impl SourceTrait for AcarsRouterSource {
+impl SourceTrait for AdsbSource {
     fn new() -> Self {
-        AcarsRouterSource {
+        AdsbSource {
             addresses: Vec::new(),
         }
     }
 
-    fn insert(&mut self, value: AcarsRouterAddress) {
+    fn insert(&mut self, value: AdsbAddress) {
         self.addresses.push(value);
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Eq, PartialEq, Hash, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(untagged)]
 enum FieldTypes {
     #[serde(rename = "address")]
     Address(String),
     #[serde(rename = "port")]
     Port(i32),
+    #[serde(rename = "lat")]
+    Lat(f64),
+    #[serde(rename = "lon")]
+    Lon(f64),
 }
 
 pub fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
@@ -135,7 +140,33 @@ where
                                 }
                             };
 
-                            let address = AcarsRouterAddress::new_from_parts(address, port);
+                            let lat = match item.get("lat").unwrap().to_owned() {
+                                FieldTypes::Lat(lat) => {
+                                    if !(-90.0..=90.0).contains(&lat) {
+                                        return Err(de::Error::custom("Latitude out of range"));
+                                    } else {
+                                        lat
+                                    }
+                                }
+                                _ => {
+                                    return Err(de::Error::custom("Latitude not found"));
+                                }
+                            };
+
+                            let lon = match item.get("lon").unwrap().to_owned() {
+                                FieldTypes::Lon(lon) => {
+                                    if !(-180.0..=180.0).contains(&lon) {
+                                        return Err(de::Error::custom("Longitude out of range"));
+                                    } else {
+                                        lon
+                                    }
+                                }
+                                _ => {
+                                    return Err(de::Error::custom("Longitude not found"));
+                                }
+                            };
+
+                            let address = AdsbAddress::new_from_parts(address, port, lat, lon);
 
                             source.insert(address);
                         }
@@ -164,7 +195,7 @@ where
             let mut source = T::new();
 
             while let Some(value) = seq.next_element::<String>()? {
-                if let Some(address) = AcarsRouterAddress::new(value) {
+                if let Some(address) = AdsbAddress::new(value) {
                     source.insert(address);
                 }
             }

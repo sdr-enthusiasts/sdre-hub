@@ -6,15 +6,7 @@
 use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
 
-use crate::{
-    acars_router_source::{string_or_struct, AcarsRouterSource},
-    address::AcarsRouterAddress,
-};
-
-pub trait SourceTrait {
-    fn new() -> Self;
-    fn insert(&mut self, value: AcarsRouterAddress);
-}
+use crate::{acars_router_source::AcarsRouterSource, adsb_source::AdsbSource};
 
 #[serde_inline_default]
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -37,9 +29,9 @@ pub struct EnabledDataSources {
 #[derive(Debug, Serialize, Default, Deserialize)]
 pub struct DataSources {
     #[serde_inline_default(AcarsRouterSource::default())]
-    #[serde(deserialize_with = "string_or_struct")]
+    #[serde(deserialize_with = "crate::acars_router_source::string_or_struct")]
     pub acars_routers: AcarsRouterSource,
-    #[serde_inline_default(AcarsRouterSource::default())]
-    #[serde(deserialize_with = "string_or_struct")]
-    pub adsb_sources: AcarsRouterSource,
+    #[serde_inline_default(AdsbSource::default())]
+    #[serde(deserialize_with = "crate::adsb_source::string_or_struct")]
+    pub adsb_sources: AdsbSource,
 }

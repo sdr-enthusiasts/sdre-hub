@@ -17,6 +17,7 @@ use source::{DataSources, EnabledDataSources};
 
 pub mod acars_router_source;
 pub mod address;
+pub mod adsb_source;
 pub mod map;
 pub mod sdrehub;
 pub mod source;
