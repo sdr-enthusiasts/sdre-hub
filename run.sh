@@ -15,27 +15,27 @@ extra_args=()
 # parse the command line options
 
 while [ $# -gt 0 ]; do
-case "$1" in
-    --web)
-    app_type="web"
-    ;;
-    --standalone)
-    app_type="standalone"
-    ;;
-    --release)
-    build_type="release"
-    ;;
-    --debug)
-    build_type="debug"
-    ;;
-    --clean)
-        clean=true
+    case "$1" in
+        --web)
+        app_type="web"
         ;;
-    *)
-        extra_args+=("$1")
-    ;;
-esac
-shift
+        --standalone)
+        app_type="standalone"
+        ;;
+        --release)
+        build_type="release"
+        ;;
+        --debug)
+        build_type="debug"
+        ;;
+        --clean)
+            clean=true
+            ;;
+        *)
+            extra_args+=("$1")
+        ;;
+    esac
+    shift
 done
 
 echo "Building SDRE Hub"
@@ -54,26 +54,26 @@ echo "Build type: $build_type"
 # build the app
 
 if [ "$app_type" == "web" ]; then
-echo "Building SDRE Hub as a web app"
-if [ "$build_type" == "debug" ]; then
-    echo "Building debug version"
-    # build the debug version
-    cargo run -- "${extra_args[@]}"
+    echo "Building SDRE Hub as a web app"
+    if [ "$build_type" == "debug" ]; then
+        echo "Building debug version"
+        # build the debug version
+        cargo run -- "${extra_args[@]}"
+        else
+        echo "Building release version"
+        # build the release version
+        cargo run --release -- "${extra_args[@]}"
+    fi
     else
-    echo "Building release version"
-    # build the release version
-    cargo run --release -- "${extra_args[@]}"
-fi
-else
-echo "Building SDRE Hub as a standalone app"
-echo "Not yet implemented. Exiting"
-if [ "$build_type" == "debug" ]; then
-    echo "Building debug version"
-    # build the debug version
-    # this is a placeholder for the actual build command
-else
-    echo "Building release version"
-    # build the release version
-    # this is a placeholder for the actual build command
-fi
+    echo "Building SDRE Hub as a standalone app"
+    echo "Not yet implemented. Exiting"
+    if [ "$build_type" == "debug" ]; then
+        echo "Building debug version"
+        # build the debug version
+        # this is a placeholder for the actual build command
+    else
+        echo "Building release version"
+        # build the release version
+        # this is a placeholder for the actual build command
+    fi
 fi

@@ -206,7 +206,7 @@ where
             Ok(FromStr::from_str(value).unwrap())
         }
 
-        fn visit_map<M>(self, map: M) -> Result<T, M::Error>
+        fn visit_map<M>(self, mut map: M) -> Result<T, M::Error>
         where
             M: MapAccess<'de>,
         {
@@ -214,7 +214,27 @@ where
             // into a `Deserializer`, allowing it to be used as the input to T's
             // `Deserialize` implementation. T then deserializes itself using
             // the entries from the map visitor.
-            Deserialize::deserialize(de::value::MapAccessDeserializer::new(map))
+
+            let mut source = T::new();
+
+            if let Some(_key) = map.next_key::<String>()? {
+                match map.next_value::<Vec<String>>() {
+                    Ok(value) => {
+                        for address in value {
+                            if let Some(address) = Address::new(address) {
+                                source.insert(address);
+                            }
+                        }
+
+                        return Ok(source);
+                    }
+                    Err(e) => {
+                        return Err(e);
+                    }
+                }
+            }
+
+            Ok(source)
         }
 
         fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
