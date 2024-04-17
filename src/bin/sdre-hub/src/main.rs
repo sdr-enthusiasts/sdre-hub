@@ -5,7 +5,7 @@
 
 #![deny(
     clippy::pedantic,
-    clippy::cargo,
+    //clippy::cargo,
     clippy::nursery,
     clippy::style,
     clippy::correctness,
@@ -13,10 +13,20 @@
 )]
 
 use sdrehub_config::ShConfig;
+use std::error::Error;
 
-fn main() {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
     let config = ShConfig::new();
     config.enable_logging();
     config.write_config();
     config.show_config();
+
+    // start sleep loop
+
+    loop {
+        tokio::time::sleep(std::time::Duration::from_secs(60)).await;
+    }
+
+    //Ok(())
 }

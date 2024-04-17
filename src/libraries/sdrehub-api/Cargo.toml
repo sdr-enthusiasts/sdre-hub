@@ -1,5 +1,5 @@
 [package]
-name = "sdre-hub"
+name = "sdrehub_api"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -13,7 +13,7 @@ rust-version.workspace = true
 categories.workspace = true
 keywords.workspace = true
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [dependencies]
-sdrehub_api = { path = "../../libraries/sdrehub-api" }
-sdrehub_config = { path = "../../libraries/sdrehub-config" }
 tokio = { version = "1.37.0", features = ["full", "tracing"] }
