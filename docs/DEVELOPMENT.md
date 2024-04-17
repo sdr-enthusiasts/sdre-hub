@@ -14,7 +14,7 @@
 Two scripts are provided to run the project:
 
 - `./run.sh` - This script will build the project and run
-- `./run-dev.sh` - This script will build the project
+- `./build.sh` - This script will build the project
 
 Command line options, for both scripts, are as follows:
 
