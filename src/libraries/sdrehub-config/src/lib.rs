@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 #![deny(
     clippy::pedantic,
 //    clippy::cargo,
@@ -17,7 +16,8 @@ use figment::{
     providers::{Env, Format, Toml},
     Figment,
 };
-use log::debug;
+#[macro_use]
+extern crate log;
 use map::ShMapConfig;
 use sdre_rust_logging::SetupLogging;
 use sdrehub::SDREHub;
@@ -48,19 +48,20 @@ pub struct ShConfig {
 }
 
 impl ShConfig {
-    #[must_use] pub fn new() -> Self {
+    #[must_use]
+    pub fn new() -> Self {
         Self::get_and_validate_config()
     }
 
     fn get_file_path() -> String {
         "./sh_config.toml".to_string() // FIXME: commented out the logic below to make clippy happy until we featurize the code
-        // match std::env::consts::OS {
-        //     "linux" => "./sh_config.toml",
-        //     "macos" => "./sh_config.toml",
-        //     "windows" => "./sh_config.toml",
-        //     _ => "./sh_config.toml",
-        // }
-        // .to_string()
+                                       // match std::env::consts::OS {
+                                       //     "linux" => "./sh_config.toml",
+                                       //     "macos" => "./sh_config.toml",
+                                       //     "windows" => "./sh_config.toml",
+                                       //     _ => "./sh_config.toml",
+                                       // }
+                                       // .to_string()
     }
 
     fn get_config(file_path: &str) -> Self {

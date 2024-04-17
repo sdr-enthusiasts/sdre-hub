@@ -69,3 +69,10 @@ repos:
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
+
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: fmt
+      - id: cargo-check
+      - id: clippy

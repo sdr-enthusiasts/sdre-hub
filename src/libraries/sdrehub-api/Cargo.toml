@@ -16,4 +16,6 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+axum = { version = "0.7.5", features = ["ws"] }
+log = "0.4.21"
 tokio = { version = "1.37.0", features = ["full", "tracing"] }

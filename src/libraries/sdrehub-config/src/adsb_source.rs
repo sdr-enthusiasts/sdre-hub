@@ -56,12 +56,12 @@ impl SourceTrait for AdsbSource {
 enum FieldTypes {
     Address(String),
     Port(u32),
-    Position(f64)
+    Position(f64),
 }
 
 ///# Errors
 /// will return an error if the input fails to deserialize
- pub fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
+pub fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
 where
     T: Deserialize<'de> + FromStr<Err = Void> + SourceTrait,
     D: Deserializer<'de>,
@@ -124,7 +124,9 @@ where
                                 }
                             };
 
-                            let FieldTypes::Address(address) = item.get("address").unwrap().to_owned() else {
+                            let FieldTypes::Address(address) =
+                                item.get("address").unwrap().to_owned()
+                            else {
                                 return Err(de::Error::custom("Address not found"));
                             };
 
@@ -154,7 +156,8 @@ where
                                 }
                             };
 
-                            let address = SHAdsbConfig::new_from_parts(address, port, latitude, longitude);
+                            let address =
+                                SHAdsbConfig::new_from_parts(address, port, latitude, longitude);
 
                             source.insert(address);
                         }

@@ -11,9 +11,15 @@
     clippy::correctness,
     clippy::all
 )]
-
+// FIXME: This is a temporary fix because there is an upstream error(I think)
+// in the tokio::select macro
+#![allow(clippy::redundant_pub_crate)]
+#[macro_use]
+extern crate log;
+pub use sdrehub_api::run_webserver;
 use sdrehub_config::ShConfig;
 use std::error::Error;
+use tokio::select;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -22,11 +28,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
     config.write_config();
     config.show_config();
 
-    // start sleep loop
-
-    loop {
-        tokio::time::sleep(std::time::Duration::from_secs(60)).await;
+    select! {
+        () = run_webserver() => {
+            error!("Webserver exited");
+        }
     }
 
-    //Ok(())
+    Ok(())
 }

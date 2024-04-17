@@ -18,7 +18,7 @@ pub enum ShEnabledDataSources {
     Iridium,
     Vdlm2,
     #[default]
-    None
+    None,
 }
 
 impl TryFrom<String> for ShEnabledDataSources {
@@ -32,7 +32,7 @@ impl TryFrom<String> for ShEnabledDataSources {
             "inmarsat" => Ok(Self::Inmarsat),
             "iridium" => Ok(Self::Iridium),
             "vdlm2" => Ok(Self::Vdlm2),
-            _ => Err(format!("Invalid value for ShEnabledDataSources: {}", value)),
+            _ => Err(format!("Invalid value for ShEnabledDataSources: {value}")),
         }
     }
 }
