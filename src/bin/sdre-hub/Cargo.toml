@@ -1,5 +1,5 @@
 [package]
-name = "sdre_hub"
+name = "sdre-hub"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -14,4 +14,4 @@ categories.workspace = true
 keywords.workspace = true
 
 [dependencies]
-sdrehub_config = { path = "../../libraries/sdrehub_config" }
+sdrehub_config = { path = "../../libraries/sdrehub-config" }

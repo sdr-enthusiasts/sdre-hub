@@ -1,5 +1,5 @@
 [workspace]
-members = ["src/libraries/sdrehub_config", "src/bin/sdre_hub"]
+members = ["src/libraries/sdrehub-config", "src/bin/sdre-hub"]
 
 resolver = "2"
 
