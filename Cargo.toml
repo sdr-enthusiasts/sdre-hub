@@ -1,8 +1,10 @@
 [workspace]
 members = [
-    "src/libraries/sdrehub-config",
     "src/bin/sdre-hub",
+    "src/libraries/libsdrehub",
+    "src/libraries/libsdrehubcommon",
     "src/libraries/sdrehub-api",
+    "src/libraries/sdrehub-config",
 ]
 
 resolver = "2"

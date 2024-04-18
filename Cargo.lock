@@ -602,6 +602,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
 
 [[package]]
+name = "libsdrehub"
+version = "4.0.0-alpha1"
+dependencies = [
+ "libsdrehubcommon",
+ "log",
+ "sdrehub_api",
+ "sdrehub_config",
+ "tokio",
+]
+
+[[package]]
+name = "libsdrehubcommon"
+version = "4.0.0-alpha1"
+dependencies = [
+ "async-trait",
+]
+
+[[package]]
 name = "lock_api"
 version = "0.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -906,7 +924,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 name = "sdre-hub"
 version = "4.0.0-alpha1"
 dependencies = [
- "log",
+ "libsdrehub",
  "sdrehub_api",
  "sdrehub_config",
  "tokio",
@@ -928,7 +946,9 @@ dependencies = [
 name = "sdrehub_api"
 version = "4.0.0-alpha1"
 dependencies = [
+ "async-trait",
  "axum",
+ "libsdrehubcommon",
  "log",
  "tokio",
 ]

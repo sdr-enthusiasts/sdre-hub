@@ -11,26 +11,21 @@
     clippy::correctness,
     clippy::all
 )]
-// FIXME: This is a temporary fix because there is an upstream error(I think)
-// in the tokio::select macro
-#![allow(clippy::redundant_pub_crate)]
-#[macro_use]
-extern crate log;
-pub use sdrehub_api::run_webserver;
+
+use libsdrehub::SdreHub;
 use sdrehub_config::ShConfig;
 use std::error::Error;
-use tokio::select;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let config = ShConfig::new();
-    config.enable_logging();
-    config.write_config();
-    config.show_config();
+    let hub = SdreHub::new(config);
 
-    select! {
-        () = run_webserver() => {
-            error!("Webserver exited");
+    match hub.run().await {
+        Ok(()) => {}
+        Err(e) => {
+            eprintln!("Error running SDRE Hub: {e}");
+            return Err(e);
         }
     }
 

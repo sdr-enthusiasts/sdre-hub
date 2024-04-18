@@ -12,35 +12,65 @@
     clippy::all
 )]
 
+use async_trait::async_trait;
 use axum::{
     extract::ws::{Message, WebSocket, WebSocketUpgrade},
     response::Response,
     routing::get,
     Router,
 };
+use libsdrehubcommon::ShDataUser;
 #[macro_use]
 extern crate log;
 
-pub async fn run_webserver() {
-    let listener = match tokio::net::TcpListener::bind("0.0.0.0:3000").await {
-        Ok(listener) => listener,
-        Err(e) => {
-            error!("Error binding socket for websocket server: {e}");
-            return;
-        }
-    };
+pub struct ShWebServer {}
 
-    let local_addr = match listener.local_addr() {
-        Ok(addr) => addr,
-        Err(e) => {
-            error!("Error getting local address for websocket server: {e}");
-            return;
-        }
-    };
+#[async_trait]
+impl ShDataUser for ShWebServer {
+    async fn start(&self) -> Result<(), Box<dyn std::error::Error>> {
+        // Start the web server
+        self.run_webserver().await
+    }
 
-    info!("listening for websocket connections on {}", local_addr);
-    if axum::serve(listener, app()).await.is_err() {
-        error!("Error starting WebSocket server");
+    fn stop(&self) {
+        // Stop the web server
+    }
+
+    fn restart(&self) {
+        // Restart the web server
+    }
+}
+
+impl ShWebServer {
+    /// # Errors
+    /// - Error binding socket for websocket server: {e}
+    pub async fn run_webserver(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let listener = match tokio::net::TcpListener::bind("0.0.0.0:3000").await {
+            Ok(listener) => listener,
+            Err(e) => {
+                error!("Error binding socket for websocket server: {e}");
+                return Err(Box::new(e));
+            }
+        };
+
+        let local_addr = match listener.local_addr() {
+            Ok(addr) => addr,
+            Err(e) => {
+                error!("Error getting local address for websocket server: {e}");
+                return Err(Box::new(e));
+            }
+        };
+
+        info!("listening for websocket connections on {}", local_addr);
+        if axum::serve(listener, app()).await.is_err() {
+            error!("Error starting WebSocket server");
+            return Err(Box::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                "Error starting WebSocket server",
+            )));
+        }
+
+        Ok(())
     }
 }
 
