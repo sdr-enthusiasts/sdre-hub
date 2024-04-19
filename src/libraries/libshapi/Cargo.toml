@@ -1,5 +1,5 @@
 [package]
-name = "sdrehub_api"
+name = "libshapi"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

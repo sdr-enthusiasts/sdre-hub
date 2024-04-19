@@ -18,6 +18,6 @@ keywords.workspace = true
 [dependencies]
 libsdrehubcommon = { path = "../libsdrehubcommon" }
 log = "0.4.21"
-sdrehub_api = { path = "../sdrehub-api" }
-sdrehub_config = { path = "../sdrehub-config" }
+libshapi = { path = "../libshapi" }
+libshconfig = { path = "../libshconfig" }
 tokio = { version = "1.37.0", features = ["full", "tracing"] }

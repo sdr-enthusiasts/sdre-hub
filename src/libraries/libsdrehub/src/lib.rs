@@ -26,8 +26,8 @@
 extern crate log;
 
 use libsdrehubcommon::ShDataUserList;
-use sdrehub_api::ShWebServer;
-use sdrehub_config::ShConfig;
+use libshapi::ShWebServer;
+use libshconfig::ShConfig;
 use tokio::task::JoinSet;
 
 pub struct SdreHub {

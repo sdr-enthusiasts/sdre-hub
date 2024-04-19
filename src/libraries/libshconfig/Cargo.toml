@@ -1,5 +1,5 @@
 [package]
-name = "sdrehub_config"
+name = "libshconfig"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

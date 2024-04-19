@@ -13,7 +13,7 @@
 )]
 
 use libsdrehub::SdreHub;
-use sdrehub_config::ShConfig;
+use libshconfig::ShConfig;
 use std::error::Error;
 
 #[tokio::main]

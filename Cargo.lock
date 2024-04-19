@@ -606,9 +606,9 @@ name = "libsdrehub"
 version = "4.0.0-alpha1"
 dependencies = [
  "libsdrehubcommon",
+ "libshapi",
+ "libshconfig",
  "log",
- "sdrehub_api",
- "sdrehub_config",
  "tokio",
 ]
 
@@ -617,6 +617,30 @@ name = "libsdrehubcommon"
 version = "4.0.0-alpha1"
 dependencies = [
  "async-trait",
+]
+
+[[package]]
+name = "libshapi"
+version = "4.0.0-alpha1"
+dependencies = [
+ "async-trait",
+ "axum",
+ "libsdrehubcommon",
+ "log",
+ "tokio",
+]
+
+[[package]]
+name = "libshconfig"
+version = "4.0.0-alpha1"
+dependencies = [
+ "figment",
+ "log",
+ "sdre-rust-logging",
+ "serde",
+ "serde-inline-default",
+ "toml",
+ "void",
 ]
 
 [[package]]
@@ -925,8 +949,8 @@ name = "sdre-hub"
 version = "4.0.0-alpha1"
 dependencies = [
  "libsdrehub",
- "sdrehub_api",
- "sdrehub_config",
+ "libshapi",
+ "libshconfig",
  "tokio",
 ]
 
@@ -940,30 +964,6 @@ dependencies = [
  "chrono",
  "env_logger",
  "log",
-]
-
-[[package]]
-name = "sdrehub_api"
-version = "4.0.0-alpha1"
-dependencies = [
- "async-trait",
- "axum",
- "libsdrehubcommon",
- "log",
- "tokio",
-]
-
-[[package]]
-name = "sdrehub_config"
-version = "4.0.0-alpha1"
-dependencies = [
- "figment",
- "log",
- "sdre-rust-logging",
- "serde",
- "serde-inline-default",
- "toml",
- "void",
 ]
 
 [[package]]
