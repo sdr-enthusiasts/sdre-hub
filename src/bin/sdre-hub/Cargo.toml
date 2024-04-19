@@ -1,5 +1,5 @@
 [package]
-name = "sdre_hub"
+name = "sdre-hub"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -14,4 +14,7 @@ categories.workspace = true
 keywords.workspace = true
 
 [dependencies]
-sdrehub_config = { path = "../../libraries/sdrehub_config" }
+libsdrehub = { path = "../../libraries/libsdrehub" }
+libshapi = { path = "../../libraries/libshapi" }
+libshconfig = { path = "../../libraries/libshconfig" }
+tokio = { version = "1.37.0", features = ["full", "tracing"] }

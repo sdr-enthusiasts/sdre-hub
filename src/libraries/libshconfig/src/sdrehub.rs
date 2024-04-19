@@ -24,7 +24,7 @@ pub struct SDREHub {
 
 impl Default for SDREHub {
     fn default() -> Self {
-        SDREHub {
+        Self {
             database_url: "sqlite://sdre-hub.db".to_string(),
             data_path: "./data".to_string(),
             log_level: "info".to_string(),

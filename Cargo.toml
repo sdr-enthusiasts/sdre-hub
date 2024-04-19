@@ -1,10 +1,15 @@
 [workspace]
-members = ["src/libraries/sdrehub_config", "src/bin/sdre_hub"]
+members = [
+    "src/bin/sdre-hub",
+    "src/libraries/libshapi",
+    "src/libraries/libshconfig",
+    "src/libraries/libsdrehub",
+    "src/libraries/libsdrehubcommon",
+]
 
 resolver = "2"
 
 [workspace.package]
-name = "sdre-hub"
 version = "4.0.0-alpha1"
 edition = "2021"
 authors = ["Fred Clausen"]

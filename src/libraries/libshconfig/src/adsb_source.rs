@@ -11,26 +11,26 @@ use serde::{
 };
 use void::Void;
 
-use crate::address::AdsbAddress;
+use crate::address::SHAdsbConfig;
 
 pub trait SourceTrait {
     fn new() -> Self;
-    fn insert(&mut self, value: AdsbAddress);
+    fn insert(&mut self, value: SHAdsbConfig);
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct AdsbSource {
-    addresses: Vec<AdsbAddress>,
+    addresses: Vec<SHAdsbConfig>,
 }
 
 impl FromStr for AdsbSource {
     type Err = Void;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut output = AdsbSource::new();
+        let mut output = Self::new();
 
         for address in s.split(',') {
-            if let Some(address) = AdsbAddress::new(address.to_string()) {
+            if let Some(address) = SHAdsbConfig::new(address) {
                 output.insert(address);
             }
         }
@@ -41,12 +41,12 @@ impl FromStr for AdsbSource {
 
 impl SourceTrait for AdsbSource {
     fn new() -> Self {
-        AdsbSource {
+        Self {
             addresses: Vec::new(),
         }
     }
 
-    fn insert(&mut self, value: AdsbAddress) {
+    fn insert(&mut self, value: SHAdsbConfig) {
         self.addresses.push(value);
     }
 }
@@ -54,16 +54,13 @@ impl SourceTrait for AdsbSource {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(untagged)]
 enum FieldTypes {
-    #[serde(rename = "address")]
     Address(String),
-    #[serde(rename = "port")]
-    Port(i32),
-    #[serde(rename = "lat")]
-    Lat(f64),
-    #[serde(rename = "lon")]
-    Lon(f64),
+    Port(u32),
+    Position(f64),
 }
 
+///# Errors
+/// will return an error if the input fails to deserialize
 pub fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
 where
     T: Deserialize<'de> + FromStr<Err = Void> + SourceTrait,
@@ -105,27 +102,21 @@ where
             let mut source = T::new();
 
             if let Some(_key) = map.next_key::<String>()? {
-                println!("key: {}", _key);
-
                 // loop through the keys and values
 
                 match map.next_value::<Vec<HashMap<String, FieldTypes>>>() {
                     Ok(value) => {
-                        println!("value: {:?}", value);
-
                         if value.is_empty() {
                             return Ok(source);
                         }
 
-                        for item in value.iter() {
-                            println!("item: {:?}", item);
-
+                        for item in &value {
                             let port = match item.get("port").unwrap().to_owned() {
                                 FieldTypes::Port(port) => {
-                                    if !(0..=65535).contains(&port) {
-                                        return Err(de::Error::custom("Port out of range"));
+                                    if (0..=65535).contains(&port) {
+                                        port
                                     } else {
-                                        port as u32
+                                        return Err(de::Error::custom("Port out of range"));
                                     }
                                 }
                                 _ => {
@@ -133,19 +124,18 @@ where
                                 }
                             };
 
-                            let address = match item.get("address").unwrap().to_owned() {
-                                FieldTypes::Address(address) => address,
-                                _ => {
-                                    return Err(de::Error::custom("Address not found"));
-                                }
+                            let FieldTypes::Address(address) =
+                                item.get("address").unwrap().to_owned()
+                            else {
+                                return Err(de::Error::custom("Address not found"));
                             };
 
-                            let lat = match item.get("lat").unwrap().to_owned() {
-                                FieldTypes::Lat(lat) => {
-                                    if !(-90.0..=90.0).contains(&lat) {
-                                        return Err(de::Error::custom("Latitude out of range"));
+                            let latitude = match item.get("latitude").unwrap().to_owned() {
+                                FieldTypes::Position(latitutde) => {
+                                    if (-90.0..=90.0).contains(&latitutde) {
+                                        latitutde
                                     } else {
-                                        lat
+                                        return Err(de::Error::custom("Latitude out of range"));
                                     }
                                 }
                                 _ => {
@@ -153,12 +143,12 @@ where
                                 }
                             };
 
-                            let lon = match item.get("lon").unwrap().to_owned() {
-                                FieldTypes::Lon(lon) => {
-                                    if !(-180.0..=180.0).contains(&lon) {
-                                        return Err(de::Error::custom("Longitude out of range"));
+                            let longitude = match item.get("longitude").unwrap().to_owned() {
+                                FieldTypes::Position(longitude) => {
+                                    if (-180.0..=180.0).contains(&longitude) {
+                                        longitude
                                     } else {
-                                        lon
+                                        return Err(de::Error::custom("Longitude out of range"));
                                     }
                                 }
                                 _ => {
@@ -166,7 +156,8 @@ where
                                 }
                             };
 
-                            let address = AdsbAddress::new_from_parts(address, port, lat, lon);
+                            let address =
+                                SHAdsbConfig::new_from_parts(address, port, latitude, longitude);
 
                             source.insert(address);
                         }
@@ -195,7 +186,7 @@ where
             let mut source = T::new();
 
             while let Some(value) = seq.next_element::<String>()? {
-                if let Some(address) = AdsbAddress::new(value) {
+                if let Some(address) = SHAdsbConfig::new(&value) {
                     source.insert(address);
                 }
             }

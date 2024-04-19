@@ -3,12 +3,22 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+#![deny(
+    clippy::pedantic,
+//    clippy::cargo,
+    clippy::nursery,
+    clippy::style,
+    clippy::correctness,
+    clippy::all
+)]
+
 use figment::{
     providers::{Env, Format, Toml},
     Figment,
 };
-use log::debug;
-use map::MapConfig;
+#[macro_use]
+extern crate log;
+use map::ShMapConfig;
 use sdre_rust_logging::SetupLogging;
 use sdrehub::SDREHub;
 use serde::{Deserialize, Serialize};
@@ -33,26 +43,28 @@ pub struct ShConfig {
     pub enabled_data_sources: EnabledDataSources,
     #[serde_inline_default(DataSources::default())]
     pub data_sources: DataSources,
-    #[serde_inline_default(MapConfig::default())]
-    pub map: MapConfig,
+    #[serde_inline_default(ShMapConfig::default())]
+    pub map: ShMapConfig,
 }
 
 impl ShConfig {
+    #[must_use]
     pub fn new() -> Self {
-        ShConfig::get_and_validate_config()
+        Self::get_and_validate_config()
     }
 
     fn get_file_path() -> String {
-        match std::env::consts::OS {
-            "linux" => "./sh_config.toml",
-            "macos" => "./sh_config.toml",
-            "windows" => "./sh_config.toml",
-            _ => "./sh_config.toml",
-        }
-        .to_string()
+        "./sh_config.toml".to_string() // FIXME: commented out the logic below to make clippy happy until we featurize the code
+                                       // match std::env::consts::OS {
+                                       //     "linux" => "./sh_config.toml",
+                                       //     "macos" => "./sh_config.toml",
+                                       //     "windows" => "./sh_config.toml",
+                                       //     _ => "./sh_config.toml",
+                                       // }
+                                       // .to_string()
     }
 
-    fn get_config(file_path: &str) -> ShConfig {
+    fn get_config(file_path: &str) -> Self {
         match Figment::new()
             .merge(Toml::file(file_path))
             .merge(Env::prefixed("SH_"))
@@ -60,16 +72,16 @@ impl ShConfig {
         {
             Ok(config) => config,
             Err(e) => {
-                println!("Error reading config file: {}", e);
+                println!("Error reading config file: {e}");
                 println!("Exiting");
                 std::process::exit(1);
             }
         }
     }
 
-    fn get_and_validate_config() -> ShConfig {
-        let file_path = ShConfig::get_file_path();
-        ShConfig::get_config(&file_path)
+    fn get_and_validate_config() -> Self {
+        let file_path = Self::get_file_path();
+        Self::get_config(&file_path)
     }
 
     pub fn show_config(&self) {
@@ -85,13 +97,13 @@ impl ShConfig {
     }
 
     pub fn write_config(&self) {
-        let file_path = ShConfig::get_file_path();
+        let file_path = Self::get_file_path();
         let config = self.get_config_as_toml_string();
 
         match std::fs::write(file_path, config) {
-            Ok(_) => (),
+            Ok(()) => (),
             Err(e) => {
-                println!("Error writing config file: {}", e);
+                println!("Error writing config file: {e}");
                 println!("Exiting");
                 std::process::exit(1);
             }
