@@ -9,6 +9,13 @@
 - [Rust](https://www.rust-lang.org/). Always the latest stable version
 - [Pre Commit](https://pre-commit.com/)
 
+### Cargo Specific Prerequisites
+
+```shell
+rustup target add wasm32-unknown-unknown &&
+cargo install trunk tauri-cli
+```
+
 ## Running the Project
 
 Two scripts are provided to run the project:
