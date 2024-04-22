@@ -58,11 +58,11 @@ if [ "$app_type" == "web" ]; then
     if [ "$build_type" == "debug" ]; then
         echo "Building debug version"
         # build the debug version
-        cargo run -- "${extra_args[@]}"
+        cargo run --bin sdre-hub -- "${extra_args[@]}"
         else
         echo "Building release version"
         # build the release version
-        cargo run --release -- "${extra_args[@]}"
+        cargo run --release --bin sdre-hub -- "${extra_args[@]}"
     fi
     else
     echo "Building SDRE Hub as a standalone app"
