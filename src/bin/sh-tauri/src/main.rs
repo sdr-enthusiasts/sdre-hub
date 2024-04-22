@@ -25,6 +25,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let config = ShConfig::new();
     let hub = SdreHub::new(config);
 
+    // https://rfdonnelly.github.io/posts/tauri-async-rust-process/
     tauri::Builder::default()
         .setup(|_app| {
             tauri::async_runtime::spawn(async move {
