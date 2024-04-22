@@ -4,26 +4,9 @@ WORKDIR /tmp/sdre-hub
 # hadolint ignore=DL3008,DL3003,SC1091,DL4006,DL3009
 RUN set -x && \
     apt-get update && \
-    apt-get install -y --no-install-recommends libzmq3-dev \
-    libwebkit2gtk-4.0-dev \
-    build-essential \
-    curl \
-    wget \
-    file \
-    libssl-dev \
-    libgtk-3-dev \
-    libayatana-appindicator3-dev \
-    librsvg2-dev && \
-    curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash && \
-    curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && \
-    cargo binstall trunk wasm-bindgen-cli --no-confirm && \
-    cargo install tauri-cli && \
-    rustup target add wasm32-unknown-unknown
+    apt-get install -y --no-install-recommends libzmq3-dev
 
 COPY . .
 
 # hadolint ignore=DL3008,DL3003,SC1091
-RUN set -x && \
-    cargo build --release --bin sdre-hub && \
-    cd sh-frontend && \
-    trunk build --release
+RUN cargo build --release --bin sdre-hub
