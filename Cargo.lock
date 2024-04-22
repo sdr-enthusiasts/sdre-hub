@@ -602,48 +602,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
 
 [[package]]
-name = "libsdrehub"
-version = "4.0.0-alpha1"
-dependencies = [
- "libsdrehubcommon",
- "libshapi",
- "libshconfig",
- "log",
- "tokio",
-]
-
-[[package]]
-name = "libsdrehubcommon"
-version = "4.0.0-alpha1"
-dependencies = [
- "async-trait",
-]
-
-[[package]]
-name = "libshapi"
-version = "4.0.0-alpha1"
-dependencies = [
- "async-trait",
- "axum",
- "libsdrehubcommon",
- "log",
- "tokio",
-]
-
-[[package]]
-name = "libshconfig"
-version = "4.0.0-alpha1"
-dependencies = [
- "figment",
- "log",
- "sdre-rust-logging",
- "serde",
- "serde-inline-default",
- "toml",
- "void",
-]
-
-[[package]]
 name = "lock_api"
 version = "0.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -948,9 +906,8 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 name = "sdre-hub"
 version = "4.0.0-alpha1"
 dependencies = [
- "libsdrehub",
- "libshapi",
- "libshconfig",
+ "sdrehub",
+ "sh-config",
  "tokio",
 ]
 
@@ -964,6 +921,17 @@ dependencies = [
  "chrono",
  "env_logger",
  "log",
+]
+
+[[package]]
+name = "sdrehub"
+version = "4.0.0-alpha1"
+dependencies = [
+ "log",
+ "sh-api",
+ "sh-common",
+ "sh-config",
+ "tokio",
 ]
 
 [[package]]
@@ -1037,6 +1005,37 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "sh-api"
+version = "4.0.0-alpha1"
+dependencies = [
+ "async-trait",
+ "axum",
+ "log",
+ "sh-common",
+ "tokio",
+]
+
+[[package]]
+name = "sh-common"
+version = "4.0.0-alpha1"
+dependencies = [
+ "async-trait",
+]
+
+[[package]]
+name = "sh-config"
+version = "4.0.0-alpha1"
+dependencies = [
+ "figment",
+ "log",
+ "sdre-rust-logging",
+ "serde",
+ "serde-inline-default",
+ "toml",
+ "void",
 ]
 
 [[package]]

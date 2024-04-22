@@ -12,8 +12,8 @@
     clippy::all
 )]
 
-use libsdrehub::SdreHub;
-use libshconfig::ShConfig;
+use sdrehub::SdreHub;
+use sh_config::ShConfig;
 use std::error::Error;
 
 #[tokio::main]

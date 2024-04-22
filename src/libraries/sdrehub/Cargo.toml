@@ -1,5 +1,5 @@
 [package]
-name = "libshconfig"
+name = "sdrehub"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -16,10 +16,8 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-figment = { version = "0.10.16", features = ["toml", "env"] }
-sdre-rust-logging = "0.3.1"
 log = "0.4.21"
-serde = { version = "1.0.197", features = ["derive"] }
-serde-inline-default = "0.2.0"
-toml = "0.8.12"
-void = "1.0.2"
+sh-api = { path = "../sh-api" }
+sh-common = { path = "../sh-common" }
+sh-config = { path = "../sh-config" }
+tokio = { version = "1.37.0", features = ["full", "tracing"] }

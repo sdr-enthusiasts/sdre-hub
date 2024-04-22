@@ -19,7 +19,7 @@ use axum::{
     routing::get,
     Router,
 };
-use libsdrehubcommon::ShDataUser;
+use sh_common::ShDataUser;
 #[macro_use]
 extern crate log;
 
