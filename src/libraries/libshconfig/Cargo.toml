@@ -16,7 +16,7 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-figment = { version = "0.10.16", features = ["toml", "env"] }
+figment = { version = "0.10.18", features = ["toml", "env"] }
 sdre-rust-logging = "0.3.1"
 log = "0.4.21"
 serde = { version = "1.0.197", features = ["derive"] }
