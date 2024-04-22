@@ -26,7 +26,7 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
 
 - [ ] Alpha 1
   - [ ] Create a basic web interface
-  - [ ] Docker build
+  - [x] Docker build
   - [ ] Application build
   - [ ] Manage settings from the web interface
   - [ ] GitHub CI
