@@ -5,12 +5,14 @@ COPY ./rootfs /
 COPY ./bin/sdre-hub.armv7/sdre-hub /opt/sdre-hub.armv7
 COPY ./bin/sdre-hub.arm64/sdre-hub /opt/sdre-hub.arm64
 COPY ./bin/sdre-hub.amd64/sdre-hub /opt/sdre-hub.amd64
+COPY ./sh-frontend /opt/sh-frontend
 
 # hadolint ignore=DL3008,DL3003,SC1091
 RUN set -x && \
     KEPT_PACKAGES=() && \
     TEMP_PACKAGES=() && \
     KEPT_PACKAGES+=(libzmq5) && \
+    KEPT_PACKAGES+=(nginx-light) && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
     "${KEPT_PACKAGES[@]}" \

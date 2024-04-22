@@ -13,7 +13,7 @@
 
 ```shell
 rustup target add wasm32-unknown-unknown &&
-cargo install trunk tauri-cli
+cargo install trunk tauri-cli wasm-pack
 ```
 
 ## Running the Project

@@ -25,7 +25,7 @@
 #[macro_use]
 extern crate log;
 
-use sh_api::ShWebServer;
+use sh_api::ShAPIServer;
 use sh_common::ShDataUserList;
 use sh_config::ShConfig;
 use tokio::task::JoinSet;
@@ -57,7 +57,7 @@ impl SdreHub {
 
         // lets generate the consumers
 
-        self.data_users.push(Box::new(ShWebServer {}));
+        self.data_users.push(Box::new(ShAPIServer {}));
 
         debug!("Starting consumers");
 

@@ -4,10 +4,16 @@ WORKDIR /tmp/sdre-hub
 # hadolint ignore=DL3008,DL3003,SC1091,DL3009
 RUN set -x && \
     apt-get update && \
-    apt-get install -y --no-install-recommends libzmq3-dev
-COPY . .
+    apt-get install -y --no-install-recommends libzmq3-dev && \
+    rustup target add wasm32-unknown-unknown && \
+    cargo install trunk tauri-cli wasm-pack && \
+    COPY . .
 
-RUN cargo build --release
+# hadolint ignore=DL3008,DL3003,SC1091,DL3009,SC3044
+RUN set -x && \
+    cargo build --release && \
+    pushd sh-frontend && \
+    trunk build --release
 
 FROM scratch
 COPY --from=builder /tmp/sdre-hub/target/release/sdre-hub /sdre-hub

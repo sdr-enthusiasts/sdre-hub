@@ -23,13 +23,13 @@ use sh_common::ShDataUser;
 #[macro_use]
 extern crate log;
 
-pub struct ShWebServer {}
+pub struct ShAPIServer {}
 
 #[async_trait]
-impl ShDataUser for ShWebServer {
+impl ShDataUser for ShAPIServer {
     async fn start(&self) -> Result<(), Box<dyn std::error::Error>> {
         // Start the web server
-        self.run_webserver().await
+        self.run_apiserver().await
     }
 
     fn stop(&self) {
@@ -41,10 +41,10 @@ impl ShDataUser for ShWebServer {
     }
 }
 
-impl ShWebServer {
+impl ShAPIServer {
     /// # Errors
     /// - Error binding socket for websocket server: {e}
-    pub async fn run_webserver(&self) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn run_apiserver(&self) -> Result<(), Box<dyn std::error::Error>> {
         let listener = match tokio::net::TcpListener::bind("0.0.0.0:3000").await {
             Ok(listener) => listener,
             Err(e) => {
