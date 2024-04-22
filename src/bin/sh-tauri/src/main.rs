@@ -7,9 +7,36 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
+#![deny(
+    clippy::pedantic,
+    //clippy::cargo,
+    clippy::nursery,
+    clippy::style,
+    clippy::correctness,
+    clippy::all
+)]
 
-fn main() {
+use sdrehub::SdreHub;
+use sh_config::ShConfig;
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let config = ShConfig::new();
+    let hub = SdreHub::new(config);
+
     tauri::Builder::default()
+        .setup(|_app| {
+            tauri::async_runtime::spawn(async move {
+                if let Err(e) = hub.run().await {
+                    eprintln!("Error running SDRE Hub: {e}");
+                }
+            });
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+
+    Ok(())
 }

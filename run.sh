@@ -70,10 +70,10 @@ if [ "$app_type" == "web" ]; then
     if [ "$build_type" == "debug" ]; then
         echo "Building debug version"
         # build the debug version
-        cargo tauri serve -d
+        cargo tauri dev
     else
         echo "Building release version"
         # build the release version
-        cargo tauri serve
+        cargo tauri build
     fi
 fi

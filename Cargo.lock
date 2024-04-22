@@ -3634,10 +3634,13 @@ dependencies = [
 name = "sh-tauri"
 version = "4.0.0-alpha.1"
 dependencies = [
+ "sdrehub",
  "serde",
  "serde_json",
+ "sh-config",
  "tauri",
  "tauri-build",
+ "tokio",
 ]
 
 [[package]]
