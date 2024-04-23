@@ -220,7 +220,6 @@ jobs:
         binary_build_arm64,
         binary_build_armv7,
         frontend_build,
-        build_mac_app,
       ]
     steps:
       - run: mkdir -p ./bin
@@ -271,6 +270,7 @@ jobs:
       cache_key: ${{ github.run_id }}
 
   publish-tauri:
+    name: Publish Tauri
     permissions:
       contents: write
     strategy:
