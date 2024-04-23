@@ -34,7 +34,7 @@ pub mod adsb_source;
 pub mod map;
 pub mod sdrehub;
 pub mod source;
-// TODO: Implement command line arguments. The config crate doesn't do this out of the box
+
 // FIXME: env variables require a dot between the prefix and the variable name. This is not ideal. Should be able to use underscores
 
 #[serde_inline_default]

@@ -3,7 +3,7 @@ WORKDIR /tmp/sdre-hub
 # hadolint ignore=DL3008,DL3003,SC1091,DL4006
 RUN set -x && \
     apt-get update && \
-    apt-get install -y --no-install-recommends libzmq3-dev \
+    apt-get install -y --no-install-recommends libzmq3-dev && \
     curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash && \
     curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && \
     cargo binstall trunk wasm-bindgen-cli --no-confirm && \
