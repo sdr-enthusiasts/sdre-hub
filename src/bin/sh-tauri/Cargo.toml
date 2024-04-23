@@ -25,7 +25,3 @@ sdrehub = { path = "../../libraries/sdrehub" }
 sh-config = { path = "../../libraries/sh-config" }
 tauri = { version = "1.6.2", features = ["api-all"] }
 tokio = { version = "1.37.0", features = ["full", "tracing"] }
-
-[features]
-default = ["custom-protocol"]
-custom-protocol = ["tauri/custom-protocol"]

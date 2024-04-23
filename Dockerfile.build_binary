@@ -10,3 +10,6 @@ COPY . .
 
 # hadolint ignore=DL3008,DL3003,SC1091
 RUN cargo build --release --bin sdre-hub
+
+FROM scratch
+COPY --from=builder /tmp/sdre-hub/target/release/sdre-hub /sdre-hub
