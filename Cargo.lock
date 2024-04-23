@@ -3370,7 +3370,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
 name = "sdre-hub"
-version = "4.0.0-alpha.1"
+version = "4.0.0-1"
 dependencies = [
  "sdrehub",
  "sh-config",
@@ -3391,7 +3391,7 @@ dependencies = [
 
 [[package]]
 name = "sdrehub"
-version = "4.0.0-alpha.1"
+version = "4.0.0-1"
 dependencies = [
  "log",
  "sh-api",
@@ -3601,7 +3601,7 @@ dependencies = [
 
 [[package]]
 name = "sh-api"
-version = "4.0.0-alpha.1"
+version = "4.0.0-1"
 dependencies = [
  "async-trait",
  "axum",
@@ -3612,14 +3612,14 @@ dependencies = [
 
 [[package]]
 name = "sh-common"
-version = "4.0.0-alpha.1"
+version = "4.0.0-1"
 dependencies = [
  "async-trait",
 ]
 
 [[package]]
 name = "sh-config"
-version = "4.0.0-alpha.1"
+version = "4.0.0-1"
 dependencies = [
  "figment",
  "log",
@@ -3632,7 +3632,7 @@ dependencies = [
 
 [[package]]
 name = "sh-tauri"
-version = "4.0.0-alpha.1"
+version = "4.0.0-1"
 dependencies = [
  "sdrehub",
  "serde",
