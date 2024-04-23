@@ -19,7 +19,7 @@ server {
   access_log off;
 
   # cache all of the files
-  location ~ \.(css|js|png|jpg|jpeg|gif|ico|woff|woff2|ttf|svg|eot|otf|map|mjs|mp3|wasm)$ {
+  location ~ \.(css|js|png|jpg|jpeg|gif|ico|woff|woff2|ttf|svg|eot|otf|map|mjs|mp3|wasm|webmanifest)$ {
     expires 30d;
     add_header Cache-Control "public";
     root /opt/sh-frontend;
