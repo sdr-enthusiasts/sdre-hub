@@ -307,6 +307,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
+      - name: install other stuff
+        run: |
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+          cargo binstall trunk wasm-bindgen-cli --no-confirm
+          rustup target add wasm32-unknown-unknown
+
       # - name: install frontend dependencies
       #   run: yarn install # change this to npm, pnpm or bun depending on which one you use.
 
