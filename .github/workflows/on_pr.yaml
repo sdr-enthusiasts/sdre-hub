@@ -209,7 +209,7 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: frontend
-          path: ./bin/sh-frontend
+          path: ./frontend/sh-frontend
 
   consolidate_binaries:
     name: Consolidate & Cache Binaries
@@ -239,7 +239,12 @@ jobs:
           name: sdre-hub.arm64
           path: ./bin/sdre-hub.arm64
 
-      - run: ls -la ./bin/*
+      - uses: actions/download-artifact@v4.1.6
+        with:
+          name: frontend
+          path: ./bin/sh-frontend
+
+      - run: ls -la */*
 
       - name: Cache Binaries
         uses: actions/cache@v4
