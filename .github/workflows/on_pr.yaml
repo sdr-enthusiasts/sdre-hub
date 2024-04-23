@@ -221,13 +221,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Docker on tmpfs
-        uses: JonasAlfredsson/docker-on-tmpfs@v1
-        with:
-          tmpfs_size: 5
-          swap_size: 4
-          swap_location: "/mnt/swapfile"
-
       - name: Build Mac App
         run: |
           apt-get update && \
