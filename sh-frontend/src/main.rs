@@ -1,4 +1,4 @@
-use yew_app::app::App;
+use sh_frontend::app::App;
 
 // This is the entry point for the web app
 fn main() {

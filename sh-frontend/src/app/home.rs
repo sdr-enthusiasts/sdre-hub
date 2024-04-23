@@ -4,7 +4,7 @@ use yew_hooks::prelude::*;
 /// Home page
 #[function_component(Home)]
 pub fn home() -> Html {
-    let counter = use_counter(0);
+    let counter = use_counter(69);
 
     let onincrease = {
         let counter = counter.clone();

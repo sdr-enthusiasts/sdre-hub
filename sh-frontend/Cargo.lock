@@ -1309,6 +1309,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "sh-frontend"
+version = "4.0.0-alpha.1"
+dependencies = [
+ "gloo-utils 0.2.0",
+ "log",
+ "reqwest",
+ "serde",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
+ "wasm-logger",
+ "web-sys",
+ "yew",
+ "yew-hooks",
+ "yew-router",
+]
+
+[[package]]
 name = "slab"
 version = "0.4.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1919,23 +1936,6 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "yew-macro",
-]
-
-[[package]]
-name = "yew-app"
-version = "0.1.0"
-dependencies = [
- "gloo-utils 0.2.0",
- "log",
- "reqwest",
- "serde",
- "wasm-bindgen",
- "wasm-bindgen-test",
- "wasm-logger",
- "web-sys",
- "yew",
- "yew-hooks",
- "yew-router",
 ]
 
 [[package]]
