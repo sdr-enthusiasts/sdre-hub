@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "SDR-E Hub",
-    "version": "4.0.0-alpha.1"
+    "version": "4.0.0-1"
   },
   "build": {
     "distDir": "../../../sh-frontend/dist",
