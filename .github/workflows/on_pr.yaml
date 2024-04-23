@@ -244,11 +244,6 @@ jobs:
           name: frontend
           path: ./bin/sh-frontend
 
-      - uses: actions/download-artifact@v4.1.6
-        with:
-          name: mac_app
-          path: ./Apps/SDR-E\ Hub.app
-
       - run: ls -la */*
 
       - name: Cache Binaries
