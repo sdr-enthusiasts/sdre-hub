@@ -333,6 +333,7 @@ jobs:
       get_version_method: cargo_toml_file_in_repo:file=/Cargo.toml
       cache_enabled: true
       cache_path: ./bin/
+      cache_key: ${{ github.run_id }}
 
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
@@ -360,6 +361,7 @@ jobs:
       get_version_method: cargo_toml_file_in_repo:file=/Cargo.toml
       cache_enabled: true
       cache_path: ./bin/
+      cache_key: ${{ github.run_id }}
       docker_latest_tag: test
     secrets:
       ghcr_token: ${{ secrets.GITHUB_TOKEN }}
