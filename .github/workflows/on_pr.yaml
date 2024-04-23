@@ -211,6 +211,40 @@ jobs:
           name: frontend
           path: ./frontend/sh-frontend
 
+  build_mac_app:
+    name: Build Mac App
+    runs-on: macos-latest
+    needs: [test_rust_functionality]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.2
+        with:
+          fetch-depth: 0
+
+      - name: Run Docker on tmpfs
+        uses: JonasAlfredsson/docker-on-tmpfs@v1
+        with:
+          tmpfs_size: 5
+          swap_size: 4
+          swap_location: "/mnt/swapfile"
+
+      - name: Build Mac App
+        run: |
+          apt-get update && \
+          apt-get install -y --no-install-recommends libzmq3-dev
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+          cargo binstall trunk wasm-bindgen-cli --no-confirm
+          cargo install tauri-cli
+          rustup target add universal-apple-darwin wasm32-unknown-unknown
+          cargo tauri build
+
+      - name: Upload artifact mac app
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: mac_app
+          path: ./target/release/bundle/SDR-E\ Hub.app
+
   consolidate_binaries:
     name: Consolidate & Cache Binaries
     runs-on: ubuntu-latest
@@ -220,6 +254,7 @@ jobs:
         binary_build_arm64,
         binary_build_armv7,
         frontend_build,
+        build_mac_app,
       ]
     steps:
       - run: mkdir -p ./bin
@@ -243,6 +278,11 @@ jobs:
         with:
           name: frontend
           path: ./bin/sh-frontend
+
+      - uses: actions/download-artifact@v4.1.6
+        with:
+          name: mac_app
+          path: ./Apps/SDR-E\ Hub.app
 
       - run: ls -la */*
 

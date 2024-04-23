@@ -32,6 +32,7 @@ impl ShDataUser for ShAPIServer {
         self.run_apiserver().await
     }
 
+    // TODO: Can we dynamically start/stop/restart the web server?
     fn stop(&self) {
         // Stop the web server
     }
