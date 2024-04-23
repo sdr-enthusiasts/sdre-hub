@@ -18,6 +18,16 @@ use std::error::Error;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    // Check the command line args and see if `--version` was passed.
+    // If so, print version and exit 0
+
+    if std::env::args().any(|x| x == *"--version") {
+        // get the version from the Cargo.toml file
+        let version = env!("CARGO_PKG_VERSION");
+        println!("SDRE Hub version: {version}");
+        return Ok(());
+    }
+
     let config = ShConfig::new();
     let hub = SdreHub::new(config);
 
