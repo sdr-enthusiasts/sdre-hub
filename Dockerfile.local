@@ -23,6 +23,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY rootfs /
 COPY --from=builder /tmp/sdre-hub/target/release/sdre-hub /opt/sdre-hub
 COPY --from=builder /tmp/sdre-hub/sh-frontend/dist /opt/sh-frontend
+ENV SH_DATA_PATH="/opt/sdre-hub-data"
 # hadolint ignore=DL3008,DL3003,SC1091
 RUN set -x && \
     KEPT_PACKAGES=() && \
