@@ -1,0 +1,38 @@
+server {
+  listen 80 default_server;
+  root /opt/sh-frontend;
+  server_name _;
+
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection $http_connection;
+  proxy_set_header Host $host;
+  proxy_set_header  X-Real-IP $remote_addr;
+  proxy_set_header  X-Real-Port $remote_port;
+  include /etc/nginx/mime.types;
+
+  # mjs is not in default mime types, add in here
+  types {
+    application/javascript mjs;
+  }
+	default_type application/octet-stream;
+  access_log off;
+
+  # cache all of the files
+  location ~ \.(css|js|png|jpg|jpeg|gif|ico|woff|woff2|ttf|svg|eot|otf|map|mjs|mp3|wasm)$ {
+    expires 30d;
+    add_header Cache-Control "public";
+    root /opt/sh-frontend;
+  }
+
+  # proxy pass the web socket to gunicorn
+  location /sdrehub {
+    proxy_pass http://127.0.0.1:3001/sdrehub;
+  }
+
+  # index page
+  location = / {
+    add_header Cache-Control 'no-store';
+    try_files /index.html =404;
+  }
+}

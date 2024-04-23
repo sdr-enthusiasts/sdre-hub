@@ -1,16 +1,18 @@
 [workspace]
 members = [
     "src/bin/sdre-hub",
-    "src/libraries/libshapi",
-    "src/libraries/libshconfig",
-    "src/libraries/libsdrehub",
-    "src/libraries/libsdrehubcommon",
+    "src/bin/sh-tauri",
+    "src/libraries/sdrehub",
+    "src/libraries/sh-api",
+    "src/libraries/sh-config",
+    "src/libraries/sh-common",
 ]
+exclude = ["sh-frontend"]
 
 resolver = "2"
 
 [workspace.package]
-version = "4.0.0-alpha1"
+version = "4.0.0-alpha.1"
 edition = "2021"
 authors = ["Fred Clausen"]
 description = "SDR-E Hub is a consumer of ACARS messages from many sources, matching them up with ADSB and other data, and then displaying them in a web interface."
@@ -18,7 +20,7 @@ documentation = "https://github.com/sdr-enthusiasts/sdre-hub/README.md"
 homepage = "https://github.com/sdr-enthusiasts/sdre-hub"
 repository = "https://github.com/sdr-enthusiasts/sdre-hub"
 readme = "README.MD"
-license = "GPL-3.0"
+license = "MIT"
 rust-version = "1.77.2"
 keywords = [
     "acars",

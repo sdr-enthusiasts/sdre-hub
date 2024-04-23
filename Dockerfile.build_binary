@@ -1,13 +1,15 @@
 FROM rust:1.77.2 as builder
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 WORKDIR /tmp/sdre-hub
-# hadolint ignore=DL3008,DL3003,SC1091,DL3009
+# hadolint ignore=DL3008,DL3003,SC1091,DL4006,DL3009
 RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends libzmq3-dev
+
 COPY . .
 
-RUN cargo build --release
+# hadolint ignore=DL3008,DL3003,SC1091
+RUN cargo build --release --bin sdre-hub
 
 FROM scratch
 COPY --from=builder /tmp/sdre-hub/target/release/sdre-hub /sdre-hub

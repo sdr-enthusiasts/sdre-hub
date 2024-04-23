@@ -14,7 +14,6 @@ categories.workspace = true
 keywords.workspace = true
 
 [dependencies]
-libsdrehub = { path = "../../libraries/libsdrehub" }
-libshapi = { path = "../../libraries/libshapi" }
-libshconfig = { path = "../../libraries/libshconfig" }
+sdrehub = { path = "../../libraries/sdrehub" }
+sh-config = { path = "../../libraries/sh-config" }
 tokio = { version = "1.37.0", features = ["full", "tracing"] }

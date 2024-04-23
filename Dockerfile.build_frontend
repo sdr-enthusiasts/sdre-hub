@@ -1,0 +1,21 @@
+FROM rust:1.77.2 as builder
+WORKDIR /tmp/sdre-hub
+# hadolint ignore=DL3008,DL3003,SC1091,DL4006,DL3009
+RUN set -x && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends libzmq3-dev && \
+    curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash && \
+    curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && \
+    cargo binstall trunk wasm-bindgen-cli --no-confirm && \
+    cargo install tauri-cli && \
+    rustup target add wasm32-unknown-unknown
+
+COPY . .
+
+# hadolint ignore=DL3008,DL3003,SC1091,DL3009
+RUN set -x && \
+    cd sh-frontend && \
+    trunk build --release
+
+FROM scratch
+COPY --from=builder /tmp/sdre-hub/sh-frontend/dist /sh-frontend

@@ -1,0 +1,9 @@
+[build]
+target = "index.html"
+dist = "dist"
+
+[tools]
+# FIXME: hard coding this Feels Bad Man. As of 4/22/24, the latest version of wasm-opt is 117 but
+# fucking trunk hard codes 116 as the default. This should be fine but the docker build fails on
+# macs because.....*****reasons*****
+wasm_opt = "version_117"

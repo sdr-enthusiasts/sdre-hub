@@ -261,3 +261,4 @@ target/
 sh_config.toml
 sh_config.yaml
 data/
+sh-frontend/target
