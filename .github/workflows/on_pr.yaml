@@ -23,7 +23,7 @@ jobs:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -39,7 +39,7 @@ jobs:
     name: "Linting: hadolint"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.3
       - name: Pull hadolint/hadolint:latest Image
         run: docker pull hadolint/hadolint:latest
       - name: Run hadolint against Dockerfiles
@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0
 
@@ -75,7 +75,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0
 
@@ -103,7 +103,7 @@ jobs:
           outputs: type=local,dest=./image_armv7/
 
       - name: Upload artifact armv7 binary
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: sdre-hub.armv7
           path: ./image_armv7/sdre-hub
@@ -115,7 +115,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0
 
@@ -143,7 +143,7 @@ jobs:
           outputs: type=local,dest=./image_arm64/
 
       - name: Upload artifact arm64 binary
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: sdre-hub.arm64
           path: ./image_arm64/sdre-hub
@@ -155,7 +155,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0
 
@@ -183,7 +183,7 @@ jobs:
           outputs: type=local,dest=./image_amd64/
 
       - name: Upload artifact amd64 binary
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: sdre-hub.amd64
           path: ./image_amd64/sdre-hub
@@ -240,17 +240,17 @@ jobs:
     steps:
       - run: mkdir -p ./bin
 
-      - uses: actions/download-artifact@v4.1.4
+      - uses: actions/download-artifact@v4.1.6
         with:
           name: sdre-hub.amd64
           path: ./bin/sdre-hub.amd64
 
-      - uses: actions/download-artifact@v4.1.4
+      - uses: actions/download-artifact@v4.1.6
         with:
           name: sdre-hub.armv7
           path: ./bin/sdre-hub.armv7
 
-      - uses: actions/download-artifact@v4.1.4
+      - uses: actions/download-artifact@v4.1.6
         with:
           name: sdre-hub.arm64
           path: ./bin/sdre-hub.arm64
