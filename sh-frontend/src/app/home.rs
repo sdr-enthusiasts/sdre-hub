@@ -16,7 +16,7 @@ pub fn home() -> Html {
     };
 
     html! {
-        <div class="container text-center">
+        <div class="container text-left">
             <header class="space-y-8">
                 <p>
                     <a href="https://yew.rs" target="_blank" rel="noopener noreferrer">

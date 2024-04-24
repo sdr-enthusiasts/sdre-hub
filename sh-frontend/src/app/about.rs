@@ -6,7 +6,9 @@ use yew_hooks::prelude::*;
 #[function_component(About)]
 pub fn about() -> Html {
     let state =
-        use_async(async move { fetch_repo(("jetli/create-yew-app".to_string()).clone()).await });
+        use_async(
+            async move { fetch_repo(("sdr-enthusiasts/sdre-hub".to_string()).clone()).await },
+        );
 
     let onclick = {
         let state = state.clone();
