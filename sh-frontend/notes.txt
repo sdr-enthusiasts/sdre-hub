@@ -1,0 +1,1 @@
+CHARTJS! https://tms-dev-blog.com/css-and-javascript-wasm-rust-yew-how-to-p2/

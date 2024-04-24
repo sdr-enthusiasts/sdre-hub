@@ -44,14 +44,13 @@ reqwest = { version = "0.12.4", features = ["json"] }
 yew = { version = "0.21.0", features = ["csr"] }
 yew-router = "0.18.0"
 yew-hooks = "0.3.1"
-wasm-bindgen = "0.2.92"
 wasm-logger = "0.2.0"
-
-[dev-dependencies]
-wasm-bindgen-test = "0.3.42"
-gloo-utils = "0.2.0"
 web-sys = { version = "0.3.69", features = [
     "Document",
     "Element",
     "HtmlCollection",
 ] }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.42"
+gloo-utils = "0.2.0"
