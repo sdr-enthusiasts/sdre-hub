@@ -1,8 +1,14 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 use std::{fmt, ops::Not};
 
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+use super::search::Search;
 use crate::app::AppRoute;
 
 // This enum seems a bit overkill. Originally, I wrote this to just use a standard bool, but I wanted to
@@ -69,15 +75,16 @@ pub fn nav() -> Html {
     html! {
       <section class="top-nav">
           <div>
-              <Link<AppRoute> to={AppRoute::Home} classes="text-emerald-800 underline" >
+              <Link<AppRoute> to={AppRoute::Live} classes="text-emerald-800 underline" >
               <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" /></Link<AppRoute>>
           </div>
+            <Search />
           <input id="menu-toggle" checked={hidden_menu.into()} onclick={mouse_show_menu} type="checkbox" />
           <label class="menu-button-container" for="menu-toggle">
               <div class="menu-button"></div>
           </label>
           <ul class="menu">
-              <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::Home} >{ "Home" }</Link<AppRoute>></li>
+              <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::Live} >{ "Live" }</Link<AppRoute>></li>
               <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::About} >{ "About" }</Link<AppRoute>></li>
           </ul>
       </section>
