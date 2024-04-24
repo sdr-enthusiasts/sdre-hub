@@ -8,10 +8,12 @@ use yew_router::prelude::*;
 
 pub mod about;
 pub mod live;
+pub mod settings;
 
 use crate::components::nav::Nav;
 use about::About;
 use live::Live;
+use settings::Settings;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -23,6 +25,8 @@ pub enum AppRoute {
     PageNotFound,
     #[at("/")]
     Live,
+    #[at("/settings")]
+    Settings,
 }
 
 /// Switch app routes
@@ -30,6 +34,7 @@ pub fn switch(routes: AppRoute) -> Html {
     match routes.clone() {
         AppRoute::Live => html! { <Live /> },
         AppRoute::About => html! { <About /> },
+        AppRoute::Settings => html! { <Settings /> },
         AppRoute::PageNotFound => html! { "Page not found" },
     }
 }
@@ -39,7 +44,7 @@ pub fn switch(routes: AppRoute) -> Html {
 pub fn app() -> Html {
     html! {
         <HashRouter>
-            <div class="flex min-h-screen flex-col">
+            <div class="flex min-h-screen flex-col p-1">
                 <Nav />
                 <Switch<AppRoute> render={switch} />
             </div>

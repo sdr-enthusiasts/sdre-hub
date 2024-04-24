@@ -6,12 +6,11 @@
 use yew::prelude::*;
 
 // Search component
-
 #[function_component(Search)]
 pub fn search() -> Html {
     html! {
         <div class="flex flex-col items-center justify-center">
-            <input type="text" class="border border-gray-300 rounded-lg p-2 mt-1 text-black" placeholder="Search..." />
+            <input type="text" class="border border-gray-300 rounded-lg mt-1 text-black" placeholder="Search..." />
         </div>
     }
 }

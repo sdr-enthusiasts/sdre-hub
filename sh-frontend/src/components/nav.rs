@@ -73,19 +73,20 @@ pub fn nav() -> Html {
     };
 
     html! {
-      <section class="top-nav">
+      <section class="top-nav rounded-3xl">
           <div>
-              <Link<AppRoute> to={AppRoute::Live} classes="text-emerald-800 underline" >
-              <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" /></Link<AppRoute>>
+                <Link<AppRoute> to={AppRoute::Live} classes="text-emerald-800 underline" >
+                <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" /></Link<AppRoute>>
           </div>
-            <Search />
+                <Search />
           <input id="menu-toggle" checked={hidden_menu.into()} onclick={mouse_show_menu} type="checkbox" />
           <label class="menu-button-container" for="menu-toggle">
-              <div class="menu-button"></div>
+                <div class="menu-button"></div>
           </label>
           <ul class="menu">
-              <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::Live} >{ "Live" }</Link<AppRoute>></li>
-              <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::About} >{ "About" }</Link<AppRoute>></li>
+                <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::Live} >{ "Live" }</Link<AppRoute>></li>
+                <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::Settings} >{ "Settings" }</Link<AppRoute>></li>
+                <li onclick={mouse_hide_menu.clone()}><Link<AppRoute> to={AppRoute::About} >{ "About" }</Link<AppRoute>></li>
           </ul>
       </section>
     }

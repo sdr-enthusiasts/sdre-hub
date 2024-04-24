@@ -5,12 +5,14 @@
 
 use yew::prelude::*;
 
-/// About page
-#[function_component(About)]
-pub fn about() -> Html {
+/// Home page
+#[function_component(Settings)]
+pub fn settings() -> Html {
     html! {
-        <div class="container p-1">
-            {"Placeholder"}
+        <div class="container text-left p-1">
+            {
+                "Settings"
+            }
         </div>
     }
 }
