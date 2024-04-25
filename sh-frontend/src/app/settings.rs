@@ -9,10 +9,8 @@ use yew::prelude::*;
 #[function_component(Settings)]
 pub fn settings() -> Html {
     html! {
-        <div class="container text-left p-1 m-2">
-            {
-                "Settings"
-            }
-        </div>
+        {
+            "Settings"
+        }
     }
 }

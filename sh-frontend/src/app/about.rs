@@ -9,8 +9,6 @@ use yew::prelude::*;
 #[function_component(About)]
 pub fn about() -> Html {
     html! {
-        <div class="container p-1  m-2">
-            {"Placeholder"}
-        </div>
+        {"Placeholder"}
     }
 }
