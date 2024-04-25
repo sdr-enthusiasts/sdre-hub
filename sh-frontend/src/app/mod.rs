@@ -17,7 +17,7 @@ use settings::Settings;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
-pub enum AppRoute {
+pub enum ShAppRoute {
     #[at("/about")]
     About,
     #[not_found]
@@ -30,12 +30,14 @@ pub enum AppRoute {
 }
 
 /// Switch app routes
-pub fn switch(routes: AppRoute) -> Html {
-    match routes.clone() {
-        AppRoute::Live => html! { <Live /> },
-        AppRoute::About => html! { <About /> },
-        AppRoute::Settings => html! { <Settings /> },
-        AppRoute::PageNotFound => html! { "Page not found" },
+// we need this to stop clippy whinging about something we can't control.
+#[allow(clippy::needless_pass_by_value)]
+pub fn switch(routes: ShAppRoute) -> Html {
+    match routes {
+        ShAppRoute::Live => html! { <Live /> },
+        ShAppRoute::About => html! { <About /> },
+        ShAppRoute::Settings => html! { <Settings /> },
+        ShAppRoute::PageNotFound => html! { "Page not found" },
     }
 }
 
@@ -46,7 +48,7 @@ pub fn app() -> Html {
         <HashRouter>
             <div class="flex min-h-screen flex-col p-1">
                 <Nav />
-                <Switch<AppRoute> render={switch} />
+                <Switch<ShAppRoute> render={switch} />
             </div>
         </HashRouter>
     }
