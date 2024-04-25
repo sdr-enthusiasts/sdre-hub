@@ -86,7 +86,7 @@ pub fn nav() -> Html {
           <ul class="menu text-[#101110]">
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
-                <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::About} >{ "About" }</Link<ShAppRoute>></li>
+                <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Help} >{ "Help" }</Link<ShAppRoute>></li>
           </ul>
       </section>
     }

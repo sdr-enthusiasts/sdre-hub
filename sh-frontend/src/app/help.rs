@@ -6,8 +6,8 @@
 use yew::prelude::*;
 
 /// About page
-#[function_component(About)]
-pub fn about() -> Html {
+#[function_component(Help)]
+pub fn help() -> Html {
     html! {
         {"Placeholder"}
     }
