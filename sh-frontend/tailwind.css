@@ -20,10 +20,6 @@ h2 {
   padding: 1em;
 }
 
-.top-nav > div {
-  width: 33%;
-}
-
 .menu {
   display: flex;
   flex-direction: row;

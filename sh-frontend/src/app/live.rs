@@ -15,10 +15,10 @@ pub fn live() -> Html {
 
     html! {
         <div class="content flex max-w-none pr-1">
-            <div class="content w-96">
+            <div class="content p-2 m-1 w-96 rounded-2xl border-[#8963ba] border-2 h-screen">
                 {"ACARS Box"}
              </div>
-            <div class="content w-full">
+            <div class="content p-2 m-1 w-full h-screen rounded-2xl border-[#8963ba] border-2 h-screen">
                 {"Map Box"}
             </div>
         </div>

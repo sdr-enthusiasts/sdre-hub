@@ -74,7 +74,7 @@ pub fn nav() -> Html {
 
     html! {
       <section class="top-nav rounded-3xl">
-          <div>
+          <div class="hidden lg:block lg:w-2/6">
                 <Link<ShAppRoute> to={ShAppRoute::Live} classes="text-emerald-800 underline" >
                 <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" /></Link<ShAppRoute>>
           </div>
@@ -83,6 +83,7 @@ pub fn nav() -> Html {
           <label class="menu-button-container" for="menu-toggle">
                 <div class="menu-button"></div>
           </label>
+          // FIXME: I think we should be fixing the menu link stuff to a width based on container size?
           <ul class="menu text-[#101110]">
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
