@@ -13,10 +13,10 @@ h2 {
   align-items: center;
   justify-content: space-between;
   background-color: #00baf0;
-  background: linear-gradient(to left, #54428e, #8963ba);
+  background: linear-gradient(to left, #8963ba, #54428e);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #fff;
-  height: 50px;
+  /* height: 50px; */
   padding: 1em;
 }
 

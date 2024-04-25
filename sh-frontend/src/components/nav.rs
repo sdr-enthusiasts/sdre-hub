@@ -83,7 +83,7 @@ pub fn nav() -> Html {
           <label class="menu-button-container" for="menu-toggle">
                 <div class="menu-button"></div>
           </label>
-          <ul class="menu">
+          <ul class="menu text-[#101110]">
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::About} >{ "About" }</Link<ShAppRoute>></li>
