@@ -9,7 +9,7 @@ use yew::prelude::*;
 #[function_component(Live)]
 pub fn live() -> Html {
     html! {
-        <div class="container text-left p-1">
+        <div class="container text-left p-1 m-2">
             {
                 "Placeholder"
             }

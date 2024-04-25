@@ -46,7 +46,7 @@ pub fn switch(routes: ShAppRoute) -> Html {
 pub fn app() -> Html {
     html! {
         <HashRouter>
-            <div class="flex min-h-screen flex-col p-1">
+            <div class="flex min-h-screen flex-col p-1  m-2">
                 <Nav />
                 <Switch<ShAppRoute> render={switch} />
             </div>
