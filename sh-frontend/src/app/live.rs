@@ -14,11 +14,11 @@ pub fn live() -> Html {
     });
 
     html! {
-        <div class="content flex width-max height-max">
-            <div class="content flex h-max max-w-96 ">
+        <div class="content flex max-w-none pr-1">
+            <div class="content w-96">
                 {"ACARS Box"}
              </div>
-            <div class="content flex pl-2">
+            <div class="content w-full">
                 {"Map Box"}
             </div>
         </div>
