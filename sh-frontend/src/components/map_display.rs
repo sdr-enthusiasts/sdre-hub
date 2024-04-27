@@ -1,5 +1,5 @@
 use crate::components::{
-    control::{Cities, Control},
+    control::Cities,
     map::{City, MapComponent, Point},
 };
 use yew::prelude::*;
@@ -48,12 +48,10 @@ impl Component for ShMap {
         true
     }
 
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let cb = ctx.link().callback(Msg::SelectCity);
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <>
                 <MapComponent city={&self.city}  />
-                // <Control select_city={cb} cities={&self.cities}/>
             </>
         }
     }
