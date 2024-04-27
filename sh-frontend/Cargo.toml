@@ -38,12 +38,15 @@ categories = ["aerospace"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+gloo-utils = "0.2.0"
+leaflet = "0.4.0"
 log = "0.4.21"
 serde = "1.0.198"
 reqwest = { version = "0.12.4", features = ["json"] }
 yew = { version = "0.21.0", features = ["csr"] }
 yew-router = "0.18.0"
 yew-hooks = "0.3.1"
+wasm-bindgen = "0.2.92"
 wasm-logger = "0.2.0"
 web-sys = { version = "0.3.69", features = [
     "Document",

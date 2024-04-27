@@ -1,1 +1,3 @@
 CHARTJS! https://tms-dev-blog.com/css-and-javascript-wasm-rust-yew-how-to-p2/
+https://github.com/jetli/awesome-yew?tab=readme-ov-file various stuff, including rust wrapper for plotly.js
+darker purple than

@@ -123,3 +123,7 @@ h2 {
     border-bottom: 1px solid #444;
   }
 }
+
+.map {
+  height: 100%;
+}

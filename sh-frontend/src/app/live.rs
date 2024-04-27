@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use crate::components::map_display::ShMap;
 use yew::prelude::*;
 use yew_hooks::use_event_with_window;
 
@@ -14,12 +15,12 @@ pub fn live() -> Html {
     });
 
     html! {
-        <div class="content flex max-w-none pr-1">
-            <div class="content p-2 m-1 md:w-96 w-full rounded-2xl border-[#8963ba] border-2 h-screen" id="live-left">
+        <div class="content flex pr-1 w-full h-screen">
+            <div class="content p-2 m-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-2" id="live-left">
                 {"ACARS Box"}
              </div>
-            <div class="content p-2 m-1 w-full h-screen rounded-2xl border-[#8963ba] border-2 h-screen hidden md:block" id="live-right">
-                {"Map Box"}
+            <div class="content p-2 m-1 h-full w-full rounded-2xl border-[#8963ba] border-2 hidden md:block" id="live-right">
+                <ShMap />
             </div>
         </div>
     }

@@ -840,6 +840,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
+name = "leaflet"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1ca4f4ecc791314ac38d50a5af6dc6506977aa7c7f0231b1bfd66989a9c4be3"
+dependencies = [
+ "js-sys",
+ "paste",
+ "url",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.153"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -975,6 +988,12 @@ dependencies = [
  "pkg-config",
  "vcpkg",
 ]
+
+[[package]]
+name = "paste"
+version = "1.0.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "de3145af08024dea9fa9914f381a17b8fc6034dfb00f3a84013f7ff43f29ed4c"
 
 [[package]]
 name = "percent-encoding"
@@ -1313,9 +1332,11 @@ name = "sh-frontend"
 version = "4.0.0-alpha.1"
 dependencies = [
  "gloo-utils 0.2.0",
+ "leaflet",
  "log",
  "reqwest",
  "serde",
+ "wasm-bindgen",
  "wasm-bindgen-test",
  "wasm-logger",
  "web-sys",
