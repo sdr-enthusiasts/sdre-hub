@@ -80,7 +80,7 @@ impl Component for MapComponent {
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
-            <div class="map-container component-container z-[100] h-full w-full">
+            <div class="map-container component-container h-full w-full">
                 {self.render_map()}
             </div>
         }

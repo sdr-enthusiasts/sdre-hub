@@ -16,10 +16,10 @@ pub fn live() -> Html {
 
     html! {
         <div class="content flex w-full h-screen">
-            <div class="content p-2 m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-2" id="live-left">
+            <div class="content p-2 m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-4" id="live-left">
                 {"ACARS Box"}
              </div>
-            <div class="content p-2 m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-2 hidden md:block" id="live-right">
+            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block" style="overflow:hidden" id="live-right">
                 <ShMap />
             </div>
         </div>
