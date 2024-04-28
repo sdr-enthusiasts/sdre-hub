@@ -48,7 +48,7 @@ pub fn app() -> Html {
         <HashRouter>
             <div class="flex min-h-screen flex-col h-full w-full">
                 <Nav />
-                <section class="container text-left p-0 m-1 h-full w-full">
+                <section class="container text-left p-0 mt-1 h-full w-full">
                     <Switch<ShAppRoute> render={switch} />
                 </section>
             </div>
