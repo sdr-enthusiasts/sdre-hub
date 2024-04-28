@@ -6,27 +6,19 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-pub mod help;
 pub mod live;
-pub mod settings;
 
 use crate::components::nav::Nav;
-use help::Help;
 use live::Live;
-use settings::Settings;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
 pub enum ShAppRoute {
-    #[at("/help")]
-    Help,
     #[not_found]
     #[at("/page-not-found")]
     PageNotFound,
     #[at("/")]
     Live,
-    #[at("/settings")]
-    Settings,
 }
 
 /// Switch app routes
@@ -35,8 +27,6 @@ pub enum ShAppRoute {
 pub fn switch(routes: ShAppRoute) -> Html {
     match routes {
         ShAppRoute::Live => html! { <Live /> },
-        ShAppRoute::Help => html! { <Help /> },
-        ShAppRoute::Settings => html! { <Settings /> },
         ShAppRoute::PageNotFound => html! { "Page not found" },
     }
 }

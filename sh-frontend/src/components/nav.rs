@@ -86,8 +86,8 @@ pub fn nav() -> Html {
           // FIXME: I think we should be fixing the menu link stuff to a width based on container size?
           <ul class="menu text-[#101110]">
                 <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
-                <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
-                <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Help} >{ "Help" }</Link<ShAppRoute>></li>
+                // <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
+                // <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Help} >{ "Help" }</Link<ShAppRoute>></li>
           </ul>
       </section>
     }
