@@ -200,7 +200,7 @@ jobs:
           outputs: type=local,dest=./frontend
 
       - name: Upload artifact amd64 binary
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: frontend
           path: ./frontend/sh-frontend
