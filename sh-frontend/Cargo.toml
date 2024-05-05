@@ -9,7 +9,7 @@ homepage = "https://github.com/sdr-enthusiasts/sdre-hub"
 repository = "https://github.com/sdr-enthusiasts/sdre-hub"
 readme = "README.MD"
 license = "MIT"
-rust-version = "1.77.2"
+rust-version = "1.78.0"
 keywords = [
     "acars",
     "vdlm",
