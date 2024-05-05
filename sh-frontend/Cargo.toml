@@ -41,7 +41,7 @@ categories = ["aerospace"]
 gloo-utils = "0.2.0"
 leaflet = "0.4.0"
 log = "0.4.21"
-serde = "1.0.199"
+serde = "1.0.200"
 reqwest = { version = "0.12.4", features = ["json"] }
 yew = { version = "0.21.0", features = ["csr"] }
 yew-router = "0.18.0"

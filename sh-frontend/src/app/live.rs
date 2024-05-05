@@ -6,7 +6,7 @@
 use crate::components::acars_messages::AcarsMessages;
 use crate::components::map_display::ShMap;
 use yew::prelude::*;
-use yew_hooks::use_event_with_window;
+use yew_hooks::{use_event_with_window, use_measure, use_size, use_window_size};
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 enum Panels {
@@ -96,9 +96,29 @@ impl Panels {
 pub fn live() -> Html {
     // TODO: Grab current state from local storage
     let left_panel = use_state(|| Panels::Messages);
-    let right_panel = use_state(|| Panels::Map);
+
+    let node = use_node_ref();
+    let state = use_size(node.clone());
+
+    let window_state = use_window_size();
+    let right_panel = use_state(|| if window_state.0 > 1000.0 {
+        Panels::Map
+    } else {
+        Panels::None
+    });
+
+    log::debug!("Window size: {:?}", window_state);
+
+    use_event_with_window("resize", move |_: KeyboardEvent| {
+        let state = state.clone();
+        let current_right_panel = right_panel.clone();
+        if state.0 > 0 && *current_right_panel == Panels::None {
+            right_panel.set(Panels::Map);
+        }
+    });
 
     let right_panel_status = {
+        let right_panel = right_panel.clone();
         match *right_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
@@ -150,7 +170,7 @@ pub fn live() -> Html {
             <div class="content p-2 m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-4" id="live-left">
                 { left_panel_show.clone() }
              </div>
-            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block" style="overflow:hidden" id="live-right">
+            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block" style="overflow:hidden" id="live-right" ref={node}>
                 { right_panel_status.clone() }
             </div>
         </div>
