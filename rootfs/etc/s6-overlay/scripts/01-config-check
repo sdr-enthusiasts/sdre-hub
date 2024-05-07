@@ -1,11 +1,16 @@
-#!/command/with-contenv bash
-# shellcheck shell=bash
+#!/bin/bash
+## !/command/with-contenv bash
+## shellcheck shell=bash
 
 # check the environment and see if there are any SH_* variables set
 # if so, warn the user that they really should be mapping a file
 # to /opt/sdre-hub-data and using /opt/sdre-hub-data/sh_config.toml
 
 SH_DATA=$(env | grep '^SH_')
+
+# remove SH_DATA_PATH, if it exists in SH_DATA from the list of variables to check
+
+SH_DATA=$(echo "$SH_DATA" | grep -v '^SH_DATA_PATH')
 
 if [ -n "$SH_DATA" ]; then
   echo "[01-config-check] WARNING: You have SH_* environment variables set. You should be using a config file instead."

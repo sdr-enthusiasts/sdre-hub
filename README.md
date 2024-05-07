@@ -30,6 +30,7 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
   - [x] Application build
   - [ ] Manage settings from the web interface
   - [x] GitHub CI
+  - [ ] FIXME/TODO Cleanup
 - [ ] Alpha 2
   - [ ] Connect to data providers
     - [ ] ADSB
@@ -39,13 +40,16 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
     - [ ] Satellite ACARS
   - [ ] Combine data from data providers and provide a state machine to manage data
   - [ ] Display data on the web interface
+  - [ ] FIXME/TODO Cleanup
 - [ ] Alpha 3
   - [ ] Implement database storage
     - [ ] RRD style data storage for relevant stats
     - [ ] SQL storage for historical data
     - [ ] General stats
+  - [ ] FIXME/TODO Cleanup
 - [ ] Beta 1
   - [ ] Focus on interface; clean it up, mobile functionality, etc
+  - [ ] FIXME/TODO Cleanup
 
 ## Thank you
 

@@ -16,11 +16,11 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.1", features = [] }
+tauri-build = { version = "1.5.2", features = [] }
 
 [dependencies]
 serde_json = "1.0.116"
-serde = { version = "1.0.198", features = ["derive"] }
+serde = { version = "1.0.200", features = ["derive"] }
 sdrehub = { path = "../../libraries/sdrehub" }
 sh-config = { path = "../../libraries/sh-config" }
 tauri = { version = "1.6.2", features = ["api-all"] }

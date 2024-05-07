@@ -12,6 +12,9 @@
     clippy::all
 )]
 
+use std::env;
+
+use directories::ProjectDirs;
 use figment::{
     providers::{Env, Format, Toml},
     Figment,
@@ -31,7 +34,7 @@ pub mod adsb_source;
 pub mod map;
 pub mod sdrehub;
 pub mod source;
-// TODO: Implement command line arguments. The config crate doesn't do this out of the box
+
 // FIXME: env variables require a dot between the prefix and the variable name. This is not ideal. Should be able to use underscores
 
 #[serde_inline_default]
@@ -53,15 +56,67 @@ impl ShConfig {
         Self::get_and_validate_config()
     }
 
-    fn get_file_path() -> String {
-        "./sh_config.toml".to_string() // FIXME: commented out the logic below to make clippy happy until we featurize the code
-                                       // match std::env::consts::OS {
-                                       //     "linux" => "./sh_config.toml",
-                                       //     "macos" => "./sh_config.toml",
-                                       //     "windows" => "./sh_config.toml",
-                                       //     _ => "./sh_config.toml",
-                                       // }
-                                       // .to_string()
+    fn get_application_data_path() -> String {
+        if env::var("SH_DATA_PATH").is_ok() {
+            let path = env::var("SH_DATA_PATH").unwrap();
+            if std::path::Path::new(&path).exists() {
+                // canonicalize the path
+                match std::fs::canonicalize(&path) {
+                    Ok(canonical_path) => {
+                        if let Some(canonical_path_str) = canonical_path.to_str() {
+                            return canonical_path_str.to_string();
+                        }
+                    }
+                    Err(e) => {
+                        println!("Error getting config file path: {e}");
+                        println!("Exiting");
+                        std::process::exit(1);
+                    }
+                }
+            }
+
+            println!("Error getting config file path");
+            println!("Exiting");
+            std::process::exit(1);
+        }
+
+        // Otherwise, use the OS default pathing
+        ProjectDirs::from("org", "sdre-e", "sdr-e-hub").map_or_else(
+            || {
+                println!("Error getting config file path");
+                println!("Exiting");
+                std::process::exit(1);
+            },
+            |proj_dirs| {
+                proj_dirs.config_dir().to_str().map_or_else(
+                    || {
+                        println!("Error getting config file path");
+                        println!("Exiting");
+                        std::process::exit(1);
+                    },
+                    |path| {
+                        // make the directory if it doesn't exist
+                        if std::path::Path::new(&path).exists() {
+                            path.to_string()
+                        } else {
+                            match std::fs::create_dir_all(path) {
+                                Ok(()) => path.to_string(),
+                                Err(e) => {
+                                    println!("Error creating config directory: {e}");
+                                    println!("Exiting");
+                                    std::process::exit(1);
+                                }
+                            }
+                        }
+                    },
+                )
+            },
+        )
+    }
+
+    fn get_config_file_path() -> String {
+        let path = Self::get_application_data_path();
+        format!("{path}/sh_config.toml")
     }
 
     fn get_config(file_path: &str) -> Self {
@@ -80,7 +135,7 @@ impl ShConfig {
     }
 
     fn get_and_validate_config() -> Self {
-        let file_path = Self::get_file_path();
+        let file_path = Self::get_config_file_path();
         Self::get_config(&file_path)
     }
 
@@ -97,8 +152,9 @@ impl ShConfig {
     }
 
     pub fn write_config(&self) {
-        let file_path = Self::get_file_path();
+        let file_path = Self::get_config_file_path();
         let config = self.get_config_as_toml_string();
+        println!("Writing config file to: {file_path}");
 
         match std::fs::write(file_path, config) {
             Ok(()) => (),

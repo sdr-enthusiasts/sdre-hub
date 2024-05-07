@@ -3,14 +3,14 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-#![deny(
-    clippy::pedantic,
-    //clippy::cargo,
-    clippy::nursery,
-    clippy::style,
-    clippy::correctness,
-    clippy::all
-)]
+use yew::prelude::*;
 
-pub mod app;
-pub mod components;
+/// Home page
+#[function_component(Settings)]
+pub fn settings() -> Html {
+    html! {
+        {
+            "Settings"
+        }
+    }
+}

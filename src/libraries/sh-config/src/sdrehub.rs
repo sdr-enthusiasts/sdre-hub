@@ -15,20 +15,21 @@ pub struct SDREHub {
     pub database_url: String,
     #[serde_inline_default("info".to_string())]
     pub log_level: String,
-    #[serde_inline_default("./data".to_string())]
+    #[serde_inline_default(ShConfig::get_application_data_path())]
     pub data_path: String,
-    #[serde_inline_default(ShConfig::get_file_path())]
+    #[serde_inline_default(ShConfig::get_config_file_path())]
     #[serde(skip_serializing)]
     pub config_file: String,
 }
 
 impl Default for SDREHub {
     fn default() -> Self {
+        let path = ShConfig::get_application_data_path();
         Self {
-            database_url: "sqlite://sdre-hub.db".to_string(),
-            data_path: "./data".to_string(),
+            database_url: format!("sqlite://{path}sdre-hub.db"),
+            data_path: path,
             log_level: "info".to_string(),
-            config_file: ShConfig::get_file_path(),
+            config_file: ShConfig::get_config_file_path(),
         }
     }
 }

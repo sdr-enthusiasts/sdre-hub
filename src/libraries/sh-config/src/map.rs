@@ -8,11 +8,11 @@ use serde::{Deserialize, Serialize};
 /// `MapConfig` is a struct for storing global map values
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct ShMapConfig {
-    /// center_latitude is the latitude of the center of the map
+    /// `center_latitude` is the latitude of the center of the map
     /// This value will be used to center the map on the web interface
     /// Default value is 0.0
     center_latitude: f64,
-    /// center_longitude is the longitude of the center of the map
+    /// `center_longitude` is the longitude of the center of the map
     /// This value will be used to center the map on the web interface
     /// Default value is 0.0
     center_longitude: f64,
