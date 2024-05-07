@@ -6,7 +6,7 @@
 use crate::components::acars_messages::AcarsMessages;
 use crate::components::map_display::ShMap;
 use yew::prelude::*;
-use yew_hooks::{use_event_with_window, use_measure, use_size, use_window_size};
+use yew_hooks::{use_event_with_window, use_window_size};
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 enum Panels {
@@ -94,28 +94,11 @@ impl Panels {
 /// Home page
 #[function_component(Live)]
 pub fn live() -> Html {
+    log::debug!("Rendering Live page");
     // TODO: Grab current state from local storage
     let left_panel = use_state(|| Panels::Messages);
 
-    let node = use_node_ref();
-    let state = use_size(node.clone());
-
-    let window_state = use_window_size();
-    let right_panel = use_state(|| if window_state.0 > 1000.0 {
-        Panels::Map
-    } else {
-        Panels::None
-    });
-
-    log::debug!("Window size: {:?}", window_state);
-
-    use_event_with_window("resize", move |_: KeyboardEvent| {
-        let state = state.clone();
-        let current_right_panel = right_panel.clone();
-        if state.0 > 0 && *current_right_panel == Panels::None {
-            right_panel.set(Panels::Map);
-        }
-    });
+    let right_panel = use_state(|| Panels::Map);
 
     let right_panel_status = {
         let right_panel = right_panel.clone();
@@ -145,22 +128,22 @@ pub fn live() -> Html {
         let left_panel = left_panel.clone();
 
         // if control is pressed, with left arrow, go to the previous panel
-        if e.shift_key() && e.key() == "ArrowLeft" {
+        if e.key() == "F1" {
             right_panel.set(right_panel.previous(*left_panel));
         }
 
         // if control is pressed, with right arrow, go to the next panel
-        if e.shift_key() && e.key() == "ArrowRight" {
+        if e.key() == "F2" {
             right_panel.set(right_panel.next(*left_panel));
         }
 
         // if alt is pressed, with left arrow, go to the previous panel
-        if e.alt_key() && e.key() == "ArrowLeft" {
+        if e.key() == "F3" {
             left_panel.set(left_panel.previous(*right_panel));
         }
 
         // if alt is pressed, with right arrow, go to the next panel
-        if e.alt_key() && e.key() == "ArrowRight" {
+        if e.key() == "F4" {
             left_panel.set(left_panel.next(*right_panel));
         }
     });
@@ -170,7 +153,7 @@ pub fn live() -> Html {
             <div class="content p-2 m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-4" id="live-left">
                 { left_panel_show.clone() }
              </div>
-            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block" style="overflow:hidden" id="live-right" ref={node}>
+            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block" style="overflow:hidden" id="live-right">
                 { right_panel_status.clone() }
             </div>
         </div>
