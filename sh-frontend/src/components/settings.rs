@@ -6,7 +6,7 @@
 use yew::prelude::*;
 
 /// Home page
-#[function_component(Settings)]
+#[function_component(ShSettings)]
 pub fn settings() -> Html {
     html! {
         {

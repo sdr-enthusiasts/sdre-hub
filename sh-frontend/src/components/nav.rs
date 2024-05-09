@@ -68,7 +68,6 @@ pub fn nav() -> Html {
 
     let hidden_menu = {
         let menu_state = *menu_state;
-        log::info!("Menu state: {menu_state}");
         menu_state
     };
 

@@ -4,7 +4,9 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::components::acars_messages::AcarsMessages;
+use crate::components::help::ShHelp;
 use crate::components::map_display::ShMap;
+use crate::components::settings::ShSettings;
 use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
 use yew::prelude::*;
@@ -122,7 +124,6 @@ impl Panels {
 /// Home page
 #[function_component(Live)]
 pub fn live() -> Html {
-    log::debug!("Rendering Live page");
     // Grab the current panel state from storage:
     let left_panel = use_state(|| {
         let panel: Option<String> = LocalStorage::get("left_panel").unwrap_or_default();
@@ -144,8 +145,8 @@ pub fn live() -> Html {
         match *right_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <div>{"Settings"}</div> },
-            Panels::Help => html! { <div>{"Help"}</div> },
+            Panels::Settings => html! { <ShSettings />},
+            Panels::Help => html! { <ShHelp /> },
             Panels::None => html! { <div>{"None"}</div> },
         }
     };
@@ -154,15 +155,13 @@ pub fn live() -> Html {
         match *left_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <div>{"Settings"}</div> },
-            Panels::Help => html! { <div>{"Help"}</div> },
+            Panels::Settings => html! { <ShSettings />},
+            Panels::Help => html! { <ShHelp /> },
             Panels::None => html! { <div>{"None"}</div> },
         }
     };
 
     use_event_with_window("keydown", move |e: KeyboardEvent| {
-        log::debug!("Key pressed: {}", e.key());
-
         let right_panel = right_panel.clone();
         let left_panel = left_panel.clone();
 

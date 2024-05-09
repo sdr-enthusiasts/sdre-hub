@@ -5,10 +5,14 @@
 
 use yew::prelude::*;
 
-/// About page
-#[function_component(Help)]
+/// Help page
+#[function_component(ShHelp)]
 pub fn help() -> Html {
     html! {
-        {"Placeholder"}
+        <div class="m-1">
+            <h1 class="pb-1">{"SDR-E Hub Help"}</h1>
+            // TODO: Write help content
+            <p>{"Welcome to SDR-E Hub help."}</p>
+        </div>
     }
 }
