@@ -5,8 +5,10 @@
 
 use crate::components::acars_messages::AcarsMessages;
 use crate::components::map_display::ShMap;
+use gloo::storage::LocalStorage;
+use gloo_storage::Storage;
 use yew::prelude::*;
-use yew_hooks::{use_event_with_window, use_window_size};
+use yew_hooks::use_event_with_window;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 enum Panels {
@@ -17,40 +19,66 @@ enum Panels {
     None,
 }
 
+// implement to_string for Panels
+impl std::fmt::Display for Panels {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Messages => write!(f, "Messages"),
+            Self::Map => write!(f, "Map"),
+            Self::Settings => write!(f, "Settings"),
+            Self::Help => write!(f, "Help"),
+            Self::None => write!(f, "None"),
+        }
+    }
+}
+
+// implement try_from for Panels
+impl Panels {
+    fn from(s: &str) -> Panels {
+        match s {
+            "Messages" => Self::Messages,
+            "Map" => Self::Map,
+            "Settings" => Self::Settings,
+            "Help" => Self::Help,
+            _ => Self::None,
+        }
+    }
+}
+
 impl Panels {
     fn next(&self, skip: Panels) -> Panels {
         // go to the next panel, skipping the one we're currently on
 
         match self {
-            Panels::Messages => {
-                if skip == Panels::Map {
-                    Panels::Settings
+            Self::Messages => {
+                if skip == Self::Map {
+                    Self::Settings
                 } else {
-                    Panels::Map
+                    Self::Map
                 }
             }
-            Panels::Map => {
-                if skip == Panels::Settings {
-                    Panels::Help
+            Self::Map => {
+                if skip == Self::Settings {
+                    Self::Help
                 } else {
-                    Panels::Settings
+                    Self::Settings
                 }
             }
-            Panels::Settings => {
-                if skip == Panels::Help {
-                    Panels::Messages
+            Self::Settings => {
+                if skip == Self::Help {
+                    Self::Messages
                 } else {
-                    Panels::Help
+                    Self::Help
                 }
             }
-            Panels::Help => {
-                if skip == Panels::Messages {
-                    Panels::Map
+            Self::Help => {
+                if skip == Self::Messages {
+                    Self::Map
                 } else {
-                    Panels::Messages
+                    Self::Messages
                 }
             }
-            Panels::None => Panels::None,
+            Self::None => Self::None,
         }
     }
 
@@ -58,35 +86,35 @@ impl Panels {
         // go to the previous panel, skipping the one we're currently on
 
         match self {
-            Panels::Messages => {
-                if skip == Panels::Help {
-                    Panels::Settings
+            Self::Messages => {
+                if skip == Self::Help {
+                    Self::Settings
                 } else {
-                    Panels::Help
+                    Self::Help
                 }
             }
-            Panels::Map => {
-                if skip == Panels::Messages {
-                    Panels::Help
+            Self::Map => {
+                if skip == Self::Messages {
+                    Self::Help
                 } else {
-                    Panels::Messages
+                    Self::Messages
                 }
             }
-            Panels::Settings => {
-                if skip == Panels::Map {
-                    Panels::Messages
+            Self::Settings => {
+                if skip == Self::Map {
+                    Self::Messages
                 } else {
-                    Panels::Map
+                    Self::Map
                 }
             }
-            Panels::Help => {
-                if skip == Panels::Settings {
-                    Panels::Map
+            Self::Help => {
+                if skip == Self::Settings {
+                    Self::Map
                 } else {
-                    Panels::Settings
+                    Self::Settings
                 }
             }
-            Panels::None => Panels::None,
+            Self::None => Self::None,
         }
     }
 }
@@ -95,10 +123,21 @@ impl Panels {
 #[function_component(Live)]
 pub fn live() -> Html {
     log::debug!("Rendering Live page");
-    // TODO: Grab current state from local storage
-    let left_panel = use_state(|| Panels::Messages);
-
-    let right_panel = use_state(|| Panels::Map);
+    // Grab the current panel state from storage:
+    let left_panel = use_state(|| {
+        let panel: Option<String> = LocalStorage::get("left_panel").unwrap_or_default();
+        match panel {
+            Some(panel) => Panels::from(panel.as_str()),
+            None => Panels::Messages,
+        }
+    });
+    let right_panel = use_state(|| {
+        let panel: Option<String> = LocalStorage::get("right_panel").unwrap_or_default();
+        match panel {
+            Some(panel) => Panels::from(panel.as_str()),
+            None => Panels::Messages,
+        }
+    });
 
     let right_panel_status = {
         let right_panel = right_panel.clone();
@@ -130,21 +169,41 @@ pub fn live() -> Html {
         // if control is pressed, with left arrow, go to the previous panel
         if e.key() == "F1" {
             right_panel.set(right_panel.previous(*left_panel));
+            LocalStorage::set(
+                "right_panel",
+                right_panel.previous(*left_panel).to_string().as_str(),
+            )
+            .unwrap();
         }
 
         // if control is pressed, with right arrow, go to the next panel
         if e.key() == "F2" {
             right_panel.set(right_panel.next(*left_panel));
+            LocalStorage::set(
+                "right_panel",
+                right_panel.next(*left_panel).to_string().as_str(),
+            )
+            .unwrap();
         }
 
         // if alt is pressed, with left arrow, go to the previous panel
         if e.key() == "F3" {
             left_panel.set(left_panel.previous(*right_panel));
+            LocalStorage::set(
+                "left_panel",
+                left_panel.previous(*right_panel).to_string().as_str(),
+            )
+            .unwrap();
         }
 
         // if alt is pressed, with right arrow, go to the next panel
         if e.key() == "F4" {
             left_panel.set(left_panel.next(*right_panel));
+            LocalStorage::set(
+                "left_panel",
+                left_panel.next(*right_panel).to_string().as_str(),
+            )
+            .unwrap();
         }
     });
 

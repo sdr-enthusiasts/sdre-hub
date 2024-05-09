@@ -42,7 +42,7 @@ impl Component for Control {
     type Properties = Props;
 
     fn create(ctx: &Context<Self>) -> Self {
-        Control {
+        Self {
             cities: ctx.props().cities.list.clone(),
         }
     }

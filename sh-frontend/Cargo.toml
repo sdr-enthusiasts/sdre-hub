@@ -38,6 +38,8 @@ categories = ["aerospace"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+gloo = "0.11.0"
+gloo-storage = "0.3.0"
 gloo-utils = "0.2.0"
 leaflet = "0.4.0"
 log = "0.4.21"
