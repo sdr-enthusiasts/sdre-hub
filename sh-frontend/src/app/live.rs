@@ -203,7 +203,6 @@ pub fn live() -> Html {
 
         // if alt is pressed, with left arrow, go to the previous panel
         if e.key() == "F3" {
-            log::info!("Previous left panel");
             let previous = if visible {
                 *right_panel_clone
             } else {
@@ -220,7 +219,6 @@ pub fn live() -> Html {
 
         // if alt is pressed, with right arrow, go to the next panel
         if e.key() == "F4" {
-            log::info!("Next left panel");
             let previous = if visible {
                 *right_panel_clone
             } else {
