@@ -155,6 +155,9 @@ pub fn live() -> Html {
         .unwrap();
     }
 
+    // FIXME: We probably shouldn't panic here, and instead alert the user that something went wrong
+    // and reset the panels to a default state.
+
     let right_panel_status = {
         let right_panel = right_panel.clone();
         match *right_panel {
@@ -177,26 +180,31 @@ pub fn live() -> Html {
     };
 
     let right_panel_clone = right_panel.clone();
+    let left_panel_clone = left_panel.clone();
 
     use_event_with_window("keydown", move |e: KeyboardEvent| {
-        let left_panel = left_panel.clone();
-
         // if control is pressed, with left arrow, go to the previous panel
         if visible && e.key() == "F1" {
-            right_panel_clone.set(right_panel_clone.previous(*left_panel));
+            right_panel_clone.set(right_panel_clone.previous(*left_panel_clone));
             LocalStorage::set(
                 "right_panel",
-                right_panel_clone.previous(*left_panel).to_string().as_str(),
+                right_panel_clone
+                    .previous(*left_panel_clone)
+                    .to_string()
+                    .as_str(),
             )
             .unwrap();
         }
 
         // if control is pressed, with right arrow, go to the next panel
         if visible && e.key() == "F2" {
-            right_panel_clone.set(right_panel_clone.next(*left_panel));
+            right_panel_clone.set(right_panel_clone.next(*left_panel_clone));
             LocalStorage::set(
                 "right_panel",
-                right_panel_clone.next(*left_panel).to_string().as_str(),
+                right_panel_clone
+                    .next(*left_panel_clone)
+                    .to_string()
+                    .as_str(),
             )
             .unwrap();
         }
@@ -209,10 +217,10 @@ pub fn live() -> Html {
                 Panels::None
             };
 
-            left_panel.set(left_panel.previous(previous));
+            left_panel_clone.set(left_panel_clone.previous(previous));
             LocalStorage::set(
                 "left_panel",
-                left_panel.previous(previous).to_string().as_str(),
+                left_panel_clone.previous(previous).to_string().as_str(),
             )
             .unwrap();
         }
@@ -225,9 +233,12 @@ pub fn live() -> Html {
                 Panels::None
             };
 
-            left_panel.set(left_panel.next(previous));
-            LocalStorage::set("left_panel", left_panel.next(previous).to_string().as_str())
-                .unwrap();
+            left_panel_clone.set(left_panel_clone.next(previous));
+            LocalStorage::set(
+                "left_panel",
+                left_panel_clone.next(previous).to_string().as_str(),
+            )
+            .unwrap();
         }
     });
 
