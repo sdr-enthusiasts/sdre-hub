@@ -72,9 +72,9 @@ dependencies = [
 
 [[package]]
 name = "anstyle"
-version = "1.0.6"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8901269c6307e8d93993578286ac0edf7f195079ffff5ebdeea6a59ffb7e36bc"
+checksum = "038dfcf04a5feb68e9c60b21c9625a54c2c0616e79b72b0fd87075a056ae1d1b"
 
 [[package]]
 name = "anstyle-parse"
@@ -3406,9 +3406,9 @@ dependencies = [
 
 [[package]]
 name = "sdre-rust-logging"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2afae84b8b266836f049a963c74b360f93227636640f6b9926e2d1f3fc92f368"
+checksum = "30b3028f94704eb1ca2606a3dff00e9bb97b82f43f13aeda1d0a50b827bc4ac0"
 dependencies = [
  "anstyle",
  "chrono",
