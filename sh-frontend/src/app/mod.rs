@@ -8,7 +8,7 @@ use yew_router::prelude::*;
 
 pub mod live;
 
-use crate::components::nav::Nav;
+use crate::{components::nav::Nav, services::websocket::WebsocketService};
 use live::Live;
 
 /// App routes
@@ -31,17 +31,33 @@ pub fn switch(routes: ShAppRoute) -> Html {
     }
 }
 
-/// Root app component
-#[function_component(App)]
-pub fn app() -> Html {
-    html! {
-        <HashRouter>
-            <div class="flex min-h-screen flex-col h-full w-full">
-                <Nav />
-                <section class="container text-left p-0 mt-1 h-full w-full">
-                    <Switch<ShAppRoute> render={switch} />
-                </section>
-            </div>
-        </HashRouter>
+pub struct App {
+    wss: WebsocketService,
+}
+
+impl Component for App {
+    type Message = ();
+    type Properties = ();
+
+    fn create(ctx: &Context<Self>) -> Self {
+        let wss = WebsocketService::new();
+        Self { wss }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        true
+    }
+
+    fn view(&self, ctx: &Context<Self>) -> Html {
+        html! {
+            <HashRouter>
+                <div class="flex min-h-screen flex-col h-full w-full">
+                    <Nav />
+                    <section class="container text-left p-0 mt-1 h-full w-full">
+                        <Switch<ShAppRoute> render={switch} />
+                    </section>
+                </div>
+            </HashRouter>
+        }
     }
 }
