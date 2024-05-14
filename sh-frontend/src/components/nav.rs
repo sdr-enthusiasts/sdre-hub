@@ -6,10 +6,10 @@
 use std::{fmt, ops::Not};
 
 use yew::prelude::*;
-use yew_router::prelude::*;
+
+use crate::app::MessageContext;
 
 use super::search::Search;
-use crate::app::ShAppRoute;
 
 // This enum seems a bit overkill. Originally, I wrote this to just use a standard bool, but I wanted to
 // But the code's readability is improved by using this enum. Also, for state management in Yew, it's better to use
@@ -53,6 +53,7 @@ impl fmt::Display for Checked {
 /// Nav component
 #[function_component(Nav)]
 pub fn nav() -> Html {
+    let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
     let menu_state = use_state(|| Checked::False);
 
     let mouse_hide_menu = {
@@ -74,8 +75,7 @@ pub fn nav() -> Html {
     html! {
       <section class="top-nav rounded-3xl">
           <div class="hidden lg:block lg:w-2/6">
-                <Link<ShAppRoute> to={ShAppRoute::Live} classes="text-emerald-800 underline" >
-                <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" /></Link<ShAppRoute>>
+                <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" />
           </div>
                 <Search />
           <input id="menu-toggle" checked={hidden_menu.into()} onclick={mouse_show_menu} type="checkbox" />
@@ -84,7 +84,15 @@ pub fn nav() -> Html {
           </label>
           // FIXME: I think we should be fixing the menu link stuff to a width based on container size?
           <ul class="menu text-[#101110]">
-                <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
+                { "Left Panel" }
+                <ul class="menu text-[#101110]">
+                    <li> { "Messages" } </li>
+                    <li> { "Map" } </li>
+                    <li> { "Settings" } </li>
+                    <li> { "Help" } </li>
+                </ul>
+
+                //<li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
                 // <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
                 // <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Help} >{ "Help" }</Link<ShAppRoute>></li>
           </ul>

@@ -3,7 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::components::acars_messages::AcarsMessages;
+use crate::app::Actions;
+use crate::{app::MessageContext, components::acars_messages::AcarsMessages};
 use crate::components::help::ShHelp;
 use crate::components::map_display::ShMap;
 use crate::components::settings::ShSettings;
@@ -13,7 +14,7 @@ use yew::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
-enum Panels {
+pub enum Panels {
     Messages,
     Map,
     Settings,
@@ -48,7 +49,7 @@ impl Panels {
 }
 
 impl Panels {
-    fn next(&self, skip: Panels) -> Panels {
+    pub fn next(&self, skip: Panels) -> Panels {
         // go to the next panel, skipping the one we're currently on
 
         match self {
@@ -84,7 +85,7 @@ impl Panels {
         }
     }
 
-    fn previous(&self, skip: Panels) -> Panels {
+    pub fn previous(&self, skip: Panels) -> Panels {
         // go to the previous panel, skipping the one we're currently on
 
         match self {
@@ -124,6 +125,8 @@ impl Panels {
 /// Home page
 #[function_component(Live)]
 pub fn live() -> Html {
+    let msg_ctx = use_context::<MessageContext>().unwrap();
+    log::debug!("msg_ctx: {:?}", msg_ctx);
     let node = use_node_ref();
     let visible = use_visible(node.clone(), false);
 
@@ -131,14 +134,22 @@ pub fn live() -> Html {
     let left_panel = use_state(|| {
         let panel: Option<String> = LocalStorage::get("left_panel").unwrap_or_default();
         match panel {
-            Some(panel) => Panels::from(panel.as_str()),
+            Some(panel) => {
+                // set the context
+                msg_ctx.dispatch(Actions::SetPanelLeft(Panels::from(panel.as_str())));
+                Panels::from(panel.as_str())
+            },
             None => Panels::Messages,
         }
     });
     let right_panel = use_state(|| {
         let panel: Option<String> = LocalStorage::get("right_panel").unwrap_or_default();
         match panel {
-            Some(panel) => Panels::from(panel.as_str()),
+            Some(panel) => {
+                // set the context
+                msg_ctx.dispatch(Actions::SetPanelRight(Panels::from(panel.as_str())));
+                Panels::from(panel.as_str())
+            },
             None => Panels::Messages,
         }
     });
@@ -148,6 +159,8 @@ pub fn live() -> Html {
 
     if visible && *left_panel == *right_panel {
         left_panel.set(left_panel.next(*right_panel));
+        // set the context
+        msg_ctx.dispatch(Actions::SetPanelLeft(left_panel.next(*right_panel)));
         LocalStorage::set(
             "left_panel",
             left_panel.next(*right_panel).to_string().as_str(),
@@ -185,6 +198,8 @@ pub fn live() -> Html {
     use_event_with_window("keydown", move |e: KeyboardEvent| {
         // if control is pressed, with left arrow, go to the previous panel
         if visible && e.key() == "F1" {
+            // set the context
+            msg_ctx.dispatch(Actions::SetPanelRight(right_panel_clone.previous(*left_panel_clone)));
             right_panel_clone.set(right_panel_clone.previous(*left_panel_clone));
             LocalStorage::set(
                 "right_panel",
@@ -198,6 +213,8 @@ pub fn live() -> Html {
 
         // if control is pressed, with right arrow, go to the next panel
         if visible && e.key() == "F2" {
+            // set the context
+            msg_ctx.dispatch(Actions::SetPanelRight(right_panel_clone.next(*left_panel_clone)));
             right_panel_clone.set(right_panel_clone.next(*left_panel_clone));
             LocalStorage::set(
                 "right_panel",
@@ -217,6 +234,8 @@ pub fn live() -> Html {
                 Panels::None
             };
 
+            // set the context
+            msg_ctx.dispatch(Actions::SetPanelLeft(left_panel_clone.previous(previous)));
             left_panel_clone.set(left_panel_clone.previous(previous));
             LocalStorage::set(
                 "left_panel",
@@ -233,6 +252,8 @@ pub fn live() -> Html {
                 Panels::None
             };
 
+            // set the context
+            msg_ctx.dispatch(Actions::SetPanelLeft(left_panel_clone.next(previous)));
             left_panel_clone.set(left_panel_clone.next(previous));
             LocalStorage::set(
                 "left_panel",
