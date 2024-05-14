@@ -31,7 +31,7 @@ use sh_config::ShConfig;
 use tokio::task::JoinSet;
 
 pub struct SdreHub {
-    config: ShConfig,
+    config: std::sync::Arc<ShConfig>,
     data_users: ShDataUserList,
 }
 
@@ -39,7 +39,7 @@ impl SdreHub {
     #[must_use]
     pub fn new(config: ShConfig) -> Self {
         Self {
-            config,
+            config: std::sync::Arc::new(config),
             data_users: Vec::new(),
         }
     }
@@ -57,7 +57,8 @@ impl SdreHub {
 
         // lets generate the consumers
 
-        self.data_users.push(Box::new(ShAPIServer {}));
+        self.data_users
+            .push(Box::new(ShAPIServer::new(self.config.clone())));
 
         debug!("Starting consumers");
 

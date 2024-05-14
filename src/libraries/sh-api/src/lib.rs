@@ -19,11 +19,20 @@ use axum::{
     routing::get,
     Router,
 };
+use serde::Deserialize;
 use sh_common::ShDataUser;
+use sh_config::ShConfig;
 #[macro_use]
 extern crate log;
 
-pub struct ShAPIServer {}
+#[derive(Deserialize)]
+pub enum MessageRequest {
+    RequestConfig,
+}
+
+pub struct ShAPIServer {
+    _config: std::sync::Arc<ShConfig>,
+}
 
 #[async_trait]
 impl ShDataUser for ShAPIServer {
@@ -43,6 +52,11 @@ impl ShDataUser for ShAPIServer {
 }
 
 impl ShAPIServer {
+    #[must_use]
+    pub fn new(config: std::sync::Arc<ShConfig>) -> Self {
+        Self { _config: config }
+    }
+
     /// # Errors
     /// - Error binding socket for websocket server: {e}
     pub async fn run_apiserver(&self) -> Result<(), Box<dyn std::error::Error>> {
@@ -88,13 +102,33 @@ async fn ws_handler(ws: WebSocketUpgrade) -> Response {
 
 async fn ws_handle_socket(mut socket: WebSocket) {
     while let Some(Ok(msg)) = socket.recv().await {
-        if let Message::Text(msg) = msg {
-            if socket
-                .send(Message::Text(format!("You said: {msg}")))
-                .await
-                .is_err()
-            {
-                break;
+        // deserialize the message and see if it's a request for config
+        match msg {
+            Message::Text(text) => {
+                match serde_json::from_str(&text) {
+                    Ok(MessageRequest::RequestConfig) => {
+                        // send the config
+                        socket
+                            .send(Message::Text("test".to_string()))
+                            .await
+                            .unwrap();
+                    }
+                    Err(e) => {
+                        error!("Error deserializing message: {e}");
+                    }
+                }
+            }
+            Message::Binary(_) => {
+                error!("Binary messages not supported");
+            }
+            Message::Ping(_) => {
+                error!("Ping messages not supported");
+            }
+            Message::Pong(_) => {
+                error!("Pong messages not supported");
+            }
+            Message::Close(_) => {
+                error!("Close messages not supported");
             }
         }
     }

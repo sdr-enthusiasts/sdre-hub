@@ -39,16 +39,16 @@ impl Component for App {
     type Message = ();
     type Properties = ();
 
-    fn create(ctx: &Context<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         let wss = WebsocketService::new();
         Self { wss }
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
         true
     }
 
-    fn view(&self, ctx: &Context<Self>) -> Html {
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <HashRouter>
                 <div class="flex min-h-screen flex-col h-full w-full">

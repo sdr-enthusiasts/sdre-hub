@@ -14,6 +14,8 @@ pub struct WebsocketService {
 
 impl WebsocketService {
     pub fn new() -> Self {
+        // FIXME: we should self-suss the URL from the current page
+        // FIXME: this should handle disconnects and reconnects
         let ws = WebSocket::open("ws://127.0.0.1:3000/sdre-hub").unwrap();
 
         let (mut write, mut read) = ws.split();
