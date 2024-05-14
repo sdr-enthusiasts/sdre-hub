@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use sh_api::{MessageData, UserMessageTypes, UserWssMessage};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -41,6 +42,21 @@ impl Component for App {
 
     fn create(_ctx: &Context<Self>) -> Self {
         let wss = WebsocketService::new();
+        let message = UserWssMessage::new(UserMessageTypes::UserRequestConfig, MessageData::None);
+
+        match serde_json::to_string(&message) {
+            Ok(message) => {
+                if let Ok(_) = wss.tx.clone().try_send(message) {
+                    log::info!("Sent message to server");
+                } else {
+                    log::error!("Failed to send message to server");
+                }
+            }
+            Err(e) => {
+                log::error!("Error serializing message: {}", e);
+            }
+        }
+
         Self { wss }
     }
 

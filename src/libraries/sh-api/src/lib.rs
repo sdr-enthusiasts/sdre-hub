@@ -19,15 +19,52 @@ use axum::{
     routing::get,
     Router,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use sh_common::ShDataUser;
 use sh_config::ShConfig;
 #[macro_use]
 extern crate log;
 
-#[derive(Deserialize)]
-pub enum MessageRequest {
-    RequestConfig,
+#[derive(Serialize, Deserialize)]
+pub enum UserMessageTypes {
+    UserRequestConfig,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum ServerMessageTypes {
+    ServerResponseConfig,
+}
+
+#[derive(Deserialize, Serialize)]
+pub enum MessageData {
+    Config(String),
+    None,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct ServerWssMessage {
+    message_type: ServerMessageTypes,
+    data: MessageData,
+}
+
+impl ServerWssMessage {
+    #[must_use]
+    pub fn new(message_type: ServerMessageTypes, data: MessageData) -> Self {
+        Self { message_type, data }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UserWssMessage {
+    message_type: UserMessageTypes,
+    data: MessageData,
+}
+
+impl UserWssMessage {
+    #[must_use]
+    pub fn new(message_type: UserMessageTypes, data: MessageData) -> Self {
+        Self { message_type, data }
+    }
 }
 
 pub struct ShAPIServer {
@@ -105,16 +142,21 @@ async fn ws_handle_socket(mut socket: WebSocket) {
         // deserialize the message and see if it's a request for config
         match msg {
             Message::Text(text) => {
-                match serde_json::from_str(&text) {
-                    Ok(MessageRequest::RequestConfig) => {
-                        // send the config
-                        socket
-                            .send(Message::Text("test".to_string()))
-                            .await
-                            .unwrap();
-                    }
+                let (message_type, data) = match serde_json::from_str::<UserWssMessage>(&text) {
+                    Ok(message) => (message.message_type, message.data),
                     Err(e) => {
                         error!("Error deserializing message: {e}");
+                        continue;
+                    }
+                };
+
+                match message_type {
+                    UserMessageTypes::UserRequestConfig => {
+                        let response_type = ServerMessageTypes::ServerResponseConfig;
+                        let data = MessageData::Config("test".to_string());
+                        let message = ServerWssMessage::new(response_type, data);
+                        let config = serde_json::to_string(&message).unwrap();
+                        socket.send(Message::Text(config)).await.unwrap();
                     }
                 }
             }
@@ -122,10 +164,12 @@ async fn ws_handle_socket(mut socket: WebSocket) {
                 error!("Binary messages not supported");
             }
             Message::Ping(_) => {
-                error!("Ping messages not supported");
+                // respond with a pong
+                log::debug!("Received ping, responding with pong");
+                socket.send(Message::Pong(vec![])).await.unwrap();
             }
             Message::Pong(_) => {
-                error!("Pong messages not supported");
+                log::debug!("Received pong");
             }
             Message::Close(_) => {
                 error!("Close messages not supported");
