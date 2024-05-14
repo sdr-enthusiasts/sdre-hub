@@ -38,7 +38,7 @@ pub mod source;
 // FIXME: env variables require a dot between the prefix and the variable name. This is not ideal. Should be able to use underscores
 
 #[serde_inline_default]
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Clone)]
 pub struct ShConfig {
     #[serde_inline_default(SDREHub::default())]
     pub app: SDREHub,

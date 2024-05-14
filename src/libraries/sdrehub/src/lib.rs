@@ -25,13 +25,15 @@
 #[macro_use]
 extern crate log;
 
+use std::sync::{Arc, Mutex};
+
 use sh_api::ShAPIServer;
-use sh_common::ShDataUserList;
+use sh_common::{ServerType, ShDataUserList};
 use sh_config::ShConfig;
 use tokio::task::JoinSet;
 
 pub struct SdreHub {
-    config: ShConfig,
+    config: std::sync::Arc<Mutex<ShConfig>>,
     data_users: ShDataUserList,
 }
 
@@ -39,7 +41,7 @@ impl SdreHub {
     #[must_use]
     pub fn new(config: ShConfig) -> Self {
         Self {
-            config,
+            config: std::sync::Arc::new(Mutex::new(config)),
             data_users: Vec::new(),
         }
     }
@@ -47,23 +49,49 @@ impl SdreHub {
     /// # Errors
     /// - Error starting consumer: {e}
     pub async fn run(mut self) -> Result<(), Box<dyn std::error::Error>> {
+        // get the config lock
+        let config_lock = Arc::clone(&self.config);
+        let config = match config_lock.lock() {
+            Ok(c) => c.clone(),
+            Err(e) => {
+                error!("Error getting config lock: {e}");
+                return Err(Box::new(std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "Error getting config lock",
+                )));
+            }
+        };
+
         // init logging and stuff
-        self.config.enable_logging();
-        self.config.write_config();
-        self.config.show_config();
+        config.enable_logging();
+        config.write_config();
+        config.show_config();
+
+        // release the lock
+        drop(config_lock);
+
         // Start the web server
 
         let mut consumer_set = JoinSet::new();
 
         // lets generate the consumers
 
-        self.data_users.push(Box::new(ShAPIServer {}));
+        self.data_users.push(Box::new(ShAPIServer::new()));
 
         debug!("Starting consumers");
 
         for fut in self.data_users {
+            // if the kind of ShDataUser is ShAPIServer, then we can spawn it
+            let config = match fut.get_server_type() {
+                ServerType::WebSocket => {
+                    // Start the web server
+                    Some(Arc::clone(&self.config))
+                }
+                ServerType::Other => None,
+            };
+
             consumer_set.spawn(tokio::spawn(async move {
-                match fut.start().await {
+                match fut.start(config).await {
                     Ok(()) => {}
                     Err(e) => {
                         error!("Error starting consumer: {e}");

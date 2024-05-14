@@ -6,7 +6,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Struct to store the address of an ACARS router
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
 pub struct ShAcarsRouterConfig {
     address: String,
     port: u32,
@@ -41,7 +41,7 @@ impl ShAcarsRouterConfig {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub struct SHAdsbConfig {
     address: String,
     port: u32,

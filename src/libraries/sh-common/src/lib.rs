@@ -14,13 +14,68 @@
 
 // This is the main loop of the SDRE Hub.
 
+use std::sync::{Arc, Mutex};
+
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
+use sh_config::ShConfig;
 
 #[async_trait]
 pub trait ShDataUser {
-    async fn start(&self) -> Result<(), Box<dyn std::error::Error>>;
+    async fn start(
+        &self,
+        data: Option<Arc<Mutex<ShConfig>>>,
+    ) -> Result<(), Box<dyn std::error::Error>>;
     fn stop(&self);
     fn restart(&self);
+    fn get_server_type(&self) -> ServerType;
 }
 
 pub type ShDataUserList = Vec<Box<dyn ShDataUser + Send + Sync>>;
+
+#[derive(Serialize, Deserialize)]
+pub enum UserMessageTypes {
+    UserRequestConfig,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum ServerMessageTypes {
+    ServerResponseConfig,
+}
+
+#[derive(Deserialize, Serialize, PartialEq)]
+pub enum MessageData {
+    Config(ShConfig),
+    None,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct ServerWssMessage {
+    message_type: ServerMessageTypes,
+    data: MessageData,
+}
+
+impl ServerWssMessage {
+    #[must_use]
+    pub fn new(message_type: ServerMessageTypes, data: MessageData) -> Self {
+        Self { message_type, data }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UserWssMessage {
+    pub message_type: UserMessageTypes,
+    pub data: MessageData,
+}
+
+impl UserWssMessage {
+    #[must_use]
+    pub fn new(message_type: UserMessageTypes, data: MessageData) -> Self {
+        Self { message_type, data }
+    }
+}
+
+pub enum ServerType {
+    WebSocket,
+    Other,
+}

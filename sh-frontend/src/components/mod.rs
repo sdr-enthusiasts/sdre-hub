@@ -5,7 +5,9 @@
 
 pub mod acars_messages;
 pub mod control;
+pub mod help;
 pub mod map;
 pub mod map_display;
 pub mod nav;
 pub mod search;
+pub mod settings;

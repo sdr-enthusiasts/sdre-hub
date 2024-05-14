@@ -9,7 +9,7 @@ use serde_inline_default::serde_inline_default;
 use crate::ShConfig;
 
 #[serde_inline_default]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct SDREHub {
     #[serde_inline_default("sqlite://sdre-hub.db".to_string())]
     pub database_url: String,

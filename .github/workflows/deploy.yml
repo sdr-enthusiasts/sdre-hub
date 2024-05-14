@@ -55,25 +55,25 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.3
+        uses: actions/checkout@v4.1.5
         with:
           fetch-depth: 0
 
       - name: Run Docker on tmpfs
-        uses: JonasAlfredsson/docker-on-tmpfs@v1
+        uses: JonasAlfredsson/docker-on-tmpfs@v1.0.1
         with:
           tmpfs_size: 5
           swap_size: 4
           swap_location: "/mnt/swapfile"
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v3.0.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build armv7
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           push: false
@@ -95,25 +95,25 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.3
+        uses: actions/checkout@v4.1.5
         with:
           fetch-depth: 0
 
       - name: Run Docker on tmpfs
-        uses: JonasAlfredsson/docker-on-tmpfs@v1
+        uses: JonasAlfredsson/docker-on-tmpfs@v1.0.1
         with:
           tmpfs_size: 5
           swap_size: 4
           swap_location: "/mnt/swapfile"
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v3.0.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build arm64
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           push: false
@@ -134,25 +134,25 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.3
+        uses: actions/checkout@v4.1.5
         with:
           fetch-depth: 0
 
       - name: Run Docker on tmpfs
-        uses: JonasAlfredsson/docker-on-tmpfs@v1
+        uses: JonasAlfredsson/docker-on-tmpfs@v1.0.1
         with:
           tmpfs_size: 5
           swap_size: 4
           swap_location: "/mnt/swapfile"
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v3.0.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build amd64
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           push: false
@@ -172,25 +172,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.5
         with:
           fetch-depth: 0
 
       - name: Run Docker on tmpfs
-        uses: JonasAlfredsson/docker-on-tmpfs@v1
+        uses: JonasAlfredsson/docker-on-tmpfs@v1.0.1
         with:
           tmpfs_size: 5
           swap_size: 4
           swap_location: "/mnt/swapfile"
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v3.0.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build amd64
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           push: false
@@ -241,7 +241,7 @@ jobs:
       - run: ls -la */*
 
       - name: Cache Binaries
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: ./bin/
           key: ${{ github.run_id }}
@@ -269,10 +269,10 @@ jobs:
       github.event.inputs.build_latest_as_test == '' )
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.5
 
       - name: setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: lts/*
 
@@ -298,7 +298,7 @@ jobs:
       # - name: install frontend dependencies
       #   run: yarn install # change this to npm, pnpm or bun depending on which one you use.
 
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@v0.5.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
