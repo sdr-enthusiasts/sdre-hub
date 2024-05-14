@@ -18,7 +18,7 @@ pub trait SourceTrait {
     fn insert(&mut self, value: SHAdsbConfig);
 }
 
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Clone)]
 pub struct AdsbSource {
     addresses: Vec<SHAdsbConfig>,
 }

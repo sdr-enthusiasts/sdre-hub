@@ -8,7 +8,7 @@ use serde_inline_default::serde_inline_default;
 
 use crate::{acars_router_source::AcarsRouterSource, adsb_source::AdsbSource};
 
-#[derive(Debug, Deserialize, Default)]
+#[derive(Debug, Deserialize, Default, PartialEq, Eq, Clone)]
 #[serde(rename_all = "snake_case", try_from = "String")]
 pub enum ShEnabledDataSources {
     Acars,
@@ -55,13 +55,13 @@ impl Serialize for ShEnabledDataSources {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq, Clone)]
 pub struct EnabledDataSources {
     pub enabled_sources: Vec<ShEnabledDataSources>,
 }
 
 #[serde_inline_default]
-#[derive(Debug, Serialize, Default, Deserialize)]
+#[derive(Debug, Serialize, Default, Deserialize, PartialEq, Clone)]
 pub struct DataSources {
     #[serde_inline_default(AcarsRouterSource::default())]
     #[serde(deserialize_with = "crate::acars_router_source::string_or_struct")]

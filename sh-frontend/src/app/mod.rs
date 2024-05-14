@@ -33,7 +33,7 @@ pub fn switch(routes: ShAppRoute) -> Html {
 }
 
 pub struct App {
-    wss: WebsocketService,
+    _wss: WebsocketService,
 }
 
 impl Component for App {
@@ -57,7 +57,7 @@ impl Component for App {
             }
         }
 
-        Self { wss }
+        Self { _wss: wss }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {

@@ -17,7 +17,7 @@ pub trait SourceTrait {
     fn new() -> Self;
     fn insert(&mut self, value: ShAcarsRouterConfig);
 }
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq, Clone)]
 pub struct AcarsRouterSource {
     addresses: Vec<ShAcarsRouterConfig>,
 }
