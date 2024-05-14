@@ -19,53 +19,13 @@ use axum::{
     routing::get,
     Router,
 };
-use serde::{Deserialize, Serialize};
-use sh_common::ShDataUser;
+
+use sh_common::{
+    MessageData, ServerMessageTypes, ServerWssMessage, ShDataUser, UserMessageTypes, UserWssMessage,
+};
 use sh_config::ShConfig;
 #[macro_use]
 extern crate log;
-
-#[derive(Serialize, Deserialize)]
-pub enum UserMessageTypes {
-    UserRequestConfig,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum ServerMessageTypes {
-    ServerResponseConfig,
-}
-
-#[derive(Deserialize, Serialize)]
-pub enum MessageData {
-    Config(String),
-    None,
-}
-
-#[derive(Deserialize, Serialize)]
-pub struct ServerWssMessage {
-    message_type: ServerMessageTypes,
-    data: MessageData,
-}
-
-impl ServerWssMessage {
-    #[must_use]
-    pub fn new(message_type: ServerMessageTypes, data: MessageData) -> Self {
-        Self { message_type, data }
-    }
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct UserWssMessage {
-    message_type: UserMessageTypes,
-    data: MessageData,
-}
-
-impl UserWssMessage {
-    #[must_use]
-    pub fn new(message_type: UserMessageTypes, data: MessageData) -> Self {
-        Self { message_type, data }
-    }
-}
 
 pub struct ShAPIServer {
     _config: std::sync::Arc<ShConfig>,
@@ -142,16 +102,22 @@ async fn ws_handle_socket(mut socket: WebSocket) {
         // deserialize the message and see if it's a request for config
         match msg {
             Message::Text(text) => {
-                let (message_type, data) = match serde_json::from_str::<UserWssMessage>(&text) {
-                    Ok(message) => (message.message_type, message.data),
+                let message: UserWssMessage = match serde_json::from_str::<UserWssMessage>(&text) {
+                    Ok(message) => message,
                     Err(e) => {
                         error!("Error deserializing message: {e}");
                         continue;
                     }
                 };
 
-                match message_type {
+                match message.message_type {
                     UserMessageTypes::UserRequestConfig => {
+                        // check the data
+                        if message.data != MessageData::None {
+                            error!("Received UserRequestConfig message with data");
+                            continue;
+                        }
+
                         let response_type = ServerMessageTypes::ServerResponseConfig;
                         let data = MessageData::Config("test".to_string());
                         let message = ServerWssMessage::new(response_type, data);
@@ -169,10 +135,10 @@ async fn ws_handle_socket(mut socket: WebSocket) {
                 socket.send(Message::Pong(vec![])).await.unwrap();
             }
             Message::Pong(_) => {
-                log::debug!("Received pong");
+                debug!("Received pong");
             }
             Message::Close(_) => {
-                error!("Close messages not supported");
+                trace!("Close messages not supported");
             }
         }
     }

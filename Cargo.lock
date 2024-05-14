@@ -72,9 +72,9 @@ dependencies = [
 
 [[package]]
 name = "anstyle"
-version = "1.0.6"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8901269c6307e8d93993578286ac0edf7f195079ffff5ebdeea6a59ffb7e36bc"
+checksum = "038dfcf04a5feb68e9c60b21c9625a54c2c0616e79b72b0fd87075a056ae1d1b"
 
 [[package]]
 name = "anstyle-parse"
@@ -3406,9 +3406,9 @@ dependencies = [
 
 [[package]]
 name = "sdre-rust-logging"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2afae84b8b266836f049a963c74b360f93227636640f6b9926e2d1f3fc92f368"
+checksum = "30b3028f94704eb1ca2606a3dff00e9bb97b82f43f13aeda1d0a50b827bc4ac0"
 dependencies = [
  "anstyle",
  "chrono",
@@ -3645,6 +3645,8 @@ name = "sh-common"
 version = "4.0.0-alpha.1"
 dependencies = [
  "async-trait",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -4013,9 +4015,9 @@ checksum = "e1fc403891a21bcfb7c37834ba66a547a8f402146eba7265b5a6d88059c9ff2f"
 
 [[package]]
 name = "tauri"
-version = "1.6.3"
+version = "1.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a4fab012dcf1e72762561cef2c08a6538aec2ca44d282158128117f79eb9d39"
+checksum = "13ce04f77bcd40bb57ec7061725c9c415d30b2bf80257637b857ee067f2fa198"
 dependencies = [
  "anyhow",
  "bytes",
@@ -4151,9 +4153,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-runtime-wry"
-version = "0.14.6"
+version = "0.14.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a777eaa0d88ae47d8081cdc667eba8941b3a18af0f0ccb22640d8f0c3431d6d1"
+checksum = "ef2af45aeb15b1cadb4ca91248423f4438a0864b836298cecb436892afbfdff4"
 dependencies = [
  "arboard",
  "cocoa",

@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use sh_api::{MessageData, UserMessageTypes, UserWssMessage};
+use sh_common::{MessageData, UserMessageTypes, UserWssMessage};
 use yew::prelude::*;
 use yew_router::prelude::*;
 

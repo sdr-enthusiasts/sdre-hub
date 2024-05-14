@@ -45,10 +45,9 @@ gloo-storage = "0.3.0"
 gloo-utils = "0.2.0"
 leaflet = "0.4.0"
 log = "0.4.21"
-serde = "1.0.201"
+serde = { version = "1.0.201", features = ["derive"] }
 serde_json = "1.0.117"
 reqwasm = "0.5.0"
-reqwest = { version = "0.12.4", features = ["json"] }
 yew = { version = "0.21.0", features = ["csr"] }
 yew-router = "0.18.0"
 yew-hooks = "0.3.1"
@@ -62,7 +61,7 @@ web-sys = { version = "0.3.69", features = [
     "KeyboardEvent",
 ] }
 
-sh-api = { path = "../src/libraries/sh-api" }
+sh-common = { path = "../src/libraries/sh-common" }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.42"
