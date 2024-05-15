@@ -165,7 +165,7 @@ pub fn nav() -> Html {
         Panels::Settings,
     );
     let left_panel_help = MenuItemState::new(
-        msg_ctx.clone(),
+        msg_ctx,
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Help,
@@ -177,7 +177,7 @@ pub fn nav() -> Html {
         let current_state = *show_menu_callback_right_right_panel;
         Callback::from(move |_: MouseEvent| {
             show_menu_callback_right_left_panel.set(Checked::False);
-            show_menu_callback_right_right_panel.set(!current_state)
+            show_menu_callback_right_right_panel.set(!current_state);
         })
     };
 
@@ -187,7 +187,7 @@ pub fn nav() -> Html {
         let current_state = *show_menu_callback_left_left_panel;
         Callback::from(move |_: MouseEvent| {
             show_menu_callback_left_right_panel.set(Checked::False);
-            show_menu_callback_left_left_panel.set(!current_state)
+            show_menu_callback_left_left_panel.set(!current_state);
         })
     };
 

@@ -54,7 +54,7 @@ impl Panels {
 
 impl Panels {
     #[must_use]
-    pub fn next(&self, skip: Panels) -> Self {
+    pub fn next(&self, skip: Self) -> Self {
         // go to the next panel, skipping the one we're currently on
 
         match self {
@@ -99,7 +99,7 @@ impl Panels {
     }
 
     #[must_use]
-    pub fn previous(&self, skip: Panels) -> Panels {
+    pub fn previous(&self, skip: Self) -> Self {
         // go to the previous panel, skipping the one we're currently on
 
         match self {

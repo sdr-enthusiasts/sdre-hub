@@ -11,7 +11,7 @@ use yew::{html::ImplicitClone, prelude::*};
 
 pub enum Msg {}
 
-pub struct MapComponent {
+pub struct ShMapComponent {
     map: Map,
     lat: Point,
     container: HtmlElement,
@@ -33,14 +33,14 @@ pub struct Props {
     pub city: City,
 }
 
-impl MapComponent {
+impl ShMapComponent {
     fn render_map(&self) -> Html {
         let node: &Node = &self.container.clone().into();
         Html::VRef(node.clone())
     }
 }
 
-impl Component for MapComponent {
+impl Component for ShMapComponent {
     type Message = Msg;
     type Properties = Props;
 

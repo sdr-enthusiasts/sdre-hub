@@ -10,13 +10,13 @@ use yew::prelude::*;
 
 pub mod live;
 
-use crate::{components::nav::Nav, services::websocket::WebsocketService};
+use crate::{components::nav::Nav, services::websocket::ShWebsocketService};
 use live::Live;
 
 use self::live::Panels;
 
 pub struct App {
-    _wss: WebsocketService,
+    _wss: ShWebsocketService,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -91,12 +91,12 @@ impl Component for App {
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        let wss = WebsocketService::new();
+        let wss = ShWebsocketService::new();
         let message = UserWssMessage::new(UserMessageTypes::UserRequestConfig, MessageData::None);
 
         match serde_json::to_string(&message) {
             Ok(message) => {
-                if let Ok(_) = wss.tx.clone().try_send(message) {
+                if wss.tx.clone().try_send(message).is_ok() {
                     log::info!("Sent message to server");
                 } else {
                     log::error!("Failed to send message to server");

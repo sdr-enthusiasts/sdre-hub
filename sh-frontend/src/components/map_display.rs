@@ -5,7 +5,7 @@
 
 use crate::components::{
     control::Cities,
-    map::{City, MapComponent, Point},
+    map::{City, Point, ShMapComponent},
 };
 use yew::prelude::*;
 
@@ -56,7 +56,7 @@ impl Component for ShMap {
     fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <>
-                <MapComponent city={&self.city}  />
+                <ShMapComponent city={&self.city}  />
             </>
         }
     }
