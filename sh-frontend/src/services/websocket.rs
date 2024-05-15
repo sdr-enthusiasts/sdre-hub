@@ -8,11 +8,12 @@ use reqwasm::websocket::{futures::WebSocket, Message};
 
 use wasm_bindgen_futures::spawn_local;
 
-pub struct WebsocketService {
+pub struct ShWebsocketService {
     pub tx: Sender<String>,
 }
 
-impl WebsocketService {
+impl ShWebsocketService {
+    #[must_use]
     pub fn new() -> Self {
         // FIXME: we should self-suss the URL from the current page
         // FIXME: this should handle disconnects and reconnects
@@ -42,7 +43,7 @@ impl WebsocketService {
                         }
                     }
                     Err(e) => {
-                        log::error!("ws: {:?}", e)
+                        log::error!("ws: {:?}", e);
                     }
                 }
             }
