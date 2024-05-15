@@ -300,7 +300,7 @@ pub fn live() -> Html {
     });
 
     html! {
-        <div class="content flex w-full h-screen">
+        <div class="content flex w-full h-full">
             <div class="content p-2 m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-4" id="live-left">
                 { left_panel_show.clone() }
              </div>
