@@ -59,6 +59,7 @@ web-sys = { version = "0.3.69", features = [
     "Element",
     "HtmlCollection",
     "KeyboardEvent",
+    "EventTarget",
 ] }
 
 sh-common = { path = "../src/libraries/sh-common" }

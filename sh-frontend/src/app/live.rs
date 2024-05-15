@@ -145,6 +145,7 @@ pub fn live() -> Html {
             None => Panels::Messages,
         }
     });
+
     let right_panel = use_state(|| {
         let panel: Option<String> = LocalStorage::get("right_panel").unwrap_or_default();
         match panel {
@@ -156,6 +157,20 @@ pub fn live() -> Html {
             None => Panels::Messages,
         }
     });
+
+    // The state object is only every run once, so if the context changed we need to update the actual value
+
+    if msg_ctx.left_panel != *left_panel && msg_ctx.left_panel != Panels::None {
+        left_panel.set(msg_ctx.left_panel);
+        // set the local storage
+        LocalStorage::set("left_panel", msg_ctx.left_panel.to_string().as_str()).unwrap();
+    }
+
+    if msg_ctx.right_panel != *right_panel && msg_ctx.right_panel != Panels::None {
+        right_panel.set(msg_ctx.right_panel);
+        // set the local storage
+        LocalStorage::set("right_panel", msg_ctx.right_panel.to_string().as_str()).unwrap();
+    }
 
     // lets make sure left and right panels are not the same
     // We'll enter this state if we're transitioning from a single panel to a dual panel

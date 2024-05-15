@@ -16,7 +16,14 @@ use sh_frontend::app::App;
 
 // This is the entry point for the web app
 fn main() {
-    wasm_logger::init(wasm_logger::Config::default());
+    // if we are in a debug build we want the level to be debug
+    let level = if cfg!(debug_assertions) {
+        log::Level::Debug
+    } else {
+        log::Level::Info
+    };
+
+    wasm_logger::init(wasm_logger::Config::new(level));
 
     yew::Renderer::<App>::new().render();
 }

@@ -30,8 +30,8 @@ pub struct Message {
 impl Default for Message {
     fn default() -> Self {
         Self {
-            left_panel: Panels::Messages,
-            right_panel: Panels::Map,
+            left_panel: Panels::None,
+            right_panel: Panels::None,
             right_panel_visible: true,
         }
     }

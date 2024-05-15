@@ -7,7 +7,7 @@ use std::{fmt, ops::Not};
 
 use yew::prelude::*;
 
-use crate::app::MessageContext;
+use crate::app::{live::Panels, Actions, MessageContext};
 
 use super::search::Search;
 
@@ -56,9 +56,21 @@ pub fn nav() -> Html {
     let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
     let menu_state = use_state(|| Checked::False);
 
-    let mouse_hide_menu = {
+    let msg_ctx_map_right = msg_ctx.clone();
+    let mouse_hide_menu_map_right = {
         let menu_state = menu_state.clone();
-        Callback::from(move |_: MouseEvent| menu_state.set(Checked::False))
+        Callback::from(move |_: MouseEvent| {
+            menu_state.set(Checked::False);
+            msg_ctx_map_right.dispatch(Actions::SetPanelRight(Panels::Map));
+        })
+    };
+
+    let mouse_hide_menu_settings_right = {
+        let menu_state = menu_state.clone();
+        Callback::from(move |_: MouseEvent| {
+            menu_state.set(Checked::False);
+            msg_ctx.dispatch(Actions::SetPanelRight(Panels::Settings));
+        })
     };
 
     let mouse_show_menu = {
@@ -84,17 +96,12 @@ pub fn nav() -> Html {
           </label>
           // FIXME: I think we should be fixing the menu link stuff to a width based on container size?
           <ul class="menu text-[#101110]">
-                { "Left Panel" }
                 <ul class="menu text-[#101110]">
-                    <li> { "Messages" } </li>
-                    <li> { "Map" } </li>
-                    <li> { "Settings" } </li>
-                    <li> { "Help" } </li>
+                    <li onclick={mouse_hide_menu_map_right.clone()}>{ "Map" }</li>
+                    // <li onclick={mouse_hide_menu.clone()}>{ "Messages" }</li>
+                    <li onclick={mouse_hide_menu_settings_right.clone()}>{ "Settings" }</li>
+                    // <li onclick={mouse_hide_menu.clone()}>{ "Help" }</li>
                 </ul>
-
-                //<li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Live} >{ "Live" }</Link<ShAppRoute>></li>
-                // <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Settings} >{ "Settings" }</Link<ShAppRoute>></li>
-                // <li onclick={mouse_hide_menu.clone()}><Link<ShAppRoute> to={ShAppRoute::Help} >{ "Help" }</Link<ShAppRoute>></li>
           </ul>
       </section>
     }
