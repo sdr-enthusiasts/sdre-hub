@@ -118,7 +118,7 @@ h2 {
 }
 
 .menu-left {
-  left: 0;
+  left: 30px;
 }
 
 #menu-toggle-right ~ .menu li {

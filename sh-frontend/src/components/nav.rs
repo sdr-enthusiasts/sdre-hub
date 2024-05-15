@@ -188,32 +188,36 @@ pub fn nav() -> Html {
 
     html! {
       <section class="top-nav rounded-3xl">
-        <div class="hidden lg:block lg:w-2/6">
-            <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" />
-        </div>
+        // <div class="hidden lg:block">
+        //     <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" />
+        // </div>
         <input id="menu-toggle-left" checked={hidden_menu_left.into()} onclick={mouse_show_menu_left.clone()} type="checkbox" />
-        <label class="menu-button-container" for="menu-toggle-left">
+        <label class="menu-button-container lg:w-2/6" for="menu-toggle-left">
             <div class="menu-button"></div>
         </label>
-        <ul class="menu text-[#101110] menu-left">
-            { if !left_panel_messages.hidden() { html! { <li onclick={left_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
-            { if !left_panel_map.hidden() { html! { <li onclick={left_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
-            { if !left_panel_stats.hidden() { html! { <li onclick={left_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
-            { if !left_panel_settings.hidden() { html! { <li onclick={left_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
-            { if !left_panel_help.hidden() { html! { <li onclick={left_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
-        </ul>
+        { if hidden_menu_left == Checked::True { html! {
+            <ul class="menu text-[#101110] menu-left">
+                { if !left_panel_messages.hidden() { html! { <li onclick={left_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
+                { if !left_panel_map.hidden() { html! { <li onclick={left_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
+                { if !left_panel_stats.hidden() { html! { <li onclick={left_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
+                { if !left_panel_settings.hidden() { html! { <li onclick={left_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
+                { if !left_panel_help.hidden() { html! { <li onclick={left_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
+            </ul>
+        } } else { html! { } } }
         <Search />
         <input id="menu-toggle-right" checked={hidden_menu_right.into()} onclick={mouse_show_menu_right.clone()} type="checkbox" />
         <label class="menu-button-container" for="menu-toggle-right">
             <div class="menu-button"></div>
         </label>
-        <ul class="menu text-[#101110] menu-right">
-            { if !right_panel_messages.hidden() { html! { <li onclick={right_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
-            { if !right_panel_map.hidden() { html! { <li onclick={right_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
-            { if !right_panel_stats.hidden() { html! { <li onclick={right_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
-            { if !right_panel_settings.hidden() { html! { <li onclick={right_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
-            { if !right_panel_help.hidden() { html! { <li onclick={right_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
-        </ul>
+        { if hidden_menu_right == Checked::True { html! {
+            <ul class="menu text-[#101110] menu-right">
+                { if !right_panel_messages.hidden() { html! { <li onclick={right_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
+                { if !right_panel_map.hidden() { html! { <li onclick={right_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
+                { if !right_panel_stats.hidden() { html! { <li onclick={right_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
+                { if !right_panel_settings.hidden() { html! { <li onclick={right_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
+                { if !right_panel_help.hidden() { html! { <li onclick={right_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
+            </ul>
+        } } else { html! { } } }
       </section>
     }
 }
