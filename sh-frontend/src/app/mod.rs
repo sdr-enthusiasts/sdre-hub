@@ -120,7 +120,7 @@ impl Component for App {
             <MessageProvider>
                 <div class="flex min-h-screen flex-col h-full w-full">
                     <Nav />
-                    <section class="container text-left p-0 mt-1 h-full w-full">
+                    <section class="container text-left p-0 mt-1 h-full w-full max-w-full">
                         <Live />
                     </section>
                 </div>

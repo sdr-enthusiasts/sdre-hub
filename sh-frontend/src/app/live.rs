@@ -7,6 +7,7 @@ use crate::app::Actions;
 use crate::components::help::ShHelp;
 use crate::components::map_display::ShMap;
 use crate::components::settings::ShSettings;
+use crate::components::stats::ShStatistics;
 use crate::{app::MessageContext, components::acars_messages::AcarsMessages};
 use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
@@ -17,6 +18,7 @@ use yew_hooks::{use_event_with_window, use_visible};
 pub enum Panels {
     Messages,
     Map,
+    Stats,
     Settings,
     Help,
     None,
@@ -28,6 +30,7 @@ impl std::fmt::Display for Panels {
         match self {
             Self::Messages => write!(f, "Messages"),
             Self::Map => write!(f, "Map"),
+            Self::Stats => write!(f, "Stats"),
             Self::Settings => write!(f, "Settings"),
             Self::Help => write!(f, "Help"),
             Self::None => write!(f, "None"),
@@ -42,6 +45,7 @@ impl Panels {
             "Messages" => Self::Messages,
             "Map" => Self::Map,
             "Settings" => Self::Settings,
+            "Stats" => Self::Stats,
             "Help" => Self::Help,
             _ => Self::None,
         }
@@ -55,12 +59,19 @@ impl Panels {
         match self {
             Self::Messages => {
                 if skip == Self::Map {
-                    Self::Settings
+                    Self::Stats
                 } else {
                     Self::Map
                 }
             }
             Self::Map => {
+                if skip == Self::Stats {
+                    Self::Settings
+                } else {
+                    Self::Map
+                }
+            }
+            Self::Stats => {
                 if skip == Self::Settings {
                     Self::Help
                 } else {
@@ -81,6 +92,7 @@ impl Panels {
                     Self::Messages
                 }
             }
+
             Self::None => Self::None,
         }
     }
@@ -103,25 +115,35 @@ impl Panels {
                     Self::Messages
                 }
             }
-            Self::Settings => {
+            Self::Stats => {
                 if skip == Self::Map {
                     Self::Messages
                 } else {
                     Self::Map
                 }
             }
+            Self::Settings => {
+                if skip == Self::Stats {
+                    Self::Map
+                } else {
+                    Self::Stats
+                }
+            }
             Self::Help => {
                 if skip == Self::Settings {
-                    Self::Map
+                    Self::Stats
                 } else {
                     Self::Settings
                 }
             }
+
             Self::None => Self::None,
         }
     }
 }
 
+// FIXME: we get a bunch of double rendering on menu switch. The cause is that we have the panel state
+// checking the old value vs the new one and setting the panel state if it's changed. This flags a re-render
 /// Home page
 #[function_component(Live)]
 pub fn live() -> Html {
@@ -172,19 +194,7 @@ pub fn live() -> Html {
         LocalStorage::set("right_panel", msg_ctx.right_panel.to_string().as_str()).unwrap();
     }
 
-    // lets make sure left and right panels are not the same
-    // We'll enter this state if we're transitioning from a single panel to a dual panel
-
-    if visible && *left_panel == *right_panel {
-        left_panel.set(left_panel.next(*right_panel));
-        // set the context
-        msg_ctx.dispatch(Actions::SetPanelLeft(left_panel.next(*right_panel)));
-        LocalStorage::set(
-            "left_panel",
-            left_panel.next(*right_panel).to_string().as_str(),
-        )
-        .unwrap();
-    }
+    // FIXME: we shouldn't have the same panel on both sides
 
     // FIXME: We probably shouldn't panic here, and instead alert the user that something went wrong
     // and reset the panels to a default state.
@@ -196,6 +206,7 @@ pub fn live() -> Html {
             Panels::Map => html! { <ShMap /> },
             Panels::Settings => html! { <ShSettings />},
             Panels::Help => html! { <ShHelp /> },
+            Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Right Panel is none!!!"),
         }
     };
@@ -206,6 +217,7 @@ pub fn live() -> Html {
             Panels::Map => html! { <ShMap /> },
             Panels::Settings => html! { <ShSettings />},
             Panels::Help => html! { <ShHelp /> },
+            Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Left Panel is none!!!"),
         }
     };

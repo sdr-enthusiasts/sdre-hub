@@ -50,28 +50,90 @@ impl fmt::Display for Checked {
     }
 }
 
+#[derive(PartialEq)]
+enum PanelSide {
+    Left,
+    Right,
+}
+
+struct MenuItemState {
+    context: MessageContext,
+    menu_state: UseStateHandle<Checked>,
+    panel_side: PanelSide,
+    panel: Panels,
+}
+
+impl MenuItemState {
+    fn new(
+        context: MessageContext,
+        menu_state: UseStateHandle<Checked>,
+        panel_side: PanelSide,
+        panel: Panels,
+    ) -> Self {
+        Self {
+            context,
+            menu_state,
+            panel_side,
+            panel,
+        }
+    }
+
+    pub fn callback(self) -> Callback<MouseEvent> {
+        Callback::from(move |_: MouseEvent| {
+            self.menu_state.set(Checked::False);
+            if self.panel_side == PanelSide::Left {
+                self.context.dispatch(Actions::SetPanelLeft(self.panel));
+            } else {
+                self.context.dispatch(Actions::SetPanelRight(self.panel));
+            }
+        })
+    }
+
+    pub fn hidden(&self) -> bool {
+        if self.panel_side == PanelSide::Left {
+            self.context.left_panel != self.panel || self.context.right_panel == self.panel
+        } else {
+            self.context.right_panel == self.panel || self.context.left_panel == self.panel
+        }
+    }
+}
+
 /// Nav component
 #[function_component(Nav)]
 pub fn nav() -> Html {
     let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
     let menu_state = use_state(|| Checked::False);
 
-    let msg_ctx_map_right = msg_ctx.clone();
-    let mouse_hide_menu_map_right = {
-        let menu_state = menu_state.clone();
-        Callback::from(move |_: MouseEvent| {
-            menu_state.set(Checked::False);
-            msg_ctx_map_right.dispatch(Actions::SetPanelRight(Panels::Map));
-        })
-    };
-
-    let mouse_hide_menu_settings_right = {
-        let menu_state = menu_state.clone();
-        Callback::from(move |_: MouseEvent| {
-            menu_state.set(Checked::False);
-            msg_ctx.dispatch(Actions::SetPanelRight(Panels::Settings));
-        })
-    };
+    let right_panel_map = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state.clone(),
+        PanelSide::Right,
+        Panels::Map,
+    );
+    let right_panel_stats = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state.clone(),
+        PanelSide::Right,
+        Panels::Stats,
+    );
+    let right_panel_settings = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state.clone(),
+        PanelSide::Right,
+        Panels::Settings,
+    );
+    let right_panel_help = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state.clone(),
+        PanelSide::Right,
+        Panels::Help,
+    );
+    let right_panel_messages = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state.clone(),
+        PanelSide::Right,
+        Panels::Messages,
+    );
 
     let mouse_show_menu = {
         let menu_state = menu_state.clone();
@@ -97,10 +159,11 @@ pub fn nav() -> Html {
           // FIXME: I think we should be fixing the menu link stuff to a width based on container size?
           <ul class="menu text-[#101110]">
                 <ul class="menu text-[#101110]">
-                    <li onclick={mouse_hide_menu_map_right.clone()}>{ "Map" }</li>
-                    // <li onclick={mouse_hide_menu.clone()}>{ "Messages" }</li>
-                    <li onclick={mouse_hide_menu_settings_right.clone()}>{ "Settings" }</li>
-                    // <li onclick={mouse_hide_menu.clone()}>{ "Help" }</li>
+                    { if !right_panel_messages.hidden() { html! { <li onclick={right_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
+                    { if !right_panel_map.hidden() { html! { <li onclick={right_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
+                    { if !right_panel_stats.hidden() { html! { <li onclick={right_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
+                    { if !right_panel_settings.hidden() { html! { <li onclick={right_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
+                    { if !right_panel_help.hidden() { html! { <li onclick={right_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
                 </ul>
           </ul>
       </section>
