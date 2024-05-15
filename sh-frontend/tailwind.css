@@ -18,6 +18,7 @@ h2 {
   color: #fff;
   /* height: 50px; */
   padding: 1em;
+  z-index: 1000;
 }
 
 .menu {
@@ -185,5 +186,5 @@ h2 {
 
 .map {
   height: 100%;
-  z-index: -10;
+  z-index: 1;
 }
