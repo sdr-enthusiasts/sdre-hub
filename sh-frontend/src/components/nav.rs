@@ -89,15 +89,15 @@ impl MenuItemState {
         })
     }
 
-    pub fn hidden(&self) -> bool {
+    pub fn show(&self) -> bool {
         if *self.menu_state == Checked::False {
-            return true;
+            return false;
         }
 
         if self.panel_side == PanelSide::Left {
-            self.context.left_panel == self.panel || self.context.right_panel == self.panel
+            self.context.left_panel != self.panel && self.context.right_panel != self.panel
         } else {
-            self.context.right_panel == self.panel || self.context.left_panel == self.panel
+            self.context.right_panel != self.panel && self.context.left_panel != self.panel
         }
     }
 }
@@ -194,11 +194,11 @@ pub fn nav() -> Html {
         </label>
         { if hidden_menu_left == Checked::True { html! {
             <ul class="menu text-[#101110] menu-left">
-                { if !left_panel_messages.hidden() { html! { <li onclick={left_panel_messages.callback()}>{ "Left: Messages" }</li> } } else { html! {} } }
-                { if !left_panel_map.hidden() { html! { <li onclick={left_panel_map.callback()}>{ "Left: Map" }</li> } } else { html! {} } }
-                { if !left_panel_stats.hidden() { html! { <li onclick={left_panel_stats.callback()}>{ "Left: Statistics" }</li> } } else { html! {} } }
-                { if !left_panel_settings.hidden() { html! { <li onclick={left_panel_settings.callback()}>{ "Left: Settings" }</li> } } else { html! {} } }
-                { if !left_panel_help.hidden() { html! { <li onclick={left_panel_help.callback()}>{ "Left: Help" }</li> } } else { html! {} } }
+                { if left_panel_messages.show() { html! { <li onclick={left_panel_messages.callback()}>{ "Left: Messages" }</li> } } else { html! {} } }
+                { if left_panel_map.show() { html! { <li onclick={left_panel_map.callback()}>{ "Left: Map" }</li> } } else { html! {} } }
+                { if left_panel_stats.show() { html! { <li onclick={left_panel_stats.callback()}>{ "Left: Statistics" }</li> } } else { html! {} } }
+                { if left_panel_settings.show() { html! { <li onclick={left_panel_settings.callback()}>{ "Left: Settings" }</li> } } else { html! {} } }
+                { if left_panel_help.show() { html! { <li onclick={left_panel_help.callback()}>{ "Left: Help" }</li> } } else { html! {} } }
             </ul>
         } } else { html! { } } }
         <Search />
@@ -208,11 +208,11 @@ pub fn nav() -> Html {
         </label>
         { if hidden_menu_right == Checked::True { html! {
             <ul class="menu text-[#101110] menu-right">
-                { if !right_panel_messages.hidden() { html! { <li onclick={right_panel_messages.callback()}>{ "Right: Messages" }</li> } } else { html! {} } }
-                { if !right_panel_map.hidden() { html! { <li onclick={right_panel_map.callback()}>{ "Right: Map" }</li> } } else { html! {} } }
-                { if !right_panel_stats.hidden() { html! { <li onclick={right_panel_stats.callback()}>{ "Right: Statistics" }</li> } } else { html! {} } }
-                { if !right_panel_settings.hidden() { html! { <li onclick={right_panel_settings.callback()}>{ "Right: Settings" }</li> } } else { html! {} } }
-                { if !right_panel_help.hidden() { html! { <li onclick={right_panel_help.callback()}>{ "Right: Help" }</li> } } else { html! {} } }
+                { if right_panel_messages.show() { html! { <li onclick={right_panel_messages.callback()}>{ "Right: Messages" }</li> } } else { html! {} } }
+                { if right_panel_map.show() { html! { <li onclick={right_panel_map.callback()}>{ "Right: Map" }</li> } } else { html! {} } }
+                { if right_panel_stats.show() { html! { <li onclick={right_panel_stats.callback()}>{ "Right: Statistics" }</li> } } else { html! {} } }
+                { if right_panel_settings.show() { html! { <li onclick={right_panel_settings.callback()}>{ "Right: Settings" }</li> } } else { html! {} } }
+                { if right_panel_help.show() { html! { <li onclick={right_panel_help.callback()}>{ "Right: Help" }</li> } } else { html! {} } }
             </ul>
         } } else { html! { } } }
       </section>
