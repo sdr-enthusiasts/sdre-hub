@@ -188,11 +188,8 @@ pub fn nav() -> Html {
 
     html! {
       <section class="top-nav rounded-3xl">
-        // <div class="hidden lg:block">
-        //     <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" />
-        // </div>
         <input id="menu-toggle-left" checked={hidden_menu_left.into()} onclick={mouse_show_menu_left.clone()} type="checkbox" />
-        <label class="menu-button-container lg:w-2/6" for="menu-toggle-left">
+        <label class="menu-button-container" for="menu-toggle-left">
             <div class="menu-button"></div>
         </label>
         { if hidden_menu_left == Checked::True { html! {
