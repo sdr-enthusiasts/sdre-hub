@@ -4,10 +4,10 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::app::Actions;
-use crate::{app::MessageContext, components::acars_messages::AcarsMessages};
 use crate::components::help::ShHelp;
 use crate::components::map_display::ShMap;
 use crate::components::settings::ShSettings;
+use crate::{app::MessageContext, components::acars_messages::AcarsMessages};
 use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
 use yew::prelude::*;
@@ -130,6 +130,9 @@ pub fn live() -> Html {
     let node = use_node_ref();
     let visible = use_visible(node.clone(), false);
 
+    // set the visibility of the right panel
+    msg_ctx.dispatch(Actions::SetRightPanelVisible(visible));
+
     // Grab the current panel state from storage:
     let left_panel = use_state(|| {
         let panel: Option<String> = LocalStorage::get("left_panel").unwrap_or_default();
@@ -138,7 +141,7 @@ pub fn live() -> Html {
                 // set the context
                 msg_ctx.dispatch(Actions::SetPanelLeft(Panels::from(panel.as_str())));
                 Panels::from(panel.as_str())
-            },
+            }
             None => Panels::Messages,
         }
     });
@@ -149,7 +152,7 @@ pub fn live() -> Html {
                 // set the context
                 msg_ctx.dispatch(Actions::SetPanelRight(Panels::from(panel.as_str())));
                 Panels::from(panel.as_str())
-            },
+            }
             None => Panels::Messages,
         }
     });
@@ -199,7 +202,9 @@ pub fn live() -> Html {
         // if control is pressed, with left arrow, go to the previous panel
         if visible && e.key() == "F1" {
             // set the context
-            msg_ctx.dispatch(Actions::SetPanelRight(right_panel_clone.previous(*left_panel_clone)));
+            msg_ctx.dispatch(Actions::SetPanelRight(
+                right_panel_clone.previous(*left_panel_clone),
+            ));
             right_panel_clone.set(right_panel_clone.previous(*left_panel_clone));
             LocalStorage::set(
                 "right_panel",
@@ -214,7 +219,9 @@ pub fn live() -> Html {
         // if control is pressed, with right arrow, go to the next panel
         if visible && e.key() == "F2" {
             // set the context
-            msg_ctx.dispatch(Actions::SetPanelRight(right_panel_clone.next(*left_panel_clone)));
+            msg_ctx.dispatch(Actions::SetPanelRight(
+                right_panel_clone.next(*left_panel_clone),
+            ));
             right_panel_clone.set(right_panel_clone.next(*left_panel_clone));
             LocalStorage::set(
                 "right_panel",

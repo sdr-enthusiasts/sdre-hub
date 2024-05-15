@@ -24,6 +24,7 @@ pub struct App {
 pub struct Message {
     pub left_panel: Panels,
     pub right_panel: Panels,
+    pub right_panel_visible: bool,
 }
 
 impl Default for Message {
@@ -31,6 +32,7 @@ impl Default for Message {
         Self {
             left_panel: Panels::Messages,
             right_panel: Panels::Map,
+            right_panel_visible: true,
         }
     }
 }
@@ -38,6 +40,7 @@ impl Default for Message {
 pub enum Actions {
     SetPanelLeft(Panels),
     SetPanelRight(Panels),
+    SetRightPanelVisible(bool),
 }
 
 impl Reducible for Message {
@@ -48,11 +51,18 @@ impl Reducible for Message {
             Actions::SetPanelLeft(panel) => Rc::new(Self {
                 left_panel: panel,
                 right_panel: self.right_panel,
+                right_panel_visible: self.right_panel_visible,
             }),
 
             Actions::SetPanelRight(panel) => Rc::new(Self {
                 left_panel: self.left_panel,
                 right_panel: panel,
+                right_panel_visible: self.right_panel_visible,
+            }),
+            Actions::SetRightPanelVisible(visible) => Rc::new(Self {
+                left_panel: self.left_panel,
+                right_panel: self.right_panel,
+                right_panel_visible: visible,
             }),
         }
     }
