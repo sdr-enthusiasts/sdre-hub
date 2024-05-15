@@ -151,25 +151,27 @@ h2 {
 
 .menu > li {
   display: flex;
-  justify-content: center;
   margin: 0;
   padding: 0.5em 0;
   min-width: 200px;
-  max-width: 700px;
+  max-width: 767px;
   color: white;
   background-color: #222;
+  justify-content: left;
 }
+
 .menu > li:not(:last-child) {
   border-bottom: 1px solid #444;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
   .menu {
     width: 100%;
   }
 
-  li {
+  .menu > li {
     width: 100%;
+    justify-content: center;
   }
 
   .menu-right {
