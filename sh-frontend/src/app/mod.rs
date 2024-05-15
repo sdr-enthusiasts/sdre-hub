@@ -7,7 +7,6 @@ use std::rc::Rc;
 
 use sh_common::{MessageData, UserMessageTypes, UserWssMessage};
 use yew::prelude::*;
-use yew_router::prelude::*;
 
 pub mod live;
 

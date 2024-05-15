@@ -64,7 +64,7 @@ struct MenuItemState {
 }
 
 impl MenuItemState {
-    fn new(
+    const fn new(
         context: MessageContext,
         menu_state: UseStateHandle<Checked>,
         panel_side: PanelSide,
@@ -129,7 +129,7 @@ pub fn nav() -> Html {
         Panels::Help,
     );
     let right_panel_messages = MenuItemState::new(
-        msg_ctx.clone(),
+        msg_ctx,
         menu_state.clone(),
         PanelSide::Right,
         Panels::Messages,
@@ -141,10 +141,7 @@ pub fn nav() -> Html {
         Callback::from(move |_: MouseEvent| menu_state.set(!current_state))
     };
 
-    let hidden_menu = {
-        let menu_state = *menu_state;
-        menu_state
-    };
+    let hidden_menu = { *menu_state };
 
     html! {
       <section class="top-nav rounded-3xl">

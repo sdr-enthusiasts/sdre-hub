@@ -40,7 +40,7 @@ impl std::fmt::Display for Panels {
 
 // implement try_from for Panels
 impl Panels {
-    fn from(s: &str) -> Panels {
+    fn from(s: &str) -> Self {
         match s {
             "Messages" => Self::Messages,
             "Map" => Self::Map,
@@ -53,7 +53,8 @@ impl Panels {
 }
 
 impl Panels {
-    pub fn next(&self, skip: Panels) -> Panels {
+    #[must_use]
+    pub fn next(&self, skip: Panels) -> Self {
         // go to the next panel, skipping the one we're currently on
 
         match self {
@@ -97,6 +98,7 @@ impl Panels {
         }
     }
 
+    #[must_use]
     pub fn previous(&self, skip: Panels) -> Panels {
         // go to the previous panel, skipping the one we're currently on
 
