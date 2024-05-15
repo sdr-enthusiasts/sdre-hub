@@ -15,7 +15,7 @@ use super::search::Search;
 // But the code's readability is improved by using this enum. Also, for state management in Yew, it's better to use
 // To control the state of the menu, and more specifically to just know the state which now we do.
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum Checked {
     True,
     False,
@@ -90,8 +90,12 @@ impl MenuItemState {
     }
 
     pub fn hidden(&self) -> bool {
+        if *self.menu_state == Checked::False {
+            return true;
+        }
+
         if self.panel_side == PanelSide::Left {
-            self.context.left_panel != self.panel || self.context.right_panel == self.panel
+            self.context.left_panel == self.panel || self.context.right_panel == self.panel
         } else {
             self.context.right_panel == self.panel || self.context.left_panel == self.panel
         }
@@ -102,67 +106,114 @@ impl MenuItemState {
 #[function_component(Nav)]
 pub fn nav() -> Html {
     let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
-    let menu_state = use_state(|| Checked::False);
+    let menu_state_right = use_state(|| Checked::False);
+    let menu_state_left = use_state(|| Checked::False);
 
     let right_panel_map = MenuItemState::new(
         msg_ctx.clone(),
-        menu_state.clone(),
+        menu_state_right.clone(),
         PanelSide::Right,
         Panels::Map,
     );
     let right_panel_stats = MenuItemState::new(
         msg_ctx.clone(),
-        menu_state.clone(),
+        menu_state_right.clone(),
         PanelSide::Right,
         Panels::Stats,
     );
     let right_panel_settings = MenuItemState::new(
         msg_ctx.clone(),
-        menu_state.clone(),
+        menu_state_right.clone(),
         PanelSide::Right,
         Panels::Settings,
     );
     let right_panel_help = MenuItemState::new(
         msg_ctx.clone(),
-        menu_state.clone(),
+        menu_state_right.clone(),
         PanelSide::Right,
         Panels::Help,
     );
     let right_panel_messages = MenuItemState::new(
-        msg_ctx,
-        menu_state.clone(),
+        msg_ctx.clone(),
+        menu_state_right.clone(),
         PanelSide::Right,
         Panels::Messages,
     );
 
-    let mouse_show_menu = {
-        let menu_state = menu_state.clone();
+    let left_panel_messages = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state_left.clone(),
+        PanelSide::Left,
+        Panels::Messages,
+    );
+    let left_panel_map = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state_left.clone(),
+        PanelSide::Left,
+        Panels::Map,
+    );
+    let left_panel_stats = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state_left.clone(),
+        PanelSide::Left,
+        Panels::Stats,
+    );
+    let left_panel_settings = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state_left.clone(),
+        PanelSide::Left,
+        Panels::Settings,
+    );
+    let left_panel_help = MenuItemState::new(
+        msg_ctx.clone(),
+        menu_state_left.clone(),
+        PanelSide::Left,
+        Panels::Help,
+    );
+
+    let mouse_show_menu_right = {
+        let menu_state = menu_state_right.clone();
         let current_state = *menu_state;
         Callback::from(move |_: MouseEvent| menu_state.set(!current_state))
     };
 
-    let hidden_menu = { *menu_state };
+    let mouse_show_menu_left = {
+        let menu_state = menu_state_left.clone();
+        let current_state = *menu_state;
+        Callback::from(move |_: MouseEvent| menu_state.set(!current_state))
+    };
+
+    let hidden_menu_right = { *menu_state_right };
+    let hidden_menu_left = { *menu_state_left };
 
     html! {
       <section class="top-nav rounded-3xl">
-          <div class="hidden lg:block lg:w-2/6">
-                <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" />
-          </div>
-                <Search />
-          <input id="menu-toggle" checked={hidden_menu.into()} onclick={mouse_show_menu} type="checkbox" />
-          <label class="menu-button-container" for="menu-toggle">
-                <div class="menu-button"></div>
-          </label>
-          // FIXME: I think we should be fixing the menu link stuff to a width based on container size?
-          <ul class="menu text-[#101110]">
-                <ul class="menu text-[#101110]">
-                    { if !right_panel_messages.hidden() { html! { <li onclick={right_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
-                    { if !right_panel_map.hidden() { html! { <li onclick={right_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
-                    { if !right_panel_stats.hidden() { html! { <li onclick={right_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
-                    { if !right_panel_settings.hidden() { html! { <li onclick={right_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
-                    { if !right_panel_help.hidden() { html! { <li onclick={right_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
-                </ul>
-          </ul>
+        <div class="hidden lg:block lg:w-2/6">
+            <img class="w-10 h-10" src="logo.svg" alt="SDR Enthusiasts Hub" />
+        </div>
+        <input id="menu-toggle-left" checked={hidden_menu_left.into()} onclick={mouse_show_menu_left.clone()} type="checkbox" />
+        <label class="menu-button-container" for="menu-toggle-left">
+            <div class="menu-button"></div>
+        </label>
+        <ul class="menu text-[#101110] menu-left">
+            { if !left_panel_messages.hidden() { html! { <li onclick={left_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
+            { if !left_panel_map.hidden() { html! { <li onclick={left_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
+            { if !left_panel_stats.hidden() { html! { <li onclick={left_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
+            { if !left_panel_settings.hidden() { html! { <li onclick={left_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
+            { if !left_panel_help.hidden() { html! { <li onclick={left_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
+        </ul>
+        <Search />
+        <input id="menu-toggle-right" checked={hidden_menu_right.into()} onclick={mouse_show_menu_right.clone()} type="checkbox" />
+        <label class="menu-button-container" for="menu-toggle-right">
+            <div class="menu-button"></div>
+        </label>
+        <ul class="menu text-[#101110] menu-right">
+            { if !right_panel_messages.hidden() { html! { <li onclick={right_panel_messages.callback()}>{ "Messages" }</li> } } else { html! {} } }
+            { if !right_panel_map.hidden() { html! { <li onclick={right_panel_map.callback()}>{ "Map" }</li> } } else { html! {} } }
+            { if !right_panel_stats.hidden() { html! { <li onclick={right_panel_stats.callback()}>{ "Statistics" }</li> } } else { html! {} } }
+            { if !right_panel_settings.hidden() { html! { <li onclick={right_panel_settings.callback()}>{ "Settings" }</li> } } else { html! {} } }
+            { if !right_panel_help.hidden() { html! { <li onclick={right_panel_help.callback()}>{ "Help" }</li> } } else { html! {} } }
+        </ul>
       </section>
     }
 }
