@@ -171,16 +171,24 @@ pub fn nav() -> Html {
         Panels::Help,
     );
 
+    let show_menu_callback_right_left_panel = menu_state_left.clone();
+    let show_menu_callback_right_right_panel = menu_state_right.clone();
     let mouse_show_menu_right = {
-        let menu_state = menu_state_right.clone();
-        let current_state = *menu_state;
-        Callback::from(move |_: MouseEvent| menu_state.set(!current_state))
+        let current_state = *show_menu_callback_right_right_panel;
+        Callback::from(move |_: MouseEvent| {
+            show_menu_callback_right_left_panel.set(Checked::False);
+            show_menu_callback_right_right_panel.set(!current_state)
+        })
     };
 
+    let show_menu_callback_left_left_panel = menu_state_left.clone();
+    let show_menu_callback_left_right_panel = menu_state_right.clone();
     let mouse_show_menu_left = {
-        let menu_state = menu_state_left.clone();
-        let current_state = *menu_state;
-        Callback::from(move |_: MouseEvent| menu_state.set(!current_state))
+        let current_state = *show_menu_callback_left_left_panel;
+        Callback::from(move |_: MouseEvent| {
+            show_menu_callback_left_right_panel.set(Checked::False);
+            show_menu_callback_left_left_panel.set(!current_state)
+        })
     };
 
     let hidden_menu_right = { *menu_state_right };
