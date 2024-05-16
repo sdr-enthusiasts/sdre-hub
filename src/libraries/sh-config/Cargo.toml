@@ -19,8 +19,8 @@ keywords.workspace = true
 figment = { version = "0.10.18", features = ["toml", "env"] }
 sdre-rust-logging = "0.3.2"
 log = "0.4.21"
-serde = { version = "1.0.201", features = ["derive"] }
+serde = { version = "1.0.202", features = ["derive"] }
 serde-inline-default = "0.2.0"
-toml = "0.8.12"
+toml = "0.8.13"
 void = "1.0.2"
 directories = "5.0.1"
