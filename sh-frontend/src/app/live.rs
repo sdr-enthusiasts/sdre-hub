@@ -158,7 +158,7 @@ pub fn live() -> Html {
     msg_ctx.dispatch(Actions::SetRightPanelVisible(visible));
 
     // Grab the current panel state from storage:
-    let left_panel = use_state(|| {
+    let left_panel = use_state_eq(|| {
         let panel: Option<String> = LocalStorage::get("left_panel").unwrap_or_default();
         match panel {
             Some(panel) => {
@@ -170,7 +170,7 @@ pub fn live() -> Html {
         }
     });
 
-    let right_panel = use_state(|| {
+    let right_panel = use_state_eq(|| {
         let panel: Option<String> = LocalStorage::get("right_panel").unwrap_or_default();
         match panel {
             Some(panel) => {

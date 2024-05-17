@@ -106,8 +106,8 @@ impl MenuItemState {
 #[function_component(Nav)]
 pub fn nav() -> Html {
     let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
-    let menu_state_right = use_state(|| Checked::False);
-    let menu_state_left = use_state(|| Checked::False);
+    let menu_state_right = use_state_eq(|| Checked::False);
+    let menu_state_left = use_state_eq(|| Checked::False);
 
     let right_panel_map = MenuItemState::new(
         msg_ctx.clone(),
