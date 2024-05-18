@@ -1439,7 +1439,6 @@ dependencies = [
  "wasm-logger",
  "web-sys",
  "yew",
- "yew-agent",
  "yew-hooks",
  "yew-router",
 ]
@@ -1986,31 +1985,6 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "yew-macro",
-]
-
-[[package]]
-name = "yew-agent"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7e27eaca61ea9d0e1a6589dce592283b0e62ced527d8a8b28447957295d588f5"
-dependencies = [
- "futures",
- "gloo-worker 0.4.0",
- "serde",
- "wasm-bindgen",
- "yew",
- "yew-agent-macro",
-]
-
-[[package]]
-name = "yew-agent-macro"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ad00f6c9436d25c9225ed0fd8eea27e6d2886c1387bf934afdf91e9131b8b77"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.60",
 ]
 
 [[package]]
