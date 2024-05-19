@@ -160,37 +160,35 @@ pub fn live() -> Html {
     // Grab the current panel state from storage:
     let left_panel = use_state_eq(|| {
         let panel: Option<String> = LocalStorage::get("left_panel").unwrap_or_default();
-        match panel {
-            Some(panel) => {
-                // set the context
-                msg_ctx.dispatch(Actions::SetPanelLeft(Panels::from(panel.as_str())));
-                Panels::from(panel.as_str())
-            }
-            None => Panels::Messages,
-        }
+
+        panel.map_or(Panels::Messages, |panel| {
+            // set the context
+            msg_ctx.dispatch(Actions::SetPanelLeft(Panels::from(panel.as_str())));
+            Panels::from(panel.as_str())
+        })
     });
 
     let right_panel = use_state_eq(|| {
         let panel: Option<String> = LocalStorage::get("right_panel").unwrap_or_default();
-        match panel {
-            Some(panel) => {
-                // set the context
-                msg_ctx.dispatch(Actions::SetPanelRight(Panels::from(panel.as_str())));
-                Panels::from(panel.as_str())
-            }
-            None => Panels::Messages,
-        }
+
+        panel.map_or(Panels::Messages, |panel| {
+            // set the context
+            msg_ctx.dispatch(Actions::SetPanelRight(Panels::from(panel.as_str())));
+            Panels::from(panel.as_str())
+        })
     });
 
     // The state object is only every run once, so if the context changed we need to update the actual value
 
     if msg_ctx.left_panel != *left_panel && msg_ctx.left_panel != Panels::None {
+        log::debug!("Setting left panel");
         left_panel.set(msg_ctx.left_panel);
         // set the local storage
         LocalStorage::set("left_panel", msg_ctx.left_panel.to_string().as_str()).unwrap();
     }
 
     if msg_ctx.right_panel != *right_panel && msg_ctx.right_panel != Panels::None {
+        log::debug!("Setting right panel");
         right_panel.set(msg_ctx.right_panel);
         // set the local storage
         LocalStorage::set("right_panel", msg_ctx.right_panel.to_string().as_str()).unwrap();

@@ -39,6 +39,7 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.86"
 futures = "0.3.30"
 gloo = "0.11.0"
 gloo-storage = "0.3.0"
@@ -46,10 +47,11 @@ gloo-utils = "0.2.0"
 leaflet = "0.4.0"
 log = "0.4.21"
 serde = { version = "1.0.202", features = ["derive"] }
+serde_derive = "1.0.202"
 serde_json = "1.0.117"
 reqwasm = "0.5.0"
 yew = { version = "0.21.0", features = ["csr"] }
-yew-agent = "0.3.0"
+yew-websocket = "1.21.0"
 yew-router = "0.18.0"
 yew-hooks = "0.3.1"
 wasm-bindgen = "0.2.92"
@@ -64,6 +66,7 @@ web-sys = { version = "0.3.69", features = [
 ] }
 
 sh-common = { path = "../src/libraries/sh-common" }
+sh-config = { path = "../src/libraries/sh-config" }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.42"

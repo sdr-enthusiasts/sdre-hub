@@ -3,10 +3,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+
 use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
 
-use crate::ShConfig;
+use crate::{web::sh_web_sdrehub::ShWebSDREHub, ShConfig};
 
 #[serde_inline_default]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
@@ -20,6 +21,30 @@ pub struct SDREHub {
     #[serde_inline_default(ShConfig::get_config_file_path())]
     #[serde(skip_serializing)]
     pub config_file: String,
+}
+
+impl SDREHub {
+    #[must_use] pub const fn new(
+        database_url: String,
+        log_level: String,
+        data_path: String,
+        config_file: String,
+    ) -> Self {
+        Self {
+            database_url,
+            log_level,
+            data_path,
+            config_file,
+        }
+    }
+
+    #[must_use] pub fn to_web_sdrehub(&self) -> ShWebSDREHub {
+        ShWebSDREHub::new(
+            self.database_url.clone(),
+            self.log_level.clone(),
+            self.data_path.clone(),
+        )
+    }
 }
 
 impl Default for SDREHub {

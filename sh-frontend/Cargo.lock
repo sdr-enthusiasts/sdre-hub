@@ -91,6 +91,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.86"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3d1d046238990b9cf5bcde22a3fb3584ee5cf65fb2765f454ed428c7a0063da"
+
+[[package]]
 name = "anymap2"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -276,9 +282,9 @@ checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
 
 [[package]]
 name = "figment"
-version = "0.10.18"
+version = "0.10.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d032832d74006f99547004d49410a4b4218e4c33382d56ca3ff89df74f86b953"
+checksum = "8cb01cd46b0cf372153850f4c6c272d9cbea2da513e07538405148f95bd789f3"
 dependencies = [
  "atomic",
  "pear",
@@ -597,6 +603,26 @@ name = "gloo-net"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2899cb1a13be9020b010967adc6b2a8a343b6f1428b90238c9d53ca24decc6db"
+dependencies = [
+ "futures-channel",
+ "futures-core",
+ "futures-sink",
+ "gloo-utils 0.1.7",
+ "js-sys",
+ "pin-project",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "gloo-net"
+version = "0.2.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9902a044653b26b99f7e3693a42f171312d9be8b26b5697bd1e43ad1f8a35e10"
 dependencies = [
  "futures-channel",
  "futures-core",
@@ -1423,6 +1449,7 @@ dependencies = [
 name = "sh-frontend"
 version = "4.0.0-alpha.1"
 dependencies = [
+ "anyhow",
  "futures",
  "gloo 0.11.0",
  "gloo-storage 0.3.0",
@@ -1431,17 +1458,19 @@ dependencies = [
  "log",
  "reqwasm",
  "serde",
+ "serde_derive",
  "serde_json",
  "sh-common",
+ "sh-config",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wasm-bindgen-test",
  "wasm-logger",
  "web-sys",
  "yew",
- "yew-agent",
  "yew-hooks",
  "yew-router",
+ "yew-websocket",
 ]
 
 [[package]]
@@ -1989,31 +2018,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "yew-agent"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7e27eaca61ea9d0e1a6589dce592283b0e62ced527d8a8b28447957295d588f5"
-dependencies = [
- "futures",
- "gloo-worker 0.4.0",
- "serde",
- "wasm-bindgen",
- "yew",
- "yew-agent-macro",
-]
-
-[[package]]
-name = "yew-agent-macro"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ad00f6c9436d25c9225ed0fd8eea27e6d2886c1387bf934afdf91e9131b8b77"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.60",
-]
-
-[[package]]
 name = "yew-hooks"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2072,4 +2076,26 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.60",
+]
+
+[[package]]
+name = "yew-websocket"
+version = "1.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6d75b4aa6d3a7644d649b80413f6095281c3897aeda85b5519ed12fd3de5b013"
+dependencies = [
+ "anyhow",
+ "futures",
+ "gloo 0.8.1",
+ "gloo-console 0.2.3",
+ "gloo-net 0.2.6",
+ "js-sys",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "thiserror",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "yew",
 ]

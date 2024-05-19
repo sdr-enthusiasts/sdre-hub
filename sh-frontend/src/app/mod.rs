@@ -5,33 +5,34 @@
 
 use std::rc::Rc;
 
-use sh_common::{MessageData, UserMessageTypes, UserWssMessage};
+use sh_common::{MessageData, ServerMessageTypes, ServerWssMessage};
+use sh_config::web::sh_web_config::ShWebConfig;
 use yew::prelude::*;
 
 pub mod live;
 
-use crate::{components::nav::Nav, services::websocket::ShWebsocketService};
+use crate::components::nav::Nav;
+use crate::services::websocket::ShWebSocketComponent;
 use live::Live;
 
 use self::live::Panels;
 
-pub struct App {
-    _wss: ShWebsocketService,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone)]
-pub struct Message {
+// FIXME: move the actual permanent app state stuff to yewdux. Use this as the messaging pipeline for temp states
+#[derive(Debug, PartialEq, Clone)]
+pub struct ShAppState {
     pub left_panel: Panels,
     pub right_panel: Panels,
     pub right_panel_visible: bool,
+    pub config: Option<ShWebConfig>,
 }
 
-impl Default for Message {
+impl Default for ShAppState {
     fn default() -> Self {
         Self {
             left_panel: Panels::None,
             right_panel: Panels::None,
             right_panel_visible: true,
+            config: None,
         }
     }
 }
@@ -40,9 +41,10 @@ pub enum Actions {
     SetPanelLeft(Panels),
     SetPanelRight(Panels),
     SetRightPanelVisible(bool),
+    WsReceivedMessage(ServerWssMessage),
 }
 
-impl Reducible for Message {
+impl Reducible for ShAppState {
     type Action = Actions;
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
@@ -51,23 +53,40 @@ impl Reducible for Message {
                 left_panel: panel,
                 right_panel: self.right_panel,
                 right_panel_visible: self.right_panel_visible,
+                config: self.config.clone(),
             }),
 
             Actions::SetPanelRight(panel) => Rc::new(Self {
                 left_panel: self.left_panel,
                 right_panel: panel,
                 right_panel_visible: self.right_panel_visible,
+                config: self.config.clone(),
             }),
             Actions::SetRightPanelVisible(visible) => Rc::new(Self {
                 left_panel: self.left_panel,
                 right_panel: self.right_panel,
                 right_panel_visible: visible,
+                config: self.config.clone(),
             }),
+            Actions::WsReceivedMessage(msg) => match msg.get_message_type() {
+                ServerMessageTypes::ServerResponseConfig => {
+                    let data = msg.get_data();
+                    match data {
+                        MessageData::ShConfig(config) => Rc::new(Self {
+                            left_panel: self.left_panel,
+                            right_panel: self.right_panel,
+                            right_panel_visible: self.right_panel_visible,
+                            config: Some(config.clone()),
+                        }),
+                        MessageData::NoData => self,
+                    }
+                }
+            },
         }
     }
 }
 
-pub type MessageContext = UseReducerHandle<Message>;
+pub type MessageContext = UseReducerHandle<ShAppState>;
 
 #[derive(Properties, Debug, PartialEq)]
 pub struct MessageProviderProps {
@@ -77,7 +96,7 @@ pub struct MessageProviderProps {
 
 #[function_component]
 pub fn MessageProvider(props: &MessageProviderProps) -> Html {
-    let msg = use_reducer(|| Message::default());
+    let msg = use_reducer(|| ShAppState::default());
 
     html! {
         <ContextProvider<MessageContext> context={msg}>
@@ -86,44 +105,17 @@ pub fn MessageProvider(props: &MessageProviderProps) -> Html {
     }
 }
 
-impl Component for App {
-    type Message = ();
-    type Properties = ();
-
-    fn create(_ctx: &Context<Self>) -> Self {
-        let wss = ShWebsocketService::new();
-        let message = UserWssMessage::new(UserMessageTypes::UserRequestConfig, MessageData::None);
-
-        match serde_json::to_string(&message) {
-            Ok(message) => {
-                if wss.tx.clone().try_send(message).is_ok() {
-                    log::info!("Sent message to server");
-                } else {
-                    log::error!("Failed to send message to server");
-                }
-            }
-            Err(e) => {
-                log::error!("Error serializing message: {}", e);
-            }
-        }
-
-        Self { _wss: wss }
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
-        true
-    }
-
-    fn view(&self, _ctx: &Context<Self>) -> Html {
-        html! {
-            <MessageProvider>
-                <div class="flex flex-col h-full w-full max-h-full max-w-full">
-                    <Nav />
-                    <section class="container text-left p-0 mt-1 h-full w-full max-h-full max-w-full">
-                        <Live />
-                    </section>
-                </div>
-            </MessageProvider>
-        }
+#[function_component(App)]
+pub fn app() -> Html {
+    html! {
+        <MessageProvider>
+        <ShWebSocketComponent />
+            <div class="flex flex-col h-full w-full max-h-full max-w-full">
+                <Nav />
+                <section class="container text-left p-0 mt-1 h-full w-full max-h-full max-w-full">
+                    <Live />
+                </section>
+            </div>
+        </MessageProvider>
     }
 }
