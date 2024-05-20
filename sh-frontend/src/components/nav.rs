@@ -3,12 +3,14 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+
+use std::rc::Rc;
 use std::{fmt, ops::Not};
-
 use yew::prelude::*;
-
-use crate::app::{live::Panels, Actions, MessageContext};
-
+use yewdux::prelude::*;
+use crate::app::webapp::MessageContext;
+use crate::common::panels::Panels;
+use crate::services::saved_state::WebAppState;
 use super::search::Search;
 
 // This enum seems a bit overkill. Originally, I wrote this to just use a standard bool, but I wanted to
@@ -57,24 +59,30 @@ enum PanelSide {
 }
 
 struct MenuItemState {
-    context: MessageContext,
+    msg_ctx: MessageContext,
     menu_state: UseStateHandle<Checked>,
     panel_side: PanelSide,
     panel: Panels,
+    state: Rc<WebAppState>,
+    dispatch: Dispatch<WebAppState>,
 }
 
 impl MenuItemState {
-    const fn new(
-        context: MessageContext,
+    fn new(
+        msg_ctx: MessageContext,
         menu_state: UseStateHandle<Checked>,
         panel_side: PanelSide,
         panel: Panels,
+        state: Rc<WebAppState>,
+        dispatch: Dispatch<WebAppState>,
     ) -> Self {
         Self {
-            context,
+            msg_ctx,
             menu_state,
             panel_side,
             panel,
+            state: state,
+            dispatch,
         }
     }
 
@@ -82,9 +90,13 @@ impl MenuItemState {
         Callback::from(move |_: MouseEvent| {
             self.menu_state.set(Checked::False);
             if self.panel_side == PanelSide::Left {
-                self.context.dispatch(Actions::SetPanelLeft(self.panel));
+                self.dispatch.reduce_mut(|state| {
+                    state.left_panel = self.panel;
+                });
             } else {
-                self.context.dispatch(Actions::SetPanelRight(self.panel));
+                self.dispatch.reduce_mut(|state| {
+                    state.right_panel = self.panel;
+                });
             }
         })
     }
@@ -94,10 +106,17 @@ impl MenuItemState {
             return false;
         }
 
+        if PanelSide::Left == self.panel_side && !self.msg_ctx.right_panel_visible {
+            return true;
+        }
+
+        let left_panel = self.state.left_panel;
+        let right_panel = self.state.right_panel;
+
         if self.panel_side == PanelSide::Left {
-            self.context.left_panel != self.panel && self.context.right_panel != self.panel
+            left_panel != self.panel && right_panel != self.panel
         } else {
-            self.context.right_panel != self.panel && self.context.left_panel != self.panel
+            right_panel != self.panel && left_panel != self.panel
         }
     }
 }
@@ -108,36 +127,48 @@ pub fn nav() -> Html {
     let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
     let menu_state_right = use_state_eq(|| Checked::False);
     let menu_state_left = use_state_eq(|| Checked::False);
+    let (state, dispatch) = use_store::<WebAppState>();
+    let right_panel_visible = msg_ctx.right_panel_visible;
 
     let right_panel_map = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Map,
+        state.clone(),
+        dispatch.clone(),
     );
     let right_panel_stats = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Stats,
+        state.clone(),
+        dispatch.clone(),
     );
     let right_panel_settings = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Settings,
+        state.clone(),
+        dispatch.clone(),
     );
     let right_panel_help = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Help,
+        state.clone(),
+        dispatch.clone(),
     );
     let right_panel_messages = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Messages,
+        state.clone(),
+        dispatch.clone(),
     );
 
     let left_panel_messages = MenuItemState::new(
@@ -145,30 +176,40 @@ pub fn nav() -> Html {
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Messages,
+        state.clone(),
+        dispatch.clone(),
     );
     let left_panel_map = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Map,
+        state.clone(),
+        dispatch.clone(),
     );
     let left_panel_stats = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Stats,
+        state.clone(),
+        dispatch.clone(),
     );
     let left_panel_settings = MenuItemState::new(
         msg_ctx.clone(),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Settings,
+        state.clone(),
+        dispatch.clone(),
     );
     let left_panel_help = MenuItemState::new(
         msg_ctx,
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Help,
+        state,
+        dispatch,
     );
 
     let show_menu_callback_right_left_panel = menu_state_left.clone();
@@ -200,29 +241,127 @@ pub fn nav() -> Html {
         <label class="menu-button-container" for="menu-toggle-left">
             <div class="menu-button"></div>
         </label>
-        { if hidden_menu_left == Checked::True { html! {
-            <ul class="menu text-[#101110] menu-left">
-                { if left_panel_messages.show() { html! { <li onclick={left_panel_messages.callback()}>{ "Left: Messages" }</li> } } else { html! {} } }
-                { if left_panel_map.show() { html! { <li onclick={left_panel_map.callback()}>{ "Left: Map" }</li> } } else { html! {} } }
-                { if left_panel_stats.show() { html! { <li onclick={left_panel_stats.callback()}>{ "Left: Statistics" }</li> } } else { html! {} } }
-                { if left_panel_settings.show() { html! { <li onclick={left_panel_settings.callback()}>{ "Left: Settings" }</li> } } else { html! {} } }
-                { if left_panel_help.show() { html! { <li onclick={left_panel_help.callback()}>{ "Left: Help" }</li> } } else { html! {} } }
+        {
+            if hidden_menu_left == Checked::True {
+                html! {
+                    <ul class="menu text-[#101110] menu-left">
+                    {
+                        if left_panel_messages.show() {
+                            html! {
+                                <li onclick={left_panel_messages.callback()}>{ "Left: Messages" }</li>
+                            }
+                        } else {
+                            html! {}
+                        }
+                    }
+                    {
+                        if left_panel_map.show() {
+                            html! {
+                                <li onclick={left_panel_map.callback()}>{ "Left: Map" }</li>
+                            }
+                        } else {
+                            html! {}
+                        }
+                    }
+                    {
+                        if left_panel_stats.show()
+                        {
+                            html! {
+                                <li onclick={left_panel_stats.callback()}>{ "Left: Statistics" }</li>
+                            }
+                        } else {
+                            html! {}
+                        }
+                    }
+                    {
+                        if left_panel_settings.show() {
+                            html! {
+                                <li onclick={left_panel_settings.callback()}>{ "Left: Settings" }</li>
+                            }
+                        } else {
+                            html! {}
+                        }
+                    }
+                    {
+                        if left_panel_help.show() {
+                            html! {
+                                <li onclick={left_panel_help.callback()}>{ "Left: Help" }</li>
+                            }
+                        } else {
+                            html! {}
+                        }
+                    }
             </ul>
         } } else { html! { } } }
         <Search />
-        <input id="menu-toggle-right" checked={hidden_menu_right.into()} onclick={mouse_show_menu_right.clone()} type="checkbox" />
-        <label class="menu-button-container" for="menu-toggle-right">
-            <div class="menu-button"></div>
-        </label>
-        { if hidden_menu_right == Checked::True { html! {
-            <ul class="menu text-[#101110] menu-right">
-                { if right_panel_messages.show() { html! { <li onclick={right_panel_messages.callback()}>{ "Right: Messages" }</li> } } else { html! {} } }
-                { if right_panel_map.show() { html! { <li onclick={right_panel_map.callback()}>{ "Right: Map" }</li> } } else { html! {} } }
-                { if right_panel_stats.show() { html! { <li onclick={right_panel_stats.callback()}>{ "Right: Statistics" }</li> } } else { html! {} } }
-                { if right_panel_settings.show() { html! { <li onclick={right_panel_settings.callback()}>{ "Right: Settings" }</li> } } else { html! {} } }
-                { if right_panel_help.show() { html! { <li onclick={right_panel_help.callback()}>{ "Right: Help" }</li> } } else { html! {} } }
-            </ul>
-        } } else { html! { } } }
-      </section>
+        {
+            if right_panel_visible {
+                html! {
+                    <><input id="menu-toggle-right" checked={hidden_menu_right.into()} onclick={mouse_show_menu_right.clone()} type="checkbox" />
+                    <label class="menu-button-container" for="menu-toggle-right">
+                        <div class="menu-button"></div>
+                    </label>
+                        {
+                        if hidden_menu_right == Checked::True {
+                            html! {
+                                <ul class="menu text-[#101110] menu-right">
+                                    {
+                                        if right_panel_messages.show() {
+                                            html! {
+                                                <li onclick={right_panel_messages.callback()}>{ "Right: Messages" }</li>
+                                            }
+                                        } else {
+                                            html! {}
+                                        }
+                                    }
+                                    {
+                                        if right_panel_map.show() {
+                                            html! {
+                                                <li onclick={right_panel_map.callback()}>{ "Right: Map" }</li>
+                                            }
+                                        } else {
+                                            html! {}
+                                        }
+                                    }
+                                    {
+                                        if right_panel_stats.show() {
+                                            html! {
+                                                <li onclick={right_panel_stats.callback()}>{ "Right: Statistics" }</li>
+                                        }
+                                        } else {
+                                            html! {}
+                                        }
+                                    }
+                                    {
+                                        if right_panel_settings.show() {
+                                            html! {
+                                                <li onclick={right_panel_settings.callback()}>{ "Right: Settings" }</li>
+                                            }
+                                        } else {
+                                            html! {}
+                                        }
+                                    }
+                                    {
+                                        if right_panel_help.show() {
+                                            html! {
+                                                <li onclick={right_panel_help.callback()}>{ "Right: Help" }</li>
+                                            }
+                                        } else {
+                                            html! {}
+                                        }
+                                    }
+                                </ul>
+                            }
+                        } else {
+                            html! { }
+                        }
+                    }
+                    </>
+                }
+            } else {
+                html! { }
+            }
+        }
+        </section>
     }
 }

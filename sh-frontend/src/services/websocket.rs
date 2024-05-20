@@ -1,9 +1,11 @@
-use crate::app::{Actions, MessageContext};
+use crate::app::webapp::{Actions, MessageContext};
 use anyhow::Error;
 use sh_common::{MessageData, ServerWssMessage, UserMessageTypes, UserWssMessage};
 use yew::prelude::*;
 use yew::{html, Component, Context, Html};
 use yew_websocket::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
+
+// https://github.com/security-union/yew-websocket/
 
 pub enum WsAction {
     Connect,

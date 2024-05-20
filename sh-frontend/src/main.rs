@@ -12,7 +12,7 @@
     clippy::all
 )]
 
-use sh_frontend::app::App;
+use sh_frontend::app::webapp::App;
 
 // This is the entry point for the web app
 fn main() {
