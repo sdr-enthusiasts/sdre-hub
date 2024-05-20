@@ -13,6 +13,6 @@
 )]
 
 pub mod app;
+pub mod common;
 pub mod components;
 pub mod services;
-pub mod common;

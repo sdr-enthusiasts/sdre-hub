@@ -3,17 +3,17 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::services::temp_state::Actions;
-use crate::{common::panels::Panels, services::temp_state::MessageContext};
+use crate::components::acars_messages::AcarsMessages;
 use crate::components::help::ShHelp;
 use crate::components::map_display::ShMap;
 use crate::components::settings::ShSettings;
 use crate::components::stats::ShStatistics;
 use crate::services::saved_state::WebAppState;
-use crate::components::acars_messages::AcarsMessages;
+use crate::services::temp_state::Actions;
+use crate::{common::panels::Panels, services::temp_state::MessageContext};
 use yew::prelude::*;
-use yewdux::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
+use yewdux::prelude::*;
 
 // FIXME: we get a bunch of double rendering on menu switch. The cause is that we have the panel state
 // checking the old value vs the new one and setting the panel state if it's changed. This flags a re-render

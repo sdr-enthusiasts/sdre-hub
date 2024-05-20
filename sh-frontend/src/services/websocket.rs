@@ -144,28 +144,5 @@ impl Component for ShWebSocketComponent {
         }
 
         html! {}
-        //         html! {
-        //             <div>
-        //                 <nav class="menu">
-        //                     { self.view_data() }
-        //                     <button disabled={self.ws.is_some()}
-        //                             onclick={ctx.link().callback(|_| WsAction::Connect)}>
-        //                         { "Connect To WebSocket" }
-        //                     </button>
-        //                     <button disabled={self.ws.is_none()}
-        //                             onclick={ctx.link().callback(|_| WsAction::SendData(false))}>
-        //                         { "Send To WebSocket" }
-        //                     </button>
-        //                     <button disabled={self.ws.is_none()}
-        //                             onclick={ctx.link().callback(|_| WsAction::SendData(true))}>
-        //                         { "Send To WebSocket [binary]" }
-        //                     </button>
-        //                     <button disabled={self.ws.is_none()}
-        //                             onclick={ctx.link().callback(|_| WsAction::Disconnect)}>
-        //                         { "Close WebSocket connection" }
-        //                     </button>
-        //                 </nav>
-        //             </div>
-        //         }
     }
 }

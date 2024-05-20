@@ -3,12 +3,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use yew::prelude::*;
-use crate::components::nav::Nav;
-use crate::components::message_provider::MessageProvider;
-use crate::services::websocket::ShWebSocketComponent;
 use super::live::Live;
-
+use crate::components::message_provider::MessageProvider;
+use crate::components::nav::Nav;
+use crate::services::websocket::ShWebSocketComponent;
+use yew::prelude::*;
 
 #[function_component(App)]
 pub fn app() -> Html {

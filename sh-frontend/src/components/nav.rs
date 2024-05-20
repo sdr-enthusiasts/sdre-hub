@@ -3,15 +3,14 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
+use super::search::Search;
+use crate::common::panels::Panels;
+use crate::services::saved_state::WebAppState;
+use crate::services::temp_state::MessageContext;
 use std::rc::Rc;
 use std::{fmt, ops::Not};
 use yew::prelude::*;
 use yewdux::prelude::*;
-use crate::services::temp_state::MessageContext;
-use crate::common::panels::Panels;
-use crate::services::saved_state::WebAppState;
-use super::search::Search;
 
 // This enum seems a bit overkill. Originally, I wrote this to just use a standard bool, but I wanted to
 // But the code's readability is improved by using this enum. Also, for state management in Yew, it's better to use
@@ -239,7 +238,7 @@ pub fn nav() -> Html {
       <section class="top-nav rounded-3xl">
         <input id="menu-toggle-left" checked={hidden_menu_left.into()} onclick={mouse_show_menu_left.clone()} type="checkbox" />
         <label class="menu-button-container" for="menu-toggle-left">
-            <div class="menu-button"></div>
+            <div class="menu-button" title="Left Panel"></div>
         </label>
         {
             if hidden_menu_left == Checked::True {
@@ -299,7 +298,7 @@ pub fn nav() -> Html {
                 html! {
                     <><input id="menu-toggle-right" checked={hidden_menu_right.into()} onclick={mouse_show_menu_right.clone()} type="checkbox" />
                     <label class="menu-button-container" for="menu-toggle-right">
-                        <div class="menu-button"></div>
+                        <div class="menu-button" title="Right Panel"></div>
                     </label>
                         {
                         if hidden_menu_right == Checked::True {

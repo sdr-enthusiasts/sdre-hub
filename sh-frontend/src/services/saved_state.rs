@@ -3,9 +3,9 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use crate::common::panels::Panels;
 use serde::{Deserialize, Serialize};
 use yewdux::prelude::*;
-use crate::common::panels::Panels;
 
 #[derive(Clone, PartialEq, Eq, Store, Serialize, Deserialize)]
 #[store(storage = "local", storage_tab_sync)]
