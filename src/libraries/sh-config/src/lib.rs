@@ -27,6 +27,7 @@ use sdrehub::SDREHub;
 use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
 use source::{DataSources, EnabledDataSources};
+use web::sh_web_config::ShWebConfig;
 
 pub mod acars_router_source;
 pub mod address;
@@ -34,6 +35,7 @@ pub mod adsb_source;
 pub mod map;
 pub mod sdrehub;
 pub mod source;
+pub mod web;
 
 // FIXME: env variables require a dot between the prefix and the variable name. This is not ideal. Should be able to use underscores
 
@@ -43,10 +45,13 @@ pub struct ShConfig {
     #[serde_inline_default(SDREHub::default())]
     pub app: SDREHub,
     #[serde_inline_default(EnabledDataSources::default())]
+    #[serde(skip_serializing)]
     pub enabled_data_sources: EnabledDataSources,
     #[serde_inline_default(DataSources::default())]
+    #[serde(skip_serializing)]
     pub data_sources: DataSources,
     #[serde_inline_default(ShMapConfig::default())]
+    #[serde(skip_serializing)]
     pub map: ShMapConfig,
 }
 
@@ -54,6 +59,15 @@ impl ShConfig {
     #[must_use]
     pub fn new() -> Self {
         Self::get_and_validate_config()
+    }
+
+    #[must_use] pub fn to_web_config(&self) -> ShWebConfig {
+        ShWebConfig {
+            app: self.app.to_web_sdrehub(),
+            enabled_data_sources: self.enabled_data_sources.clone(),
+            data_sources: self.data_sources.clone(),
+            map: self.map.clone(),
+        }
     }
 
     fn get_application_data_path() -> String {
@@ -144,6 +158,7 @@ impl ShConfig {
     }
 
     pub fn enable_logging(&self) {
+        println!("Enabling logging with level: {}", self.app.log_level);
         self.app.log_level.enable_logging();
     }
 

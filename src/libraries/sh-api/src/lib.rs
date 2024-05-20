@@ -133,11 +133,24 @@ async fn ws_handler(ws: WebSocketUpgrade, State(server): State<Arc<ShAPIServerSt
 }
 
 async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
+    // send the initial message
+    // let response_type = ServerMessageTypes::ServerResponseConfig;
+    // let config = state.config.lock().unwrap().clone();
+    //                     let data = MessageData::Config(config);
+    //                     let message = ServerWssMessage::new(response_type, data);
+    //                     let config = serde_json::to_string(&message).unwrap();
+    //                     socket.send(Message::Text(config)).await.unwrap();
+
     while let Some(Ok(msg)) = socket.recv().await {
         // deserialize the message and see if it's a request for config
+        debug!("Received message: {:?}", msg);
+
         match msg {
             Message::Text(text) => {
-                let message: UserWssMessage = match serde_json::from_str::<UserWssMessage>(&text) {
+                let text = text.trim_matches('"').replace("\\\"", "\"");
+
+                debug!("Received text message after trimming and replacement: {text}");
+                let message: UserWssMessage = match serde_json::from_str(&text) {
                     Ok(message) => message,
                     Err(e) => {
                         error!("Error deserializing message: {e}");
@@ -148,7 +161,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                 match message.message_type {
                     UserMessageTypes::UserRequestConfig => {
                         // check the data
-                        if message.data != MessageData::None {
+                        if message.data != MessageData::NoData {
                             error!("Received UserRequestConfig message with data");
                             continue;
                         }
@@ -156,10 +169,11 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                         let response_type = ServerMessageTypes::ServerResponseConfig;
                         // get the server config
                         let config = state.config.lock().unwrap().clone();
-                        let data = MessageData::Config(config);
+                        let data = MessageData::ShConfig(config.to_web_config());
                         let message = ServerWssMessage::new(response_type, data);
-                        let config = serde_json::to_string(&message).unwrap();
-                        socket.send(Message::Text(config)).await.unwrap();
+                        let config_serialized = serde_json::to_string(&message).unwrap();
+                        debug!("Sending config message: {config_serialized}");
+                        socket.send(Message::Text(config_serialized)).await.unwrap();
                     }
                 }
             }
@@ -175,7 +189,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                 debug!("Received pong");
             }
             Message::Close(_) => {
-                trace!("Close messages not supported");
+                trace!("Socket Closed");
             }
         }
     }

@@ -18,7 +18,7 @@ use std::sync::{Arc, Mutex};
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use sh_config::ShConfig;
+use sh_config::{web::sh_web_config::ShWebConfig, ShConfig};
 
 #[async_trait]
 pub trait ShDataUser {
@@ -33,23 +33,23 @@ pub trait ShDataUser {
 
 pub type ShDataUserList = Vec<Box<dyn ShDataUser + Send + Sync>>;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum UserMessageTypes {
     UserRequestConfig,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum ServerMessageTypes {
     ServerResponseConfig,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, PartialEq, Debug)]
 pub enum MessageData {
-    Config(ShConfig),
-    None,
+    ShConfig(ShWebConfig),
+    NoData,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct ServerWssMessage {
     message_type: ServerMessageTypes,
     data: MessageData,
@@ -60,9 +60,17 @@ impl ServerWssMessage {
     pub fn new(message_type: ServerMessageTypes, data: MessageData) -> Self {
         Self { message_type, data }
     }
+
+    pub fn get_message_type(&self) -> &ServerMessageTypes {
+        &self.message_type
+    }
+
+    pub fn get_data(&self) -> &MessageData {
+        &self.data
+    }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct UserWssMessage {
     pub message_type: UserMessageTypes,
     pub data: MessageData,
@@ -73,8 +81,17 @@ impl UserWssMessage {
     pub fn new(message_type: UserMessageTypes, data: MessageData) -> Self {
         Self { message_type, data }
     }
+
+    pub fn get_message_type(&self) -> &UserMessageTypes {
+        &self.message_type
+    }
+
+    pub fn get_data(&self) -> &MessageData {
+        &self.data
+    }
 }
 
+#[derive(Debug)]
 pub enum ServerType {
     WebSocket,
     Other,
