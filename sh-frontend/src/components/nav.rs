@@ -8,7 +8,7 @@ use std::rc::Rc;
 use std::{fmt, ops::Not};
 use yew::prelude::*;
 use yewdux::prelude::*;
-use crate::app::webapp::MessageContext;
+use crate::services::temp_state::MessageContext;
 use crate::common::panels::Panels;
 use crate::services::saved_state::WebAppState;
 use super::search::Search;

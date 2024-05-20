@@ -3,14 +3,14 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::app::webapp::Actions;
-use crate::common::panels::Panels;
+use crate::services::temp_state::Actions;
+use crate::{common::panels::Panels, services::temp_state::MessageContext};
 use crate::components::help::ShHelp;
 use crate::components::map_display::ShMap;
 use crate::components::settings::ShSettings;
 use crate::components::stats::ShStatistics;
 use crate::services::saved_state::WebAppState;
-use crate::{app::webapp::MessageContext, components::acars_messages::AcarsMessages};
+use crate::components::acars_messages::AcarsMessages;
 use yew::prelude::*;
 use yewdux::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
