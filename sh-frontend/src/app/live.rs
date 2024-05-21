@@ -9,8 +9,7 @@ use crate::components::map_display::ShMap;
 use crate::components::settings::ShSettings;
 use crate::components::stats::ShStatistics;
 use crate::services::saved_state::WebAppState;
-use crate::services::temp_state::Actions;
-use crate::{common::panels::Panels, services::temp_state::MessageContext};
+use crate::{common::panels::Panels, services::temp_state::WebAppStateTemp};
 use yew::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
 use yewdux::prelude::*;
@@ -20,14 +19,16 @@ use yewdux::prelude::*;
 /// Home page
 #[function_component(Live)]
 pub fn live() -> Html {
-    let msg_ctx = use_context::<MessageContext>().unwrap();
+    let (_state_local, dispatch_local) = use_store::<WebAppStateTemp>();
     let (_state, dispatch) = use_store::<WebAppState>();
-    log::debug!("msg_ctx: {:?}", msg_ctx);
+    log::debug!("Re-rendering live page");
     let node = use_node_ref();
     let visible = use_visible(node.clone(), false);
 
     // set the visibility of the right panel
-    msg_ctx.dispatch(Actions::SetRightPanelVisible(visible));
+    dispatch_local.reduce_mut(|state| {
+        state.right_panel_visible = visible;
+    });
 
     // Grab the current panel state from storage:
     let left_panel = use_selector(|state: &WebAppState| state.left_panel);
