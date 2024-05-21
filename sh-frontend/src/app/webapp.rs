@@ -4,7 +4,6 @@
 // https://opensource.org/licenses/MIT.
 
 use super::live::Live;
-use crate::components::message_provider::MessageProvider;
 use crate::components::nav::Nav;
 use crate::services::websocket::ShWebSocketComponent;
 use yew::prelude::*;
@@ -12,14 +11,14 @@ use yew::prelude::*;
 #[function_component(App)]
 pub fn app() -> Html {
     html! {
-        <MessageProvider>
+        <>
         <ShWebSocketComponent />
-            <div class="flex flex-col h-full w-full max-h-full max-w-full">
-                <Nav />
-                <section class="container text-left p-0 mt-1 h-full w-full max-h-full max-w-full">
-                    <Live />
-                </section>
-            </div>
-        </MessageProvider>
+        <div class="flex flex-col h-full w-full max-h-full max-w-full">
+            <Nav />
+            <section class="container text-left p-0 mt-1 h-full w-full max-h-full max-w-full">
+                <Live />
+            </section>
+        </div>
+        </>
     }
 }

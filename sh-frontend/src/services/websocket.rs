@@ -1,9 +1,11 @@
-use super::temp_state::{Actions, MessageContext};
+use super::temp_state::WebAppStateTemp;
 use anyhow::Error;
-use sh_common::{MessageData, ServerWssMessage, UserMessageTypes, UserWssMessage};
-use yew::prelude::*;
+use sh_common::{
+    MessageData, ServerMessageTypes, ServerWssMessage, UserMessageTypes, UserWssMessage,
+};
 use yew::{html, Component, Context, Html};
 use yew_websocket::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
+use yewdux::Dispatch;
 
 // https://github.com/security-union/yew-websocket/
 
@@ -28,6 +30,7 @@ impl From<WsAction> for Msg {
 pub struct ShWebSocketComponent {
     pub fetching: bool,
     pub ws: Option<WebSocketTask>,
+    pub dispatch: Dispatch<WebAppStateTemp>,
 }
 
 impl Component for ShWebSocketComponent {
@@ -35,20 +38,16 @@ impl Component for ShWebSocketComponent {
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
+        let dispatch = Dispatch::<WebAppStateTemp>::global();
+
         Self {
             fetching: false,
             ws: None,
+            dispatch,
         }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
-        // grab the context
-        let context = ctx
-            .link()
-            .context::<MessageContext>(Callback::from(|_| {}))
-            .map(|(c, _)| c);
-        let context = context.unwrap();
-
         match msg {
             Msg::WsAction(action) => match action {
                 WsAction::Connect => {
@@ -123,7 +122,23 @@ impl Component for ShWebSocketComponent {
                     }
                 };
 
-                context.dispatch(Actions::WsReceivedMessage(data_deserialized));
+                match data_deserialized.get_message_type() {
+                    ServerMessageTypes::ServerResponseConfig => {
+                        log::debug!("Received config message");
+                        self.dispatch
+                            .reduce_mut(|state| match data_deserialized.get_data() {
+                                MessageData::ShConfig(config) => {
+                                    state.config = Some(config.clone());
+                                }
+                                _ => {
+                                    log::error!("Received invalid data type");
+                                }
+                            });
+                    }
+                    _ => {
+                        log::error!("Received unknown message: {:?}", data_deserialized);
+                    }
+                }
 
                 false
             }

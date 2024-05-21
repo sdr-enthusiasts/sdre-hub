@@ -8,7 +8,6 @@ pub mod control;
 pub mod help;
 pub mod map;
 pub mod map_display;
-pub mod message_provider;
 pub mod nav;
 pub mod search;
 pub mod settings;

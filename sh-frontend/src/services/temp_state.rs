@@ -5,11 +5,13 @@
 
 use std::rc::Rc;
 
+use serde::{Deserialize, Serialize};
 use sh_common::{MessageData, ServerMessageTypes, ServerWssMessage};
 use sh_config::web::sh_web_config::ShWebConfig;
 use yew::prelude::*;
+use yewdux::prelude::*;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Clone, PartialEq, Store)]
 pub struct WebAppStateTemp {
     pub right_panel_visible: bool,
     pub config: Option<ShWebConfig>,
@@ -23,35 +25,3 @@ impl Default for WebAppStateTemp {
         }
     }
 }
-
-pub enum Actions {
-    SetRightPanelVisible(bool),
-    WsReceivedMessage(ServerWssMessage),
-}
-
-impl Reducible for WebAppStateTemp {
-    type Action = Actions;
-
-    fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
-        match action {
-            Actions::SetRightPanelVisible(visible) => Rc::new(Self {
-                right_panel_visible: visible,
-                config: self.config.clone(),
-            }),
-            Actions::WsReceivedMessage(msg) => match msg.get_message_type() {
-                ServerMessageTypes::ServerResponseConfig => {
-                    let data = msg.get_data();
-                    match data {
-                        MessageData::ShConfig(config) => Rc::new(Self {
-                            right_panel_visible: self.right_panel_visible,
-                            config: Some(config.clone()),
-                        }),
-                        MessageData::NoData => self,
-                    }
-                }
-            },
-        }
-    }
-}
-
-pub type MessageContext = UseReducerHandle<WebAppStateTemp>;

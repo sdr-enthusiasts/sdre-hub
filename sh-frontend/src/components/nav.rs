@@ -6,7 +6,7 @@
 use super::search::Search;
 use crate::common::panels::Panels;
 use crate::services::saved_state::WebAppState;
-use crate::services::temp_state::MessageContext;
+use crate::services::temp_state::WebAppStateTemp;
 use std::rc::Rc;
 use std::{fmt, ops::Not};
 use yew::prelude::*;
@@ -58,7 +58,7 @@ enum PanelSide {
 }
 
 struct MenuItemState {
-    msg_ctx: MessageContext,
+    right_panel_visible: Rc<bool>,
     menu_state: UseStateHandle<Checked>,
     panel_side: PanelSide,
     panel: Panels,
@@ -68,7 +68,7 @@ struct MenuItemState {
 
 impl MenuItemState {
     fn new(
-        msg_ctx: MessageContext,
+        right_panel_visible: Rc<bool>,
         menu_state: UseStateHandle<Checked>,
         panel_side: PanelSide,
         panel: Panels,
@@ -76,7 +76,7 @@ impl MenuItemState {
         dispatch: Dispatch<WebAppState>,
     ) -> Self {
         Self {
-            msg_ctx,
+            right_panel_visible,
             menu_state,
             panel_side,
             panel,
@@ -105,7 +105,7 @@ impl MenuItemState {
             return false;
         }
 
-        if PanelSide::Left == self.panel_side && !self.msg_ctx.right_panel_visible {
+        if PanelSide::Left == self.panel_side && !*self.right_panel_visible {
             return true;
         }
 
@@ -123,92 +123,91 @@ impl MenuItemState {
 /// Nav component
 #[function_component(Nav)]
 pub fn nav() -> Html {
-    let msg_ctx = use_context::<MessageContext>().expect("No message context found!");
     let menu_state_right = use_state_eq(|| Checked::False);
     let menu_state_left = use_state_eq(|| Checked::False);
-    let (state, dispatch) = use_store::<WebAppState>();
-    let right_panel_visible = msg_ctx.right_panel_visible;
+    let (state_local, dispatch_local) = use_store::<WebAppState>();
+    let right_panel_visible = use_selector(|state: &WebAppStateTemp| state.right_panel_visible);
 
     let right_panel_map = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Map,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let right_panel_stats = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Stats,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let right_panel_settings = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Settings,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let right_panel_help = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Help,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let right_panel_messages = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_right.clone(),
         PanelSide::Right,
         Panels::Messages,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
 
     let left_panel_messages = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Messages,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let left_panel_map = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Map,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let left_panel_stats = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Stats,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let left_panel_settings = MenuItemState::new(
-        msg_ctx.clone(),
+        Rc::new(*right_panel_visible),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Settings,
-        state.clone(),
-        dispatch.clone(),
+        state_local.clone(),
+        dispatch_local.clone(),
     );
     let left_panel_help = MenuItemState::new(
-        msg_ctx,
+        Rc::new(*right_panel_visible),
         menu_state_left.clone(),
         PanelSide::Left,
         Panels::Help,
-        state,
-        dispatch,
+        state_local,
+        dispatch_local,
     );
 
     let show_menu_callback_right_left_panel = menu_state_left.clone();
@@ -294,7 +293,7 @@ pub fn nav() -> Html {
         } } else { html! { } } }
         <Search />
         {
-            if right_panel_visible {
+            if *right_panel_visible {
                 html! {
                     <><input id="menu-toggle-right" checked={hidden_menu_right.into()} onclick={mouse_show_menu_right.clone()} type="checkbox" />
                     <label class="menu-button-container" for="menu-toggle-right">
