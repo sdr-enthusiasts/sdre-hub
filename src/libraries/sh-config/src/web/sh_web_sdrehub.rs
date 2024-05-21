@@ -13,7 +13,8 @@ pub struct ShWebSDREHub {
 }
 
 impl ShWebSDREHub {
-    #[must_use] pub const fn new(database_url: String, log_level: String, data_path: String) -> Self {
+    #[must_use]
+    pub const fn new(database_url: String, log_level: String, data_path: String) -> Self {
         Self {
             database_url,
             log_level,

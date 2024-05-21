@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-
 use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
 
@@ -24,7 +23,8 @@ pub struct SDREHub {
 }
 
 impl SDREHub {
-    #[must_use] pub const fn new(
+    #[must_use]
+    pub const fn new(
         database_url: String,
         log_level: String,
         data_path: String,
@@ -38,7 +38,8 @@ impl SDREHub {
         }
     }
 
-    #[must_use] pub fn to_web_sdrehub(&self) -> ShWebSDREHub {
+    #[must_use]
+    pub fn to_web_sdrehub(&self) -> ShWebSDREHub {
         ShWebSDREHub::new(
             self.database_url.clone(),
             self.log_level.clone(),

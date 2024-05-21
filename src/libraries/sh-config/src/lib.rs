@@ -61,7 +61,8 @@ impl ShConfig {
         Self::get_and_validate_config()
     }
 
-    #[must_use] pub fn to_web_config(&self) -> ShWebConfig {
+    #[must_use]
+    pub fn to_web_config(&self) -> ShWebConfig {
         ShWebConfig {
             app: self.app.to_web_sdrehub(),
             enabled_data_sources: self.enabled_data_sources.clone(),
