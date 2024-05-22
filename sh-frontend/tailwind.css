@@ -7,6 +7,8 @@ h2 {
   text-align: center;
 }
 
+/* Navbar styling and animation */
+
 .top-nav {
   display: flex;
   flex-direction: row;
@@ -52,11 +54,17 @@ h2 {
   display: none;
 }
 
+.menu-button:hover,
+.menu-button:hover::before,
+.menu-button:hover::after {
+  background-color: #73a942;
+}
+
 .menu-button,
 .menu-button::before,
 .menu-button::after {
   display: block;
-  background-color: #fff;
+  background-color: #fdfdff;
   position: absolute;
   height: 4px;
   width: 30px;
@@ -156,7 +164,7 @@ h2 {
   padding: 0.5em 0;
   min-width: 200px;
   max-width: 767px;
-  color: white;
+  color: #fdfdff;
   background-color: #222;
   justify-content: left;
 }
@@ -187,4 +195,75 @@ h2 {
 .map {
   height: 100%;
   z-index: 1;
+}
+
+/* Settings (and more?) collapsable styling */
+
+.wrap-collabsible {
+  margin-bottom: 1.2rem 0;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.lbl-toggle {
+  display: block;
+  text-transform: uppercase;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  color: #fdfdff;
+  background-color: #8963ba;
+  background: linear-gradient(to left, #8963ba, #3c2f66);
+  cursor: pointer;
+  border-radius: 1.5rem;
+  transition: all 0.25s ease-out;
+}
+
+.lbl-toggle:hover {
+  color: #73a942;
+}
+
+.lbl-toggle::before {
+  content: " ";
+  display: inline-block;
+
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid currentColor;
+  vertical-align: middle;
+  margin-right: 0.7rem;
+  transform: translateY(-2px);
+
+  transition: transform 0.2s ease-out;
+}
+
+.toggle:checked + .lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+}
+
+.collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.25s ease-in-out;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: 100vh;
+}
+
+.toggle:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.collapsible-content .content-inner {
+  background: #101110;
+  /* FIXME: this should be a gradient that matches the element above */
+  border-bottom: 2px solid #8963ba;
+  border-left: 2px solid #8963ba;
+  border-right: 2px solid #8963ba;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  padding: 0.5rem;
 }

@@ -111,12 +111,25 @@ pub fn live() -> Html {
         }
     });
 
+    // FIXME: This feels garbage and yuck. Ideally we use tailwind classes and dynamically set them?
+    let pad_inside_left = if *left_panel == Panels::Map {
+        "padding: 0px;"
+    } else {
+        "padding: 0.5rem;"
+    };
+
+    let pad_inside_right = if *right_panel == Panels::Map {
+        "padding: 0px;"
+    } else {
+        "padding: 0.5rem;"
+    };
+
     html! {
         <div class="content flex w-full h-full">
-            <div class="content p-2 m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-4" id="live-left">
+            <div class="content m-0 mt-1 md:w-96 h-full w-full rounded-2xl border-[#8963ba] border-4 overflow-hidden" style={pad_inside_left} id="live-left">
                 { left_panel_show.clone() }
              </div>
-            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block" style="overflow:hidden" id="live-right" ref={node}>
+            <div class="content m-0 mt-1 ml-2 h-full w-full rounded-2xl border-[#8963ba] border-4 hidden md:block overflow-hidden" style={pad_inside_right} id="live-right" ref={node}>
                 if visible {
                     { right_panel_status.clone() }
                 }
