@@ -13,3 +13,4 @@ pub mod search;
 pub mod setting_components;
 pub mod settings;
 pub mod stats;
+pub mod input;

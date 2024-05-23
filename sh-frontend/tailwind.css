@@ -267,3 +267,26 @@ input[type="checkbox"] {
   border-bottom-right-radius: 1.5rem;
   padding: 0.5rem;
 }
+
+/* Input Classes */
+
+.button {
+  border: none;
+  padding: 0.3rem;
+  border-radius: 1.5rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #73a942;
+}
+
+.button::hover {
+  cursor: pointer;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  /* justify-content: center; */
+  height: 100%;
+}

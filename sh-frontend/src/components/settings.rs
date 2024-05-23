@@ -14,10 +14,12 @@ use yew::prelude::*;
 pub fn settings() -> Html {
     html! {
         <>
-            <ShAppConfig />
-            <ShEnabledDataSourcesConfig />
-            <ShDataSourcesConfig />
-            <ShMapConfig />
+            <div class="settings">
+                <ShAppConfig />
+                <ShEnabledDataSourcesConfig />
+                <ShDataSourcesConfig />
+                <ShMapConfig />
+            </div>
         </>
     }
 }
