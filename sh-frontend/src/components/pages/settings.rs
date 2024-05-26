@@ -14,7 +14,7 @@ use yew::prelude::*;
 pub fn settings() -> Html {
     html! {
         <>
-            <div class="settings">
+            <div class="settings h-full w-full max-h-full max-w-full overflow-y-scroll">
                 <ShAppConfig />
                 <ShEnabledDataSourcesConfig />
                 <ShDataSourcesConfig />

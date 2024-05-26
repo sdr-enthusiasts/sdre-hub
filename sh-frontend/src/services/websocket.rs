@@ -81,6 +81,13 @@ impl Component for ShWebSocketComponent {
                         .as_mut()
                         .unwrap()
                         .send(serde_json::to_string(&serialized_data).unwrap());
+
+                    if self.fetching == false {
+                        self.fetching = true;
+                        self.dispatch.reduce_mut(|state| {
+                            state.websocket_connected = true;
+                        });
+                    }
                     false
                 }
                 WsAction::Disconnect => {
@@ -88,13 +95,25 @@ impl Component for ShWebSocketComponent {
                     log::info!(
                         "WebSocket connection disconnected. Why? This should be unreachable"
                     );
+                    self.fetching = false;
+                    self.dispatch.reduce_mut(|state| {
+                        state.config = None;
+                        state.websocket_connected = false;
+                    });
+
                     false
                 }
                 WsAction::Lost => {
                     self.ws = None;
                     log::error!("WebSocket connection lost. Reconnecting");
+                    self.fetching = false;
                     // reconnect
                     ctx.link().send_message(WsAction::Connect);
+                    self.dispatch.reduce_mut(|state| {
+                        state.config = None;
+                        state.websocket_connected = false;
+                    });
+
                     false
                 }
             },

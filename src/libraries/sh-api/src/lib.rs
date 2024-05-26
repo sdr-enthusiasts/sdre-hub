@@ -175,6 +175,24 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                         debug!("Sending config message: {config_serialized}");
                         socket.send(Message::Text(config_serialized)).await.unwrap();
                     }
+                    UserMessageTypes::UserUpdateAppConfig => {
+                        // check the data
+                        if message.data == MessageData::NoData {
+                            error!("Received UserUpdateAppConfig message without data");
+                            continue;
+                        }
+
+                        debug!("Received UserUpdateAppConfig message with data");
+                        let data = match message.data {
+                            MessageData::ShAppConfig(data) => data,
+                            _ => {
+                                error!("Received UserUpdateAppConfig message with incorrect data type");
+                                continue;
+                            }
+                        };
+
+                        debug!("Received app config: {:?}", data);
+                    }
                 }
             }
             Message::Binary(_) => {

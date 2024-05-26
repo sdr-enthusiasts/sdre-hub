@@ -7,6 +7,15 @@ h2 {
   text-align: center;
 }
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
 /* Navbar styling and animation */
 
 .top-nav {
@@ -246,6 +255,7 @@ input[type="checkbox"] {
   max-height: 0px;
   overflow: hidden;
   transition: max-height 0.25s ease-in-out;
+  flex-shrink: 0;
 }
 
 .toggle:checked + .lbl-toggle + .collapsible-content {
@@ -289,4 +299,66 @@ input[type="checkbox"] {
   align-items: left;
   /* justify-content: center; */
   height: 100%;
+}
+
+/* Settings layouts */
+
+.settings-item {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  /* justify-content: center; */
+  height: 100%;
+  width: 100%;
+  padding-bottom: 0.25rem;
+  flex-shrink: 0;
+}
+
+.settings-item > *:first-child {
+  width: 200px;
+}
+
+.settings-item > *:nth-child(2) {
+  width: 100%;
+}
+
+input[type="text"].text-black {
+  width: 100%;
+  padding-left: 0.25rem;
+}
+
+input:read-only,
+select:disabled {
+  background: grey;
+}
+
+select.text-black {
+  width: 100%;
+  padding-left: 0.25rem;
+}
+
+.settings-item > *:only-child {
+  width: 100%;
+}
+
+.settings-item.buttons > *:first-child {
+  width: 250px;
+}
+
+@media (max-width: 767px) {
+  .settings-item {
+    flex-direction: column;
+  }
+
+  .settings-item > *:first-child {
+    width: 100%;
+  }
+
+  .settings-item > *:nth-child(2) {
+    width: 100%;
+  }
+
+  .settings-item > *:only-child {
+    width: 100%;
+  }
 }

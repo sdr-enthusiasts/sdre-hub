@@ -10,6 +10,7 @@ use yewdux::prelude::*;
 pub struct WebAppStateTemp {
     pub right_panel_visible: bool,
     pub config: Option<ShWebConfig>,
+    pub websocket_connected: bool,
 }
 
 impl Default for WebAppStateTemp {
@@ -17,6 +18,7 @@ impl Default for WebAppStateTemp {
         Self {
             right_panel_visible: true,
             config: None,
+            websocket_connected: false,
         }
     }
 }

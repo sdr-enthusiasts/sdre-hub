@@ -4,8 +4,8 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::components::{
-    control::Cities,
-    map::{City, Point, ShMapComponent},
+    map_components::control::Cities,
+    pages::adsb::{City, Point, ShMapComponent},
 };
 use yew::prelude::*;
 

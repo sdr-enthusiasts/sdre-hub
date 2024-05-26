@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use super::map::City;
+use crate::components::pages::adsb::City;
 use yew::{html::ImplicitClone, prelude::*};
 
 pub enum Msg {

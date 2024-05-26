@@ -3,14 +3,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-pub mod acars_messages;
-pub mod control;
-pub mod help;
-pub mod map;
-pub mod map_display;
-pub mod nav;
-pub mod search;
-pub mod setting_components;
-pub mod settings;
-pub mod stats;
+pub mod alerts;
+pub mod footer_components;
 pub mod input;
+pub mod layout_components;
+pub mod map_components;
+pub mod nav_components;
+pub mod pages;
+pub mod setting_components;
