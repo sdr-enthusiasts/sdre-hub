@@ -28,7 +28,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
 
     log::debug!("InputField: {:?}", input_value);
     html! {
-        <label for="cautious-input">
+        <label for={name.clone()}>
                 { label }
                 <input
                     /* onchange={on_cautious_change} */
