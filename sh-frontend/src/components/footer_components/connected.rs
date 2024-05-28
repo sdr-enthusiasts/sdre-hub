@@ -12,11 +12,11 @@ pub fn connected() -> Html {
     let connected = use_selector(|state: &WebAppStateTemp| state.websocket_connected.clone());
 
     html! {
-        <div class="m-2"> {
+        <div> {
             if *connected {
-                html!{<span class="text-[#73a942]">{"Connected"}</span>}
+                html!{<span class="text-sdre-green-lighter">{"Connected"}</span>}
             } else {
-                html!{<span class="text-red-600">{"Disconnected"}</span>}
+                html!{<span class="text-sdre-red-darker">{"Disconnected"}</span>}
             }
          }
          </div>

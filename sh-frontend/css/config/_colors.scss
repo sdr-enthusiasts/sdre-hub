@@ -1,0 +1,50 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+$background-color: #101110;
+$text-color: #fdfdff;
+$light-purple: #8963ba;
+$dark-purple: #3c2f66;
+$grey: #808080;
+$sdre-green: #73a942;
+$sdre-red: #ef4444;
+$sdre-yellow: #f6a417;
+
+$menu-flyout-background-color: #ffffff00;
+$menu-flyout-border-color: #333333;
+$menu-flyout-border-bottom: #444444;
+$menu-li-background-color: #222222;
+
+// create a map of colors
+
+$colors: (
+  "background-color": $background-color,
+  "text-color": $text-color,
+  "light-purple": $light-purple,
+  "dark-purple": $dark-purple,
+  "grey": $grey,
+  "sdre-green": $sdre-green,
+  "sdre-red": $sdre-red,
+  "menu-flyout-background-color": $menu-flyout-background-color,
+  "menu-flyout-border-color": $menu-flyout-border-color,
+  "menu-flyout-border-bottom": $menu-flyout-border-bottom,
+  "menu-li-background-color": $menu-li-background-color,
+);
+
+@each $name, $value in $colors {
+  .text-#{$name} {
+    color: $value;
+  }
+
+  // now create 50% darker and 50% lighter versions of the color
+
+  .text-#{$name}-darker {
+    color: darken($value, 10%);
+  }
+
+  .text-#{$name}-lighter {
+    color: lighten($value, 10%);
+  }
+}

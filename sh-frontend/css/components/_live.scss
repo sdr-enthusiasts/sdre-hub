@@ -1,0 +1,40 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+@use "../config/colors";
+@use "../config/config";
+@use "../mixins/border" as b;
+
+@mixin live_panel($width: 100%, $margin-left: 0rem) {
+  margin: 0px;
+  margin-top: config.$normal-margin;
+  margin-left: $margin-left;
+  height: 100%;
+  width: $width;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  @include b.border;
+  display: block;
+}
+
+.live-panel-left {
+  @include live_panel(24rem);
+
+  @media (max-width: config.$transition-to-mobile) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.live-panel-right {
+  @include live_panel(100%, config.$double-margin);
+
+  @media (max-width: config.$transition-to-mobile) {
+    & {
+      display: none;
+    }
+  }
+}

@@ -183,12 +183,10 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                         }
 
                         debug!("Received UserUpdateAppConfig message with data");
-                        let data = match message.data {
-                            MessageData::ShAppConfig(data) => data,
-                            _ => {
-                                error!("Received UserUpdateAppConfig message with incorrect data type");
-                                continue;
-                            }
+                        // FIXME: This needs to be a match once messagedata has more shit in it
+                        let MessageData::ShAppConfig(data) = message.data else {
+                            error!("Received UserUpdateAppConfig message with incorrect data type");
+                            continue;
                         };
 
                         debug!("Received app config: {:?}", data);

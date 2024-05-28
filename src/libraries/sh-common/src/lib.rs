@@ -18,7 +18,10 @@ use std::sync::{Arc, Mutex};
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use sh_config::{web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub}, ShConfig};
+use sh_config::{
+    web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub},
+    ShConfig,
+};
 
 #[async_trait]
 pub trait ShDataUser {
@@ -36,7 +39,7 @@ pub type ShDataUserList = Vec<Box<dyn ShDataUser + Send + Sync>>;
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UserMessageTypes {
     UserRequestConfig,
-    UserUpdateAppConfig
+    UserUpdateAppConfig,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

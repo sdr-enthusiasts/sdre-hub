@@ -1,0 +1,27 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+@use "../config/colors";
+@use "../config/config";
+
+.search-bar {
+  width: 66%;
+  text-align: center;
+  input[type="text"] {
+    width: 100%;
+    color: colors.$background-color;
+    padding: config.$double-padding;
+    border-radius: config.$border-radius;
+    &:focus {
+      outline: config.$border-size solid colors.$sdre-green;
+    }
+  }
+
+  @media (max-width: config.$transition-to-mobile) {
+    width: 100%;
+    margin-left: config.$double-margin;
+    padding-left: config.$double-padding;
+  }
+}

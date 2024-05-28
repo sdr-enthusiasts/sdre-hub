@@ -126,10 +126,10 @@ pub fn live() -> Html {
 
     html! {
         <>
-            <div class="content m-0 mt-1 md:w-96 h-full w-full max-h-full rounded-2xl border-[#8963ba] border-4 overflow-hidden" style={pad_inside_left} id="live-left">
+            <div class="live-panel-left" style={pad_inside_left} id="live-left">
                 { left_panel_show.clone() }
              </div>
-            <div class="content m-0 mt-1 ml-2 h-full w-full max-h-full rounded-2xl border-[#8963ba] border-4 hidden md:block overflow-hidden" style={pad_inside_right} id="live-right" ref={node}>
+            <div class="live-panel-right" style={pad_inside_right} id="live-right" ref={node}>
                 if visible {
                     { right_panel_status.clone() }
                 }

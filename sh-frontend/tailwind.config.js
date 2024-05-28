@@ -1,7 +1,7 @@
 module.exports = {
   mode: "jit",
   content: {
-    files: ["src/**/*.rs", "**/*.html"],
+    files: ["src/**/*.rs", "**/*.html", "**/*.scss"],
   },
   darkMode: "class", // 'media' or 'class'
   theme: {
