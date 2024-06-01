@@ -16,4 +16,4 @@ keywords.workspace = true
 [dependencies]
 sdrehub = { path = "../../libraries/sdrehub" }
 sh-config = { path = "../../libraries/sh-config" }
-tokio = { version = "1.37.0", features = ["full", "tracing"] }
+tokio = { version = "1.38.0", features = ["full", "tracing"] }
