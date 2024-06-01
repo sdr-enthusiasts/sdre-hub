@@ -17,6 +17,6 @@ keywords.workspace = true
 
 [dependencies]
 async-trait = "0.1.80"
-serde = { version = "1.0.202", features = ["derive"] }
+serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
 sh-config = { path = "../sh-config" }
