@@ -32,6 +32,7 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
   - [x] GitHub CI
   - [ ] FIXME/TODO Cleanup
   - [ ] Code documentation
+  - [ ] Unit Tests
 - [ ] Alpha 2
   - [ ] Connect to data providers
     - [ ] ADSB
@@ -43,6 +44,7 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
   - [ ] Display data on the web interface
   - [ ] FIXME/TODO Cleanup
   - [ ] Code documentation
+  - [ ] Unit Tests
 - [ ] Alpha 3
   - [ ] Implement database storage
     - [ ] RRD style data storage for relevant stats
@@ -50,10 +52,12 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
     - [ ] General stats
   - [ ] FIXME/TODO Cleanup
   - [ ] Code documentation
+  - [ ] Unit Tests
 - [ ] Beta 1
   - [ ] Focus on interface; clean it up, mobile functionality, etc
   - [ ] FIXME/TODO Cleanup
   - [ ] Code documentation
+  - [ ] Unit Tests
 
 ## Thank you
 
@@ -63,7 +67,7 @@ ACARS Hub was a labor of love driven by the boundless enthusiasm of everyone tha
 
 ### Why Rust?
 
-I chose Rust mostly because I wanted to. The other option was to stick with python and TypeScript/NodeJS, which would have been signifiantly easier. The code would have been easier to write, the support of npm packages to do tasks is much bigger, and lastly the ability to search the web and find answers to questions is so much easier.
+I chose Rust mostly because I wanted to. The other option was to stick with python and TypeScript/NodeJS, which would have been much easier. The code would have been easier to write, the support of npm packages to do tasks is much bigger, and lastly the ability to search the web and find answers to questions is so much easier.
 
 That said, one of the main goals of this project was to be as performant as possible, as well as a unified code base that could generate both a web application and a desktop application. Rust makes this pretty easy.
 

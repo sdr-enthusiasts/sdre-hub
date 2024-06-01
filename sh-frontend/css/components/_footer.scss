@@ -1,0 +1,21 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+@use "../config/colors";
+@use "../config/config";
+@use "../mixins/border" as b;
+
+.footer {
+  margin-top: config.$normal-margin;
+  padding: 0rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  @include b.border;
+
+  & > div {
+    margin: config.$double-margin;
+  }
+}

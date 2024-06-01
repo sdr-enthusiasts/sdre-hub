@@ -1,0 +1,156 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+@use "../config/colors";
+@use "../config/config";
+@use "../mixins/border" as b;
+
+@mixin settings_small() {
+  flex-direction: column;
+
+  & > *:first-child {
+    width: 100%;
+  }
+
+  & > *:nth-child(2) {
+    width: 100%;
+  }
+
+  & > *:only-child {
+    width: 100%;
+  }
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  height: 100%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .toggle {
+    &:checked + .lbl-toggle::before {
+      transform: rotate(90deg) translateX(-3px);
+    }
+
+    &:checked + .lbl-toggle + .collapsible-content {
+      max-height: 100%;
+    }
+
+    &:checked + .lbl-toggle {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .lbl-toggle {
+    display: block;
+    text-transform: uppercase;
+    padding: config.$double-padding;
+    margin-top: config.$normal-margin;
+    color: colors.$text-color;
+    background-color: colors.$light-purple;
+    background: linear-gradient(
+      to left,
+      colors.$light-purple,
+      colors.$dark-purple
+    );
+    cursor: pointer;
+    border-radius: config.$border-radius;
+    transition: all 0.25s ease-out;
+  }
+
+  .lbl-toggle:hover {
+    color: colors.$sdre-green;
+  }
+
+  .lbl-toggle::before {
+    content: " ";
+    display: inline-block;
+
+    border-top: config.$border-size solid transparent;
+    border-bottom: config.$border-size solid transparent;
+    border-left: config.$border-size solid currentColor;
+    vertical-align: middle;
+    margin-right: config.$double-margin;
+    transform: translateY(-2px);
+
+    transition: transform 0.2s ease-out;
+  }
+
+  .collapsible-content {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.25s ease-in-out;
+    flex-shrink: 0;
+
+    .content-inner {
+      background: colors.$background-color;
+      /* FIXME: this should be a gradient that matches the element above */
+      @include b.border-inner-content;
+      padding: config.$double-padding;
+
+      form {
+        input[type="text"].text-black {
+          width: 100%;
+          padding-left: config.$normal-padding;
+        }
+
+        input:read-only,
+        select:disabled {
+          background: colors.$grey;
+        }
+
+        select.text-black {
+          width: 100%;
+          padding-left: config.$normal-padding;
+        }
+
+        .settings-item {
+          display: flex;
+          flex-direction: row;
+          align-items: left;
+          height: 100%;
+          width: 100%;
+          padding-bottom: config.$normal-padding;
+          flex-shrink: 0;
+
+          @media (max-width: config.$transition-to-mobile) {
+            @include settings_small;
+          }
+
+          .live-panel-left > & {
+            @include settings_small;
+          }
+
+          &.buttons {
+            & > *:first-child {
+              width: 15.625rem;
+            }
+          }
+
+          & > *:first-child {
+            width: 12.5rem;
+          }
+
+          & > *:nth-child(2) {
+            width: 100%;
+          }
+
+          & > *:only-child {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

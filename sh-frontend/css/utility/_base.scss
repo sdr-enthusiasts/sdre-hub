@@ -1,0 +1,26 @@
+// Copyright (C) 2024 Fred Clausen
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+@use "../config/colors";
+@use "../config/config";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  color: colors.$text-color;
+  background-color: colors.$background-color;
+  font-size: config.$text-size;
+}
+
+// to make the map fill the screen
+
+.map {
+  height: 100%;
+  z-index: 1;
+}

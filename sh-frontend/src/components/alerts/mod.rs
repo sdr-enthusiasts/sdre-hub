@@ -3,4 +3,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-pub mod webapp;
+// https://github.com/next-rs/yew-alert
+
+pub mod alert_error;

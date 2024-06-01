@@ -3,14 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use yew::prelude::*;
-
-/// Home page
-#[function_component(ShSettings)]
-pub fn settings() -> Html {
-    html! {
-        {
-            "Settings"
-        }
-    }
-}
+pub mod acars_messages;
+pub mod adsb;
+pub mod help;
+pub mod settings;
+pub mod stats;

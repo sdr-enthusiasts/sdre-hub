@@ -3,8 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use super::search::Search;
 use crate::common::panels::Panels;
+use crate::components::nav_components::search::Search;
 use crate::services::saved_state::WebAppState;
 use crate::services::temp_state::WebAppStateTemp;
 use std::rc::Rc;
@@ -234,7 +234,7 @@ pub fn nav() -> Html {
     let hidden_menu_left = { *menu_state_left };
 
     html! {
-      <section class="top-nav rounded-3xl">
+      <section class="top-nav">
         <input id="menu-toggle-left" checked={hidden_menu_left.into()} onclick={mouse_show_menu_left.clone()} type="checkbox" />
         <label class="menu-button-container" for="menu-toggle-left">
             <div class="menu-button" title="Left Panel"></div>
@@ -242,7 +242,7 @@ pub fn nav() -> Html {
         {
             if hidden_menu_left == Checked::True {
                 html! {
-                    <ul class="menu text-[#101110] menu-left">
+                    <ul class="menu menu-left">
                     {
                         if left_panel_messages.show() {
                             html! {
@@ -302,7 +302,7 @@ pub fn nav() -> Html {
                         {
                         if hidden_menu_right == Checked::True {
                             html! {
-                                <ul class="menu text-[#101110] menu-right">
+                                <ul class="menu menu-right">
                                     {
                                         if right_panel_messages.show() {
                                             html! {

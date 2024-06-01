@@ -1,0 +1,31 @@
+@use "../config/config";
+@use "../config/colors";
+
+@mixin border(
+  $width: config.$border-size,
+  $style: solid,
+  $color: colors.$light-purple,
+  $border-radius: config.$border-radius
+) {
+  border: $width $style $color;
+  border-radius: $border-radius;
+}
+
+// border-bottom: 2px solid colors.$light-purple;
+// border-left: 2px solid colors.$light-purple;
+// border-right: 2px solid colors.$light-purple;
+// border-bottom-left-radius: 1.5rem;
+// border-bottom-right-radius: 1.5rem;
+
+@mixin border-inner-content(
+  $width: config.$border-size-small,
+  $style: solid,
+  $color: colors.$light-purple,
+  $border-radius: config.$border-radius
+) {
+  border-bottom: $width $style $color;
+  border-left: $width $style $color;
+  border-right: $width $style $color;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}

@@ -1034,9 +1034,9 @@ dependencies = [
 
 [[package]]
 name = "leaflet"
-version = "0.4.0"
+version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f1ca4f4ecc791314ac38d50a5af6dc6506977aa7c7f0231b1bfd66989a9c4be3"
+checksum = "365807eb9e73da9377d2e313e5863af3d64e02b770ec31972d76feda3a271d17"
 dependencies = [
  "js-sys",
  "paste",
@@ -1385,9 +1385,9 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.202"
+version = "1.0.203"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "226b61a0d411b2ba5ff6d7f73a476ac4f8bb900373459cd00fab8512828ba395"
+checksum = "7253ab4de971e72fb7be983802300c30b5a7f0c2e56fab8abfc6a214307c0094"
 dependencies = [
  "serde_derive",
 ]
@@ -1427,9 +1427,9 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.202"
+version = "1.0.203"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6048858004bcff69094cd972ed40a32500f153bd3be9f716b2eed2e8217c4838"
+checksum = "500cbc0ebeb6f46627f50f3f5811ccf6bf00643be300b4c3eabc0ef55dc5b5ba"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1514,6 +1514,7 @@ dependencies = [
  "wasm-logger",
  "web-sys",
  "yew",
+ "yew-alert",
  "yew-hooks",
  "yew-router",
  "yew-websocket",
@@ -2071,12 +2072,23 @@ dependencies = [
 ]
 
 [[package]]
-name = "yew-hooks"
-version = "0.3.1"
+name = "yew-alert"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b6f2fe60864adbcc36f1d51f748a186f56f99857c55521d4c9ec1c6e4a0d0a9"
+checksum = "fc4e321496da4fe631ad3985b2d89e35e1cb4a9ce276bbd89f64721ee630b078"
 dependencies = [
- "gloo 0.10.0",
+ "gloo 0.11.0",
+ "web-sys",
+ "yew",
+]
+
+[[package]]
+name = "yew-hooks"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cbe7d30ef9d9afb9be38b1b310c42d59963c6d1c950f0e0435b78b346b4b24bf"
+dependencies = [
+ "gloo 0.11.0",
  "js-sys",
  "log",
  "serde",
