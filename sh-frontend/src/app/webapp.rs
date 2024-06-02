@@ -164,8 +164,31 @@ impl Component for App {
                                 }
                             });
                     }
-                    _ => {
-                        log::error!("Received unknown message: {:?}", data_deserialized);
+
+                    ServerMessageTypes::ServerWriteConfigFailure => {
+                        match data_deserialized.get_data() {
+                            MessageData::ShConfigFailure(data) => {
+                                log::error!("Failed to write config: {}", data);
+                            }
+                            _ => {
+                                log::error!("Invalid response type");
+                            }
+                        }
+                        log::error!("Failed to write config");
+                    }
+
+                    ServerMessageTypes::ServerWriteConfigSuccess => {
+                        // see if there is any data
+                        match data_deserialized.get_data() {
+                            MessageData::ShConfigSuccess(data) => {
+                                log::info!("Config written successfully: {}", data);
+                            }
+                            MessageData::ShConfigFailure(_) => {
+                                log::error!("Invalid response type");
+                            }
+                            _ => ()
+                        }
+                        log::info!("Config written successfully");
                     }
                 }
 

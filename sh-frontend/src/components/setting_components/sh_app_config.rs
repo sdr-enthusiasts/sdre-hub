@@ -60,6 +60,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
     let local_props = props.clone();
 
     let onsubmit = {
+        // FIXME: this is cloned, which means that after a save the new state is not reflected in the closure
         let config = config.clone();
         let database_url_node = database_url_node.clone();
         let log_level_node = log_level_node.clone();

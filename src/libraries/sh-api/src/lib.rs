@@ -12,7 +12,9 @@
     clippy::all
 )]
 
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+use sh_common_server::ShDataUser;
+use tokio::sync::Mutex;
 
 use async_trait::async_trait;
 use axum::{
@@ -26,7 +28,7 @@ use axum::{
 };
 
 use sh_common::{
-    MessageData, ServerMessageTypes, ServerType, ServerWssMessage, ShDataUser, UserMessageTypes,
+    MessageData, ServerMessageTypes, ServerType, ServerWssMessage, UserMessageTypes,
     UserWssMessage,
 };
 use sh_config::ShConfig;
@@ -168,7 +170,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                         let response_type = ServerMessageTypes::ServerResponseConfig;
                         // get the server config
-                        let config = state.config.lock().unwrap().clone();
+                        let config = state.config.lock().await;
                         let data = MessageData::ShConfig(config.to_web_config());
                         let message = ServerWssMessage::new(response_type, data);
                         let config_serialized = serde_json::to_string(&message).unwrap();
@@ -193,16 +195,45 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                         // check and see if the log level has changed
 
-                        let mut config = state.config.lock().unwrap().clone();
+                        let mut config = state.config.lock().await;
 
-                        if config.app.log_level != data.log_level {
+                        if *config.app.log_level != data.log_level {
                             debug!("New log level: {}", data.log_level);
 
-                            config.app.log_level = data.log_level.clone();
-                            config.write_config();
+                            let new_log_level = data.log_level.clone();
+
+                            config.app.log_level = new_log_level;
+                            match config.write_config() {
+                                Ok(()) => {
+                                    // tell the user that the config write was successful and they need to restart
+                                    // because the log level changed
+
+                                    let response_type = ServerMessageTypes::ServerWriteConfigSuccess;
+                                    let data = MessageData::ShConfigSuccess("Log level has been updated. Please restart the server for the change to take affect".to_string());
+
+                                    let message = ServerWssMessage::new(response_type, data);
+
+                                    let config = serde_json::to_string(&message).unwrap();
+
+                                    socket.send(Message::Text(config)).await.unwrap();
+                                }
+
+                                Err(e) => {
+                                    // tell the user that the config write failed
+                                    let response_type = ServerMessageTypes::ServerWriteConfigFailure;
+                                    let data = MessageData::ShConfigFailure(format!("Error writing config file: {e}"));
+
+                                    let message = ServerWssMessage::new(response_type, data);
+
+                                    let config = serde_json::to_string(&message).unwrap();
+
+                                    socket.send(Message::Text(config)).await.unwrap();
+                                }
+                            }
                         }
 
                         debug!("Received app config: {:?}", data);
+                        debug!("Current app state: {:?}", config);
                     }
                 }
             }

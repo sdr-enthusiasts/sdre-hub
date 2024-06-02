@@ -164,18 +164,17 @@ impl ShConfig {
         toml::to_string(&self).unwrap()
     }
 
-    pub fn write_config(&self) {
+    pub fn write_config(&self) -> Result<(), std::io::Error> {
         let file_path = Self::get_config_file_path();
         let config = self.get_config_as_toml_string();
         println!("Writing config file to: {file_path}");
         println!("Config: {config}");
 
         match std::fs::write(file_path, config) {
-            Ok(()) => (),
+            Ok(()) => Ok(()),
             Err(e) => {
                 println!("Error writing config file: {e}");
-                println!("Exiting");
-                std::process::exit(1);
+                Err(e)
             }
         }
     }

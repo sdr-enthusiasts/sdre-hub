@@ -6,6 +6,7 @@ members = [
     "src/libraries/sh-api",
     "src/libraries/sh-config",
     "src/libraries/sh-common",
+    "src/libraries/sh-common-server",
 ]
 exclude = ["sh-frontend"]
 

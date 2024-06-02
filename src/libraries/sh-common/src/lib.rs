@@ -14,27 +14,12 @@
 
 // This is the main loop of the SDRE Hub.
 
-use std::sync::{Arc, Mutex};
-
-use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use sh_config::{
     web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub},
     ShConfig,
 };
 
-#[async_trait]
-pub trait ShDataUser {
-    async fn start(
-        &self,
-        data: Option<Arc<Mutex<ShConfig>>>,
-    ) -> Result<(), Box<dyn std::error::Error>>;
-    fn stop(&self);
-    fn restart(&self);
-    fn get_server_type(&self) -> ServerType;
-}
-
-pub type ShDataUserList = Vec<Box<dyn ShDataUser + Send + Sync>>;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UserMessageTypes {
@@ -45,12 +30,16 @@ pub enum UserMessageTypes {
 #[derive(Serialize, Deserialize, Debug)]
 pub enum ServerMessageTypes {
     ServerResponseConfig,
+    ServerWriteConfigSuccess,
+    ServerWriteConfigFailure,
 }
 
 #[derive(Deserialize, Serialize, PartialEq, Debug)]
 pub enum MessageData {
     ShConfig(ShWebConfig),
     ShAppConfig(ShWebSDREHub),
+    ShConfigSuccess(String),
+    ShConfigFailure(String),
     NoData,
 }
 

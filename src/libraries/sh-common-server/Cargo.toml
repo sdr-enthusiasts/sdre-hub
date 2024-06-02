@@ -1,5 +1,5 @@
 [package]
-name = "sdrehub"
+name = "sh-common-server"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -16,9 +16,7 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = { version = "1.38.0", features = ["full", "tracing"] }
-log = "0.4.21"
+async-trait = "0.1.80"
 sh-config = { path = "../sh-config" }
-sh-api = { path = "../sh-api" }
 sh-common = { path = "../sh-common" }
-sh-common-server = { path = "../sh-common-server" }
+tokio = { version = "1.38.0", features = ["full"] }

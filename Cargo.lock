@@ -3423,6 +3423,7 @@ dependencies = [
  "log",
  "sh-api",
  "sh-common",
+ "sh-common-server",
  "sh-config",
  "tokio",
 ]
@@ -3636,6 +3637,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sh-common",
+ "sh-common-server",
  "sh-config",
  "tokio",
 ]
@@ -3644,10 +3646,19 @@ dependencies = [
 name = "sh-common"
 version = "4.0.0-alpha.1"
 dependencies = [
- "async-trait",
  "serde",
  "serde_json",
  "sh-config",
+]
+
+[[package]]
+name = "sh-common-server"
+version = "4.0.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "sh-common",
+ "sh-config",
+ "tokio",
 ]
 
 [[package]]

@@ -25,10 +25,11 @@
 #[macro_use]
 extern crate log;
 
-use std::sync::{Arc, Mutex};
-
+use std::sync::Arc;
+use tokio::sync::Mutex;
 use sh_api::ShAPIServer;
-use sh_common::{ServerType, ShDataUserList};
+use sh_common::ServerType;
+use sh_common_server::ShDataUserList;
 use sh_config::ShConfig;
 use tokio::task::JoinSet;
 
@@ -51,24 +52,21 @@ impl SdreHub {
     pub async fn run(mut self) -> Result<(), Box<dyn std::error::Error>> {
         // get the config lock
         let config_lock = Arc::clone(&self.config);
-        let config = match config_lock.lock() {
-            Ok(c) => c.clone(),
-            Err(e) => {
-                error!("Error getting config lock: {e}");
-                return Err(Box::new(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "Error getting config lock",
-                )));
-            }
-        };
+        let config = config_lock.lock().await;
 
         // init logging and stuff
         config.enable_logging();
-        config.write_config();
+        match config.write_config() {
+            Ok(_) => {}
+            Err(e) => {
+                error!("Error writing config: {e}");
+                std::process::exit(1);
+            }
+        }
         config.show_config();
 
         // release the lock
-        drop(config_lock);
+        drop(config);
 
         // Start the web server
 
