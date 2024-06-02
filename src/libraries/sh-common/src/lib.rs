@@ -20,7 +20,6 @@ use sh_config::{
     ShConfig,
 };
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UserMessageTypes {
     UserRequestConfig,

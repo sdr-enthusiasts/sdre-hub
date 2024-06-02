@@ -12,8 +12,8 @@
     clippy::all
 )]
 
-use std::sync::Arc;
 use sh_common_server::ShDataUser;
+use std::sync::Arc;
 use tokio::sync::Mutex;
 
 use async_trait::async_trait;
@@ -28,8 +28,7 @@ use axum::{
 };
 
 use sh_common::{
-    MessageData, ServerMessageTypes, ServerType, ServerWssMessage, UserMessageTypes,
-    UserWssMessage,
+    MessageData, ServerMessageTypes, ServerType, ServerWssMessage, UserMessageTypes, UserWssMessage,
 };
 use sh_config::ShConfig;
 #[macro_use]
@@ -208,7 +207,8 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                                     // tell the user that the config write was successful and they need to restart
                                     // because the log level changed
 
-                                    let response_type = ServerMessageTypes::ServerWriteConfigSuccess;
+                                    let response_type =
+                                        ServerMessageTypes::ServerWriteConfigSuccess;
                                     let data = MessageData::ShConfigSuccess("Log level has been updated. Please restart the server for the change to take affect".to_string());
 
                                     let message = ServerWssMessage::new(response_type, data);
@@ -220,8 +220,11 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                                 Err(e) => {
                                     // tell the user that the config write failed
-                                    let response_type = ServerMessageTypes::ServerWriteConfigFailure;
-                                    let data = MessageData::ShConfigFailure(format!("Error writing config file: {e}"));
+                                    let response_type =
+                                        ServerMessageTypes::ServerWriteConfigFailure;
+                                    let data = MessageData::ShConfigFailure(format!(
+                                        "Error writing config file: {e}"
+                                    ));
 
                                     let message = ServerWssMessage::new(response_type, data);
 

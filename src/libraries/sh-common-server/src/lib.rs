@@ -3,10 +3,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use std::sync::Arc;
 use async_trait::async_trait;
 use sh_common::ServerType;
 use sh_config::ShConfig;
+use std::sync::Arc;
 use tokio::sync::Mutex;
 
 #[async_trait]

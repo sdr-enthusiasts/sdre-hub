@@ -25,12 +25,12 @@
 #[macro_use]
 extern crate log;
 
-use std::sync::Arc;
-use tokio::sync::Mutex;
 use sh_api::ShAPIServer;
 use sh_common::ServerType;
 use sh_common_server::ShDataUserList;
 use sh_config::ShConfig;
+use std::sync::Arc;
+use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 
 pub struct SdreHub {
