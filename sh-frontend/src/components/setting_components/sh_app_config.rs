@@ -40,7 +40,6 @@ impl From<String> for ButtonAction {
 pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
     let config = use_selector(|state: &WebAppStateTemp| state.config.clone());
     let (state, dispatch) = use_store::<ConfigAppState>();
-    let (temp_state, temp_dispatch) = use_store::<WebAppStateTemp>();
     let show_alert = use_state(|| false);
 
     let is_visible = use_state(|| state.is_visible);
@@ -60,7 +59,6 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
     let local_props = props.clone();
 
     let onsubmit = {
-        // FIXME: this is cloned, which means that after a save the new state is not reflected in the closure
         let config = config.clone();
         let database_url_node = database_url_node.clone();
         let log_level_node = log_level_node.clone();
@@ -90,6 +88,10 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                         let log_level_original = app.log_level.clone();
                         let data_path_original = app.data_path.clone();
 
+                        log::debug!("Original Database URL: {}", database_url_original);
+                        log::debug!("Original Log Level: {}", log_level_original);
+                        log::debug!("Original Data Path: {}", data_path_original);
+
                         if database_url != database_url_original
                             || log_level != log_level_original
                             || data_path != data_path_original
@@ -109,20 +111,10 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
 
                             // send a message using the props callback
                             local_props.send_message.emit(message);
+                        } else {
+                            log::debug!("Values have not changed");
                         }
                     }
-
-                    // only do anything if the values have changed
-
-                    // if database_url != database_url_original || log_level != log_level_original || data_path != data_path_original {
-                    //     log::debug!("Values have changed");
-                    //     // save the new values
-
-                    //     let new_config = config.clone().unwrap();
-                    //     new_config.app.database_url = database_url;
-                    //     new_config.app.log_level = log_level;
-                    //     new_config.app.data_path = data_path;
-                    // }
                 }
                 ButtonAction::Reset => {
                     // set all the values back to the original values

@@ -175,6 +175,15 @@ impl Component for App {
                             }
                         }
                         log::error!("Failed to write config");
+
+                        // lets regrab the config
+
+                        let initial_message = UserWssMessage::new(
+                            UserMessageTypes::UserRequestConfig,
+                            MessageData::NoData,
+                        );
+
+                        ctx.link().send_message(WsAction::SendData(initial_message));
                     }
 
                     ServerMessageTypes::ServerWriteConfigSuccess => {
@@ -189,6 +198,15 @@ impl Component for App {
                             _ => (),
                         }
                         log::info!("Config written successfully");
+
+                        // lets regrab the config
+
+                        let initial_message = UserWssMessage::new(
+                            UserMessageTypes::UserRequestConfig,
+                            MessageData::NoData,
+                        );
+
+                        ctx.link().send_message(WsAction::SendData(initial_message));
                     }
                 }
 
