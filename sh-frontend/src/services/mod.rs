@@ -5,4 +5,3 @@
 
 pub mod saved_state;
 pub mod temp_state;
-pub mod websocket;

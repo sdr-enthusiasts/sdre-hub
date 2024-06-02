@@ -9,7 +9,10 @@ use crate::components::pages::help::ShHelp;
 use crate::components::pages::settings::ShSettings;
 use crate::components::pages::stats::ShStatistics;
 use crate::services::saved_state::WebAppState;
-use crate::{common::panels::Panels, services::temp_state::WebAppStateTemp, common::wssprops::WssCommunicationProps};
+use crate::{
+    common::panels::Panels, common::wssprops::WssCommunicationProps,
+    services::temp_state::WebAppStateTemp,
+};
 use yew::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
 use yewdux::prelude::*;

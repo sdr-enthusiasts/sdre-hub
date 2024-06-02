@@ -3,11 +3,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use crate::app::webapp::WsAction;
 use crate::common::wssprops::WssCommunicationProps;
 use crate::components::alerts::alert_error::AlertError;
 use crate::components::input::input_field::{InputField, InputFieldType};
 use crate::services::temp_state::WebAppStateTemp;
-use crate::services::websocket::WsAction;
 use serde::{Deserialize, Serialize};
 use sh_common::{MessageData, UserMessageTypes, UserWssMessage};
 use wasm_bindgen::JsCast;
