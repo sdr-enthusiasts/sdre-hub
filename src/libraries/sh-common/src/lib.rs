@@ -17,7 +17,6 @@
 use serde::{Deserialize, Serialize};
 use sh_config::{
     web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub},
-    ShConfig,
 };
 
 #[derive(Serialize, Deserialize, Debug)]

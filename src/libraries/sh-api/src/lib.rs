@@ -169,8 +169,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                         let response_type = ServerMessageTypes::ServerResponseConfig;
                         // get the server config
-                        let config = state.config.lock().await;
-                        let data = MessageData::ShConfig(config.to_web_config());
+                        let data = MessageData::ShConfig(state.config.lock().await.to_web_config());
                         let message = ServerWssMessage::new(response_type, data);
                         let config_serialized = serde_json::to_string(&message).unwrap();
                         debug!("Sending config message: {config_serialized}");

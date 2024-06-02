@@ -52,21 +52,18 @@ impl SdreHub {
     pub async fn run(mut self) -> Result<(), Box<dyn std::error::Error>> {
         // get the config lock
         let config_lock = Arc::clone(&self.config);
-        let config = config_lock.lock().await;
+        {let config = config_lock.lock().await;
 
         // init logging and stuff
         config.enable_logging();
         match config.write_config() {
-            Ok(_) => {}
+            Ok(()) => {}
             Err(e) => {
                 error!("Error writing config: {e}");
                 std::process::exit(1);
             }
         }
-        config.show_config();
-
-        // release the lock
-        drop(config);
+        config.show_config();}
 
         // Start the web server
 
