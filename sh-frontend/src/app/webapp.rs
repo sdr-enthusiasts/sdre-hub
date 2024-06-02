@@ -186,7 +186,7 @@ impl Component for App {
                             MessageData::ShConfigFailure(_) => {
                                 log::error!("Invalid response type");
                             }
-                            _ => ()
+                            _ => (),
                         }
                         log::info!("Config written successfully");
                     }
