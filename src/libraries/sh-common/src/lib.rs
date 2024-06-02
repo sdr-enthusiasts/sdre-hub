@@ -15,9 +15,7 @@
 // This is the main loop of the SDRE Hub.
 
 use serde::{Deserialize, Serialize};
-use sh_config::{
-    web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub},
-};
+use sh_config::web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UserMessageTypes {

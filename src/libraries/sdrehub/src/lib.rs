@@ -55,7 +55,7 @@ impl SdreHub {
 
         // init logging and stuff
         config_lock.lock().await.enable_logging();
-        match  config_lock.lock().await.write_config() {
+        match config_lock.lock().await.write_config() {
             Ok(()) => {}
             Err(e) => {
                 error!("Error writing config: {e}");
