@@ -45,13 +45,10 @@ pub struct ShConfig {
     #[serde_inline_default(SDREHub::default())]
     pub app: SDREHub,
     #[serde_inline_default(EnabledDataSources::default())]
-    #[serde(skip_serializing)]
     pub enabled_data_sources: EnabledDataSources,
     #[serde_inline_default(DataSources::default())]
-    #[serde(skip_serializing)]
     pub data_sources: DataSources,
     #[serde_inline_default(ShMapConfig::default())]
-    #[serde(skip_serializing)]
     pub map: ShMapConfig,
 }
 
