@@ -9,6 +9,7 @@ use yewdux::Dispatch;
 
 // https://github.com/security-union/yew-websocket/
 
+#[derive(Debug)]
 pub enum WsAction {
     Connect,
     SendData(UserWssMessage),
@@ -16,6 +17,7 @@ pub enum WsAction {
     Lost,
 }
 
+#[derive(Debug)]
 pub enum Msg {
     WsAction(WsAction),
     WsReady(Result<String, Error>),

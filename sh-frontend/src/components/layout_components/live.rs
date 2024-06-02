@@ -9,7 +9,7 @@ use crate::components::pages::help::ShHelp;
 use crate::components::pages::settings::ShSettings;
 use crate::components::pages::stats::ShStatistics;
 use crate::services::saved_state::WebAppState;
-use crate::{common::panels::Panels, services::temp_state::WebAppStateTemp};
+use crate::{common::panels::Panels, services::temp_state::WebAppStateTemp, common::wssprops::WssCommunicationProps};
 use yew::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
 use yewdux::prelude::*;
@@ -18,7 +18,7 @@ use yewdux::prelude::*;
 // checking the old value vs the new one and setting the panel state if it's changed. This flags a re-render
 /// Home page
 #[function_component(Live)]
-pub fn live() -> Html {
+pub fn live(props: &WssCommunicationProps) -> Html {
     let (_state_local, dispatch_local) = use_store::<WebAppStateTemp>();
     let (_state, dispatch) = use_store::<WebAppState>();
     log::debug!("Re-rendering live page");
@@ -45,7 +45,7 @@ pub fn live() -> Html {
         match *right_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <ShSettings />},
+            Panels::Settings => html! { <ShSettings send_message={props.send_message.clone()}/>},
             Panels::Help => html! { <ShHelp /> },
             Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Right Panel is none!!!"),
@@ -56,7 +56,7 @@ pub fn live() -> Html {
         match *left_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <ShSettings />},
+            Panels::Settings => html! { <ShSettings send_message={props.send_message.clone()} />},
             Panels::Help => html! { <ShHelp /> },
             Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Left Panel is none!!!"),

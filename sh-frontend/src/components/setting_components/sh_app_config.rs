@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use crate::common::wssprops::WssCommunicationProps;
 use crate::components::alerts::alert_error::AlertError;
 use crate::components::input::input_field::{InputField, InputFieldType};
 use crate::services::temp_state::WebAppStateTemp;
@@ -38,7 +39,7 @@ impl From<String> for ButtonAction {
 }
 
 #[function_component(ShAppConfig)]
-pub fn sh_app_config() -> Html {
+pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
     let config = use_selector(|state: &WebAppStateTemp| state.config.clone());
     let (state, dispatch) = use_store::<ConfigAppState>();
     let (temp_state, temp_dispatch) = use_store::<WebAppStateTemp>();
@@ -57,6 +58,8 @@ pub fn sh_app_config() -> Html {
         "error".to_string(),
         "warn".to_string(),
     ];
+
+    let local_props = props.clone();
 
     let onsubmit = {
         let config = config.clone();
@@ -104,6 +107,9 @@ pub fn sh_app_config() -> Html {
                                 UserMessageTypes::UserUpdateAppConfig,
                                 MessageData::ShAppConfig(new_config),
                             );
+
+                            // send a message using the props callback
+                            local_props.send_message.emit(message);
                         }
                     }
 

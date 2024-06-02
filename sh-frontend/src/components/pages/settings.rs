@@ -3,19 +3,19 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::components::setting_components::{
+use crate::{common::wssprops::WssCommunicationProps, components::setting_components::{
     sh_app_config::ShAppConfig, sh_data_sources::ShDataSourcesConfig,
     sh_enabled_data_sources::ShEnabledDataSourcesConfig, sh_map::ShMapConfig,
-};
+}};
 use yew::prelude::*;
 
 /// Home page
 #[function_component(ShSettings)]
-pub fn settings() -> Html {
+pub fn settings(props: &WssCommunicationProps) -> Html {
     html! {
         <>
             <div class="settings">
-                <ShAppConfig />
+                <ShAppConfig send_message={props.send_message.clone()} />
                 <ShEnabledDataSourcesConfig />
                 <ShDataSourcesConfig />
                 <ShMapConfig />
