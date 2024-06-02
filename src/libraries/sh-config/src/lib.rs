@@ -171,6 +171,7 @@ impl ShConfig {
         let file_path = Self::get_config_file_path();
         let config = self.get_config_as_toml_string();
         println!("Writing config file to: {file_path}");
+        println!("Config: {config}");
 
         match std::fs::write(file_path, config) {
             Ok(()) => (),

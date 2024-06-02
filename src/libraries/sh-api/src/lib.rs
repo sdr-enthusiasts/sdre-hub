@@ -189,6 +189,19 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                             continue;
                         };
 
+                        // TODO: Maybe. For now the DB path and config path are not going to be user configurable.
+
+                        // check and see if the log level has changed
+
+                        let mut config = state.config.lock().unwrap().clone();
+
+                        if config.app.log_level != data.log_level {
+                            debug!("New log level: {}", data.log_level);
+
+                            config.app.log_level = data.log_level.clone();
+                            config.write_config();
+                        }
+
                         debug!("Received app config: {:?}", data);
                     }
                 }
