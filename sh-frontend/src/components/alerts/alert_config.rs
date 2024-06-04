@@ -5,14 +5,13 @@
 
 use yew::prelude::*;
 use yew_alert::Alert;
-use super::AlertProps;
+use super::AlertPropsAlternate;
 
 // FIXME: Before ridding of tailwind the "position" part of this prop needs us to implement some more CSS classes. See: https://github.com/next-rs/yew-alert/blob/37da6d37d10cb32dc778d4f7a642800eb8188175/src/lib.rs#L233
 
-#[function_component(AlertError)]
-pub fn alert_error(props: &AlertProps) -> Html {
-    let show_alert = props.show_alert.clone();
-    let on_confirm = props.on_confirm.clone();
+#[function_component(AlertConfig)]
+pub fn alert_config(props: &AlertPropsAlternate) -> Html {
+    let show_alert_as_state = use_state_eq(|| props.show_alert);
     let on_cancel = props.on_cancel.clone();
     let show_cancel = props.show_cancel_button;
     let show_confirm = props.show_confirm_button;
@@ -22,18 +21,34 @@ pub fn alert_error(props: &AlertProps) -> Html {
     let cancel_button_class = props.cancel_button_class;
     let confirm_button_class = props.confirm_button_class;
 
+    let dismiss_alert = {
+        let show_alert_as_state = show_alert_as_state.clone();
+
+        Callback::from(move |_| {
+            show_alert_as_state.set(false)
+        })
+    };
+
+    log::debug!("AlertConfig: show_alert: {:?}", props.show_alert);
+    log::debug!("AlertConfig: show_alert_as_state: {:?}", show_alert_as_state.clone());
+    let new_show_alert = show_alert_as_state.clone();
+
+    use_effect_with(props.counter, move |_show_alert| {
+        show_alert_as_state.set(true)
+    });
+
     html! {
         <Alert
             message={message}
             timeout={timeout}
-            show_alert={show_alert}
+            show_alert={new_show_alert}
             title={title}
             container_class={""}
             cancel_button_class={cancel_button_class}
             confirm_button_class={confirm_button_class}
-            icon_type={"error"}
-            position={"middle"}
-            alert_class={"alert-error"}
+            icon_type={"info"}
+            position={"center"}
+            alert_class={"alert-notification"}
             title_class={"text-background-color"}
             message_class={"text-background-color"}
             icon_class={"alert-icon"}
@@ -42,7 +57,7 @@ pub fn alert_error(props: &AlertProps) -> Html {
             show_confirm_button={show_confirm}
             show_cancel_button={show_cancel}
             show_close_button={false}
-            on_confirm={ on_confirm }
+            on_confirm={ dismiss_alert }
             on_cancel={ on_cancel }
             icon_color={"text-background-color"}
             icon_width={"50"}

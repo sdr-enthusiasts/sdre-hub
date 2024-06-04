@@ -78,19 +78,11 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     let log_level = log_level_node.cast::<HtmlInputElement>().unwrap().value();
                     let data_path = data_path_node.cast::<HtmlInputElement>().unwrap().value();
 
-                    log::debug!("Database URL: {}", database_url);
-                    log::debug!("Log Level: {}", log_level);
-                    log::debug!("Data Path: {}", data_path);
-
                     if let Some(config) = config.as_ref() {
                         let app = config.app.clone();
                         let database_url_original = app.database_url.clone();
                         let log_level_original = app.log_level.clone();
                         let data_path_original = app.data_path.clone();
-
-                        log::debug!("Original Database URL: {}", database_url_original);
-                        log::debug!("Original Log Level: {}", log_level_original);
-                        log::debug!("Original Data Path: {}", data_path_original);
 
                         if database_url != database_url_original
                             || log_level != log_level_original
@@ -117,6 +109,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     }
                 }
                 ButtonAction::Reset => {
+                    log::debug!("Resetting config");
                     // set all the values back to the original values
                     if let Some(config) = config.as_ref() {
                         let app = config.clone().app;
@@ -215,9 +208,8 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
           <div class="content-inner">
                 {
                     if let Some(config) = config.as_ref() {
-                        log::debug!("Config: {:?}", config);
+                        log::trace!("Config: {:?}", config);
                         let app = config.app.clone();
-                        log::debug!("App: {:?}", app);
                         let database_url: String = app.database_url.clone();
                         let log_level: String = app.log_level.clone();
                         let data_path: String = app.data_path.clone();

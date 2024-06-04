@@ -46,7 +46,6 @@ pub fn input_field(props: &InputFieldProps) -> Html {
         read_only,
     } = props;
 
-    log::debug!("InputField: {:?}", input_value);
     html! {
         <>
         <div><label for={name.clone()}>
