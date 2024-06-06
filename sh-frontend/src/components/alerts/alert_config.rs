@@ -12,6 +12,7 @@ use super::AlertPropsAlternate;
 #[function_component(AlertConfig)]
 pub fn alert_config(props: &AlertPropsAlternate) -> Html {
     let show_alert_as_state = use_state_eq(|| props.show_alert);
+    let on_confirm = props.on_confirm.clone();
     let on_cancel = props.on_cancel.clone();
     let show_cancel = props.show_cancel_button;
     let show_confirm = props.show_confirm_button;
@@ -20,14 +21,6 @@ pub fn alert_config(props: &AlertPropsAlternate) -> Html {
     let timeout = props.timeout;
     let cancel_button_class = props.cancel_button_class;
     let confirm_button_class = props.confirm_button_class;
-
-    let dismiss_alert = {
-        let show_alert_as_state = show_alert_as_state.clone();
-
-        Callback::from(move |_| {
-            show_alert_as_state.set(false)
-        })
-    };
 
     log::debug!("AlertConfig: show_alert: {:?}", props.show_alert);
     log::debug!("AlertConfig: show_alert_as_state: {:?}", show_alert_as_state.clone());
@@ -47,7 +40,7 @@ pub fn alert_config(props: &AlertPropsAlternate) -> Html {
             cancel_button_class={cancel_button_class}
             confirm_button_class={confirm_button_class}
             icon_type={"info"}
-            position={"center"}
+            position={"bottom-right"}
             alert_class={"alert-notification"}
             title_class={"text-background-color"}
             message_class={"text-background-color"}
@@ -57,7 +50,7 @@ pub fn alert_config(props: &AlertPropsAlternate) -> Html {
             show_confirm_button={show_confirm}
             show_cancel_button={show_cancel}
             show_close_button={false}
-            on_confirm={ dismiss_alert }
+            on_confirm={ on_confirm }
             on_cancel={ on_cancel }
             icon_color={"text-background-color"}
             icon_width={"50"}

@@ -30,8 +30,8 @@ pub enum WsAction {
 pub enum Msg {
     WsAction(WsAction),
     WsReady(Result<String, Error>),
-    ShowAlertConfigSuccess(bool),
-    ShowAlertConfigFailure(bool),
+    ShowAlert(AlertBoxToShow),
+    HideAlert,
 }
 
 impl From<WsAction> for Msg {
@@ -40,13 +40,19 @@ impl From<WsAction> for Msg {
     }
 }
 
+#[derive(Debug, Default)]
+enum AlertBoxToShow {
+    ConfigWriteSuccess,
+    ConfigWriteFailure,
+    #[default]
+    None
+}
+
 pub struct App {
     pub fetching: bool,
     pub ws: Option<WebSocketTask>,
     pub dispatch: Dispatch<WebAppStateTemp>,
-    pub show_alert_config_write_success: bool,
-    pub show_alert_config_write_failure: bool,
-    pub counter: u32,
+    pub alert_box_type: AlertBoxToShow,
 }
 
 impl Component for App {
@@ -60,16 +66,11 @@ impl Component for App {
             fetching: false,
             ws: None,
             dispatch,
-            show_alert_config_write_success: false,
-            show_alert_config_write_failure: false,
-            counter: 0,
+            alert_box_type: AlertBoxToShow::None,
         }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
-        self.show_alert_config_write_failure = false;
-        self.show_alert_config_write_success = false;
-
         match msg {
             Msg::WsAction(action) => match action {
                 WsAction::Connect => {
@@ -193,7 +194,7 @@ impl Component for App {
                         ctx.link().send_message(WsAction::SendData(initial_message));
 
                         // show alert
-                        ctx.link().send_message(Msg::ShowAlertConfigFailure(true));
+                        ctx.link().send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteFailure));
                     }
 
                     ServerMessageTypes::ServerWriteConfigSuccess => {
@@ -219,30 +220,36 @@ impl Component for App {
                         ctx.link().send_message(WsAction::SendData(initial_message));
 
                         // show alert
-                        ctx.link().send_message(Msg::ShowAlertConfigSuccess(true));
+                        ctx.link().send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteSuccess));
                     }
                 }
 
                 false
             }
 
-            Msg::ShowAlertConfigSuccess(show) => {
-                log::debug!("Show alert config success: {}", show);
-                self.show_alert_config_write_success = show;
-                self.counter += 1;
+            Msg::ShowAlert(alert_box_type) => {
+                match alert_box_type {
+                    AlertBoxToShow::ConfigWriteSuccess => {
+                        self.alert_box_type = AlertBoxToShow::ConfigWriteSuccess;
+                    }
+                    AlertBoxToShow::ConfigWriteFailure => {
+                        self.alert_box_type = AlertBoxToShow::ConfigWriteFailure;
+                    }
+                    AlertBoxToShow::None => {
+                        self.alert_box_type = AlertBoxToShow::None;
+                    }
+                }
                 true
             }
 
-            Msg::ShowAlertConfigFailure(show) => {
-                self.show_alert_config_write_failure = show;
-                self.counter += 1;
+            Msg::HideAlert => {
+                self.alert_box_type = AlertBoxToShow::None;
                 true
             }
         }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-
         if self.ws.is_none() {
             ctx.link().send_message(WsAction::Connect);
             log::info!("Connecting to WebSocket");
@@ -253,29 +260,37 @@ impl Component for App {
             Msg::WsAction(WsAction::SendData(input))
         });
 
+        let hide_alert_box = ctx.link().callback(|_| Msg::HideAlert);
+
         // Show alert
-        let show_alert_config_success = self.show_alert_config_write_success;
-        let show_alert_config_failure = self.show_alert_config_write_failure;
 
         html! {
             <>
             <div class="flex flex-col h-full w-full max-h-full max-w-full overflow-hidden">
+                {
+                    match self.alert_box_type {
+                        AlertBoxToShow::ConfigWriteSuccess => {
+                            html! {
+                                <AlertConfig show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} on_confirm={hide_alert_box} />
+                            }
+                        }
+                        AlertBoxToShow::ConfigWriteFailure => {
+                            html! {
+                                <AlertConfig show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} />
+                            }
+                        }
+                        AlertBoxToShow::None => {
+                            html! {}
+                        }
+                    }
+                }
+            // <AlertConfig timeout={100000} show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} counter={self.counter}/>
+            // <AlertConfig show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} counter={self.counter} />
                 <Nav />
                 <section class="container flex text-left p-0 pb-1 mt-1 mb-1 h-full w-full max-h-full max-w-full overflow-hidden">
                     <Live send_message={send_data_to_wss}/>
                 </section>
                 <Footer />
-                {
-                    if show_alert_config_success {
-                        log::debug!("Show alert config success. Showing dialouge");
-                        html! { <AlertConfig show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} counter={self.counter}/> }
-                    } else if show_alert_config_failure {
-                        html! { <AlertConfig show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} counter={self.counter} /> }
-                    } else {
-                        html! {}
-                    }
-                }
-
             </div>
             </>
         }
