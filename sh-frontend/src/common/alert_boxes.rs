@@ -9,5 +9,5 @@ pub enum AlertBoxToShow {
     ConfigWriteFailure,
     UnsavedChanges,
     #[default]
-    None
+    None,
 }

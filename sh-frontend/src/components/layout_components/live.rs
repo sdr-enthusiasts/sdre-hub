@@ -48,7 +48,9 @@ pub fn live(props: &WssCommunicationProps) -> Html {
         match *right_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <ShSettings send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()}/>},
+            Panels::Settings => {
+                html! { <ShSettings send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()}/>}
+            }
             Panels::Help => html! { <ShHelp /> },
             Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Right Panel is none!!!"),
@@ -59,7 +61,9 @@ pub fn live(props: &WssCommunicationProps) -> Html {
         match *left_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <ShSettings send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()} />},
+            Panels::Settings => {
+                html! { <ShSettings send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()} />}
+            }
             Panels::Help => html! { <ShHelp /> },
             Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Left Panel is none!!!"),

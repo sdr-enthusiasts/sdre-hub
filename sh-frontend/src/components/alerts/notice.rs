@@ -6,8 +6,7 @@
 use super::AlertPropsTrait;
 
 #[derive(Default, Clone, PartialEq)]
-pub struct AlertNotice {
-}
+pub struct AlertNotice {}
 
 impl AlertPropsTrait for AlertNotice {
     fn new() -> Self {

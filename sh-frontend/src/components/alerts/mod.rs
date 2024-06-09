@@ -8,8 +8,8 @@
 pub mod error;
 pub mod notice;
 
-use notice::AlertNotice;
 use error::AlertError;
+use notice::AlertNotice;
 use yew::prelude::*;
 use yew_alert::Alert;
 
@@ -32,7 +32,7 @@ impl AlertPropsTrait for AlertType {
         AlertType::Notice(AlertNotice::new())
     }
 
-    fn get_position(&self) ->  &'static str {
+    fn get_position(&self) -> &'static str {
         match self {
             AlertType::Error(details) => details.get_position(),
             AlertType::Notice(details) => details.get_position(),

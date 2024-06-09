@@ -6,15 +6,14 @@
 use super::AlertPropsTrait;
 
 #[derive(Default, Clone, PartialEq)]
-pub struct AlertError {
-}
+pub struct AlertError {}
 
 impl AlertPropsTrait for AlertError {
     fn new() -> Self {
         Self {}
     }
 
-    fn get_position(&self) ->  &'static str {
+    fn get_position(&self) -> &'static str {
         "middle"
     }
 
