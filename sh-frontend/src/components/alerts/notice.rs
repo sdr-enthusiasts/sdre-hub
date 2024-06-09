@@ -22,7 +22,7 @@ impl AlertPropsTrait for AlertNotice {
     }
 
     fn get_alert_class(&self) -> &'static str {
-        "alert-notification"
+        "alert-notification bottom-0 right-0"
     }
 
     fn get_title_class(&self) -> &'static str {

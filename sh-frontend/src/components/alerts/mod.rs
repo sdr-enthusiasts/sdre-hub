@@ -122,7 +122,7 @@ pub struct ShAlertProps {
     pub on_confirm: Callback<()>,
     #[prop_or(Callback::noop())]
     pub on_cancel: Callback<()>,
-    #[prop_or(5000)]
+    #[prop_or(9875000)]
     pub timeout: u32,
     #[prop_or("button")]
     pub cancel_button_class: &'static str,
@@ -173,7 +173,7 @@ pub fn sh_alert(props: &ShAlertProps) -> Html {
             timeout={timeout}
             show_alert={new_show_alert}
             title={title}
-            container_class={""}
+            container_class={"top-0 left-0 fixed p-3 z-10 transition duration-300 ease-in bg-gray-900 bg-opacity-75 w-full h-full"}
             cancel_button_class={cancel_button_class}
             confirm_button_class={confirm_button_class}
             icon_type={icon_type}

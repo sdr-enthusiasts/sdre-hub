@@ -22,7 +22,7 @@ impl AlertPropsTrait for AlertError {
     }
 
     fn get_alert_class(&self) -> &'static str {
-        "alert-error"
+        "alert-error top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
     }
 
     fn get_title_class(&self) -> &'static str {

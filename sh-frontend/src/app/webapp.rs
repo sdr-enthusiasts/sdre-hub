@@ -4,12 +4,12 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::common::alert_boxes::AlertBoxToShow;
-use crate::components::alerts::error::AlertError;
-use crate::components::alerts::AlertPropsTrait;
-use crate::components::alerts::{AlertType, ShAlert};
 use crate::components::layout_components::footer::Footer;
 use crate::components::layout_components::live::Live;
 use crate::components::layout_components::nav::Nav;
+use crate::components::alerts::{ShAlert, AlertType};
+use crate::components::alerts::error::AlertError;
+use crate::components::alerts::AlertPropsTrait;
 use crate::services::temp_state::WebAppStateTemp;
 use anyhow::Error;
 use sh_common::{
@@ -189,8 +189,7 @@ impl Component for App {
                         ctx.link().send_message(WsAction::SendData(initial_message));
 
                         // show alert
-                        ctx.link()
-                            .send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteFailure));
+                        ctx.link().send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteFailure));
                     }
 
                     ServerMessageTypes::ServerWriteConfigSuccess => {
@@ -216,8 +215,7 @@ impl Component for App {
                         ctx.link().send_message(WsAction::SendData(initial_message));
 
                         // show alert
-                        ctx.link()
-                            .send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteSuccess));
+                        ctx.link().send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteSuccess));
                     }
                 }
 
@@ -262,13 +260,11 @@ impl Component for App {
         });
 
         let hide_alert_box = ctx.link().callback(|_| Msg::HideAlert);
-        let show_alert_box = ctx
-            .link()
-            .callback(|alert_box_type| Msg::ShowAlert(alert_box_type));
+        let show_alert_box = ctx.link().callback(|alert_box_type| Msg::ShowAlert(alert_box_type));
 
         html! {
             <>
-            <div class="flex flex-col h-full w-full max-h-full max-w-full overflow-hidden">
+                <div class="flex flex-col h-full w-full max-h-full max-w-full overflow-hidden">
                 {
                     match self.alert_box_type {
                         AlertBoxToShow::ConfigWriteSuccess => {
@@ -283,7 +279,7 @@ impl Component for App {
                         }
                         AlertBoxToShow::UnsavedChanges => {
                             html! {
-                                <ShAlert show_alert={true} message={"You have unsaved changes. Would you like to save them?"} title={"Unsaved Changes"} on_confirm={hide_alert_box} alert_type={AlertType::Error(AlertError::new())}/>
+                                <ShAlert show_alert={true} message={"You have unsaved changes. Please save changes, or reset, before continuing."} title={"Unsaved Changes"} on_confirm={hide_alert_box} alert_type={AlertType::Error(AlertError::new())}/>
                             }
                         }
                         AlertBoxToShow::None => {
