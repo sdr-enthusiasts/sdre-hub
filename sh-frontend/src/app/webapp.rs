@@ -4,10 +4,12 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::common::alert_boxes::AlertBoxToShow;
-use crate::components::{alerts::_AlertProps::show_alert, layout_components::footer::Footer};
+use crate::components::layout_components::footer::Footer;
 use crate::components::layout_components::live::Live;
 use crate::components::layout_components::nav::Nav;
-use crate::components::alerts::alert_config::AlertConfig;
+use crate::components::alerts::{ShAlert, AlertType};
+use crate::components::alerts::error::AlertError;
+use crate::components::alerts::AlertPropsTrait;
 use crate::services::temp_state::WebAppStateTemp;
 use anyhow::Error;
 use sh_common::{
@@ -229,6 +231,9 @@ impl Component for App {
                     AlertBoxToShow::ConfigWriteFailure => {
                         self.alert_box_type = AlertBoxToShow::ConfigWriteFailure;
                     }
+                    AlertBoxToShow::UnsavedChanges => {
+                        self.alert_box_type = AlertBoxToShow::UnsavedChanges;
+                    }
                     AlertBoxToShow::None => {
                         self.alert_box_type = AlertBoxToShow::None;
                     }
@@ -263,19 +268,21 @@ impl Component for App {
                 {
                     match self.alert_box_type {
                         AlertBoxToShow::ConfigWriteSuccess => {
-                            log::debug!("Showing alert box config success html");
                             html! {
-                                <AlertConfig show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} on_confirm={hide_alert_box} />
+                                <ShAlert show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} on_confirm={hide_alert_box} />
                             }
                         }
                         AlertBoxToShow::ConfigWriteFailure => {
-                            log::debug!("Showing alert box config failure html");
                             html! {
-                                <AlertConfig show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} />
+                                <ShAlert show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} />
+                            }
+                        }
+                        AlertBoxToShow::UnsavedChanges => {
+                            html! {
+                                <ShAlert show_alert={true} message={"You have unsaved changes. Would you like to save them?"} title={"Unsaved Changes"} on_confirm={hide_alert_box} alert_type={AlertType::Error(AlertError::new())}/>
                             }
                         }
                         AlertBoxToShow::None => {
-                            log::debug!("Showing alert box none html");
                             html! {}
                         }
                     }

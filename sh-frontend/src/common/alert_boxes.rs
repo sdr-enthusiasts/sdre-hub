@@ -7,6 +7,7 @@
 pub enum AlertBoxToShow {
     ConfigWriteSuccess,
     ConfigWriteFailure,
+    UnsavedChanges,
     #[default]
     None
 }

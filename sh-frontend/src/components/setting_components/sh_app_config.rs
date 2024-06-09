@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use crate::common::alert_boxes::AlertBoxToShow;
 use crate::common::wssprops::WssCommunicationProps;
 use crate::components::input::input_field::{InputField, InputFieldType};
 use crate::services::temp_state::WebAppStateTemp;
@@ -39,8 +40,6 @@ impl From<String> for ButtonAction {
 pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
     let config = use_selector(|state: &WebAppStateTemp| state.config.clone());
     let (state, dispatch) = use_store::<ConfigAppState>();
-    let show_alert = use_state(|| false);
-
     let is_visible = use_state(|| state.is_visible);
     let current_visible = *is_visible;
 
@@ -143,7 +142,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
         let database_url_node = database_url_node.clone();
         let log_level_node = log_level_node.clone();
         let data_path_node = data_path_node.clone();
-        let show_alert = show_alert.clone();
+        let show_alert = props.request_alert_box.clone();
 
         Callback::from(move |_: MouseEvent| {
             // if we are changing from not showing the panel to showing the panel, just save the current state
@@ -184,7 +183,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     dispatch.reduce_mut(move |state| state.is_visible = true);
                     // prompt the user to save the changes
 
-                    show_alert.set(true);
+                    show_alert.emit(AlertBoxToShow::UnsavedChanges);
                     return;
                 }
             }
