@@ -18,7 +18,7 @@ pub fn settings(props: &WssCommunicationProps) -> Html {
     html! {
         <>
             <div class="settings">
-                <ShAppConfig send_message={props.send_message.clone()} />
+                <ShAppConfig send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()} />
                 <ShEnabledDataSourcesConfig />
                 <ShDataSourcesConfig />
                 <ShMapConfig />

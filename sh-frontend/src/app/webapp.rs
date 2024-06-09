@@ -3,7 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::components::layout_components::footer::Footer;
+use crate::common::alert_boxes::AlertBoxToShow;
+use crate::components::{alerts::_AlertProps::show_alert, layout_components::footer::Footer};
 use crate::components::layout_components::live::Live;
 use crate::components::layout_components::nav::Nav;
 use crate::components::alerts::alert_config::AlertConfig;
@@ -38,14 +39,6 @@ impl From<WsAction> for Msg {
     fn from(action: WsAction) -> Self {
         Self::WsAction(action)
     }
-}
-
-#[derive(Debug, Default)]
-enum AlertBoxToShow {
-    ConfigWriteSuccess,
-    ConfigWriteFailure,
-    #[default]
-    None
 }
 
 pub struct App {
@@ -228,6 +221,7 @@ impl Component for App {
             }
 
             Msg::ShowAlert(alert_box_type) => {
+                log::debug!("Showing alert box: {:?}", alert_box_type);
                 match alert_box_type {
                     AlertBoxToShow::ConfigWriteSuccess => {
                         self.alert_box_type = AlertBoxToShow::ConfigWriteSuccess;
@@ -261,8 +255,7 @@ impl Component for App {
         });
 
         let hide_alert_box = ctx.link().callback(|_| Msg::HideAlert);
-
-        // Show alert
+        let show_alert_box = ctx.link().callback(|alert_box_type| Msg::ShowAlert(alert_box_type));
 
         html! {
             <>
@@ -270,6 +263,7 @@ impl Component for App {
                 {
                     match self.alert_box_type {
                         AlertBoxToShow::ConfigWriteSuccess => {
+                            log::debug!("Showing alert box html");
                             html! {
                                 <AlertConfig show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} on_confirm={hide_alert_box} />
                             }
@@ -284,11 +278,9 @@ impl Component for App {
                         }
                     }
                 }
-            // <AlertConfig timeout={100000} show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} counter={self.counter}/>
-            // <AlertConfig show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} counter={self.counter} />
                 <Nav />
                 <section class="container flex text-left p-0 pb-1 mt-1 mb-1 h-full w-full max-h-full max-w-full overflow-hidden">
-                    <Live send_message={send_data_to_wss}/>
+                    <Live send_message={send_data_to_wss} request_alert_box={show_alert_box} />
                 </section>
                 <Footer />
             </div>

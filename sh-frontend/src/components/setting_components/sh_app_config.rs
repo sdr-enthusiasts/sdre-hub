@@ -4,7 +4,6 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::common::wssprops::WssCommunicationProps;
-use crate::components::alerts::alert_error::AlertError;
 use crate::components::input::input_field::{InputField, InputFieldType};
 use crate::services::temp_state::WebAppStateTemp;
 use serde::{Deserialize, Serialize};
@@ -192,16 +191,9 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
         })
     };
 
-    let alert_status = show_alert.clone();
-    let dismiss_alert = {
-        Callback::from(move |_| {
-            alert_status.set(false);
-        })
-    };
-
     html! {
         <>
-        <AlertError message={"You have unsaved changes. Would you like to save them?"} title={"Unsaved Changes"} show_alert={show_alert} on_confirm={dismiss_alert} />
+        // <AlertError message={"You have unsaved changes. Would you like to save them?"} title={"Unsaved Changes"} show_alert={show_alert} on_confirm={dismiss_alert} />
         <input id="collapsible_app_config" class="toggle" type="checkbox" checked={current_visible} onclick={show_panel}/>
         <label for="collapsible_app_config" class="lbl-toggle">{"SDR-E Hub Configuration"}</label>
         <div class="collapsible-content">
