@@ -21,14 +21,15 @@ pub fn alert_config(props: &AlertPropsAlternate) -> Html {
     let cancel_button_class = props.cancel_button_class;
     let confirm_button_class = props.confirm_button_class;
     let timeout = props.timeout;
-
-    log::debug!("AlertConfig: show_alert: {:?}", props.show_alert);
-    log::debug!("AlertConfig: show_alert_as_state: {:?}", show_alert_as_state.clone());
     let new_show_alert = show_alert_as_state.clone();
 
     use_effect_with(props.show_alert, move |show_alert| {
         show_alert_as_state.set(show_alert.clone());
     });
+
+    if *new_show_alert != props.show_alert {
+        on_confirm.emit(());
+    }
 
     html! {
         <Alert

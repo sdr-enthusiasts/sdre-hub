@@ -263,17 +263,19 @@ impl Component for App {
                 {
                     match self.alert_box_type {
                         AlertBoxToShow::ConfigWriteSuccess => {
-                            log::debug!("Showing alert box html");
+                            log::debug!("Showing alert box config success html");
                             html! {
                                 <AlertConfig show_alert={true} message={"Configuration successfully saved. If you changed the Log Level please restart the server/app"} title={"Configuration Successfully Written"} on_confirm={hide_alert_box} />
                             }
                         }
                         AlertBoxToShow::ConfigWriteFailure => {
+                            log::debug!("Showing alert box config failure html");
                             html! {
                                 <AlertConfig show_alert={true} message={"Failed to write configuration. Please try again."} title={"Configuration Write Failed"} />
                             }
                         }
                         AlertBoxToShow::None => {
+                            log::debug!("Showing alert box none html");
                             html! {}
                         }
                     }
