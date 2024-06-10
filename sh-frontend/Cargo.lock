@@ -1502,7 +1502,6 @@ dependencies = [
  "wasm-logger",
  "web-sys",
  "yew",
- "yew-alert",
  "yew-hooks",
  "yew-router",
  "yew-websocket",
@@ -2057,17 +2056,6 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "yew-macro",
-]
-
-[[package]]
-name = "yew-alert"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc4e321496da4fe631ad3985b2d89e35e1cb4a9ce276bbd89f64721ee630b078"
-dependencies = [
- "gloo 0.11.0",
- "web-sys",
- "yew",
 ]
 
 [[package]]

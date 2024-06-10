@@ -4,6 +4,7 @@
 // https://opensource.org/licenses/MIT.
 
 use super::AlertPropsTrait;
+use super::base::{IconType, Position};
 
 #[derive(Default, Clone, PartialEq)]
 pub struct AlertError {}
@@ -13,12 +14,12 @@ impl AlertPropsTrait for AlertError {
         Self {}
     }
 
-    fn get_position(&self) -> &'static str {
-        "middle"
+    fn get_position(&self) -> Position {
+        Position::Middle
     }
 
-    fn get_icon_type(&self) -> &'static str {
-        "error"
+    fn get_icon_type(&self) -> IconType {
+        IconType::Error
     }
 
     fn get_alert_class(&self) -> &'static str {

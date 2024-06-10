@@ -5,13 +5,16 @@
 
 // https://github.com/next-rs/yew-alert
 
+pub mod base;
 pub mod error;
 pub mod notice;
 
+use base::Position;
+use base::IconType;
 use error::AlertError;
 use notice::AlertNotice;
 use yew::prelude::*;
-use yew_alert::Alert;
+use crate::components::alerts::base::Alert;
 
 // FIXME: Before ridding of tailwind the "position" part of this prop needs us to implement some more CSS classes. See: https://github.com/next-rs/yew-alert/blob/37da6d37d10cb32dc778d4f7a642800eb8188175/src/lib.rs#L233
 
@@ -32,14 +35,14 @@ impl AlertPropsTrait for AlertType {
         AlertType::Notice(AlertNotice::new())
     }
 
-    fn get_position(&self) -> &'static str {
+    fn get_position(&self) -> Position {
         match self {
             AlertType::Error(details) => details.get_position(),
             AlertType::Notice(details) => details.get_position(),
         }
     }
 
-    fn get_icon_type(&self) -> &'static str {
+    fn get_icon_type(&self) -> IconType {
         match self {
             AlertType::Error(details) => details.get_icon_type(),
             AlertType::Notice(details) => details.get_icon_type(),
@@ -98,8 +101,8 @@ impl AlertPropsTrait for AlertType {
 
 pub trait AlertPropsTrait {
     fn new() -> Self;
-    fn get_position(&self) -> &'static str;
-    fn get_icon_type(&self) -> &'static str;
+    fn get_position(&self) -> Position;
+    fn get_icon_type(&self) -> IconType;
     fn get_alert_class(&self) -> &'static str;
     fn get_title_class(&self) -> &'static str;
     fn get_message_class(&self) -> &'static str;
