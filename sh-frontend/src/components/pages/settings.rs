@@ -21,7 +21,7 @@ pub fn settings(props: &WssCommunicationProps) -> Html {
                 <ShAppConfig send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()} />
                 <ShEnabledDataSourcesConfig />
                 <ShDataSourcesConfig />
-                <ShMapConfig />
+                <ShMapConfig send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()} />
             </div>
         </>
     }

@@ -6,6 +6,7 @@
 use crate::common::alert_boxes::AlertBoxToShow;
 use crate::common::wssprops::WssCommunicationProps;
 use crate::components::input::input_field::{InputField, InputFieldType};
+use crate::components::setting_components::ButtonAction;
 use crate::services::temp_state::WebAppStateTemp;
 use serde::{Deserialize, Serialize};
 use sh_common::{MessageData, UserMessageTypes, UserWssMessage};
@@ -19,21 +20,6 @@ use yewdux::prelude::*;
 #[store(storage = "local", storage_tab_sync)]
 struct ConfigAppState {
     pub is_visible: bool,
-}
-
-enum ButtonAction {
-    Update,
-    Reset,
-}
-
-impl From<String> for ButtonAction {
-    fn from(action: String) -> Self {
-        match action.to_lowercase().as_str() {
-            "update" => ButtonAction::Update,
-            "reset" => ButtonAction::Reset,
-            _ => ButtonAction::Update,
-        }
-    }
 }
 
 #[function_component(ShAppConfig)]
@@ -192,7 +178,6 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
 
     html! {
         <>
-        // <AlertError message={"You have unsaved changes. Would you like to save them?"} title={"Unsaved Changes"} show_alert={show_alert} on_confirm={dismiss_alert} />
         <input id="collapsible_app_config" class="toggle" type="checkbox" checked={current_visible} onclick={show_panel}/>
         <label for="collapsible_app_config" class="lbl-toggle">{"SDR-E Hub Configuration"}</label>
         <div class="collapsible-content">
