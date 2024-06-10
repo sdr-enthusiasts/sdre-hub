@@ -21,7 +21,6 @@ const CONTAINER_CLASS: &'static str =
     "flex items-center text-center justify-center bg-gray-800 text-white border border-gray-600";
 const TITLE_CLASS: &'static str = "dark:text-white";
 const MESSAGE_CLASS: &'static str = "dark:text-gray-300";
-const ICON_TYPE: &'static str = "success";
 const ICON_COLOR: &'static str = "";
 const ICON_WIDTH: &'static str = "50";
 
