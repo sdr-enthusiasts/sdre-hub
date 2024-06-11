@@ -184,7 +184,6 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
           <div class="content-inner">
                 {
                     if let Some(config) = config.as_ref() {
-                        log::trace!("Config: {:?}", config);
                         let app = config.app.clone();
                         let database_url: String = app.database_url.clone();
                         let log_level: String = app.log_level.clone();

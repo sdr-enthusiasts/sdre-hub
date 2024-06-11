@@ -9,12 +9,12 @@ pub mod base;
 pub mod error;
 pub mod notice;
 
-use base::Position;
+use crate::components::alerts::base::Alert;
 use base::IconType;
+use base::Position;
 use error::AlertError;
 use notice::AlertNotice;
 use yew::prelude::*;
-use crate::components::alerts::base::Alert;
 
 // FIXME: Before ridding of tailwind the "position" part of this prop needs us to implement some more CSS classes. See: https://github.com/next-rs/yew-alert/blob/37da6d37d10cb32dc778d4f7a642800eb8188175/src/lib.rs#L233
 

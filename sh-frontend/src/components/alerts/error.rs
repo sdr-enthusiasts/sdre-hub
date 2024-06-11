@@ -3,8 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use super::AlertPropsTrait;
 use super::base::{IconType, Position};
+use super::AlertPropsTrait;
 
 #[derive(Default, Clone, PartialEq)]
 pub struct AlertError {}
