@@ -6,7 +6,7 @@
 use super::base::{IconType, Position};
 use super::AlertPropsTrait;
 
-#[derive(Default, Clone, PartialEq)]
+#[derive(Default, Clone, PartialEq, Eq)]
 pub struct AlertError {}
 
 impl AlertPropsTrait for AlertError {

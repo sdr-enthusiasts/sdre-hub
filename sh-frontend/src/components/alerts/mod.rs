@@ -18,7 +18,7 @@ use yew::prelude::*;
 
 // FIXME: Before ridding of tailwind the "position" part of this prop needs us to implement some more CSS classes. See: https://github.com/next-rs/yew-alert/blob/37da6d37d10cb32dc778d4f7a642800eb8188175/src/lib.rs#L233
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum AlertType {
     Error(AlertError),
     Notice(AlertNotice),
@@ -26,75 +26,75 @@ pub enum AlertType {
 
 impl Default for AlertType {
     fn default() -> Self {
-        AlertType::Notice(AlertNotice::new())
+        Self::Notice(AlertNotice::new())
     }
 }
 
 impl AlertPropsTrait for AlertType {
     fn new() -> Self {
-        AlertType::Notice(AlertNotice::new())
+        Self::Notice(AlertNotice::new())
     }
 
     fn get_position(&self) -> Position {
         match self {
-            AlertType::Error(details) => details.get_position(),
-            AlertType::Notice(details) => details.get_position(),
+            Self::Error(details) => details.get_position(),
+            Self::Notice(details) => details.get_position(),
         }
     }
 
     fn get_icon_type(&self) -> IconType {
         match self {
-            AlertType::Error(details) => details.get_icon_type(),
-            AlertType::Notice(details) => details.get_icon_type(),
+            Self::Error(details) => details.get_icon_type(),
+            Self::Notice(details) => details.get_icon_type(),
         }
     }
 
     fn get_alert_class(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_alert_class(),
-            AlertType::Notice(details) => details.get_alert_class(),
+            Self::Error(details) => details.get_alert_class(),
+            Self::Notice(details) => details.get_alert_class(),
         }
     }
 
     fn get_title_class(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_title_class(),
-            AlertType::Notice(details) => details.get_title_class(),
+            Self::Error(details) => details.get_title_class(),
+            Self::Notice(details) => details.get_title_class(),
         }
     }
 
     fn get_message_class(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_message_class(),
-            AlertType::Notice(details) => details.get_message_class(),
+            Self::Error(details) => details.get_message_class(),
+            Self::Notice(details) => details.get_message_class(),
         }
     }
 
     fn get_icon_class(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_icon_class(),
-            AlertType::Notice(details) => details.get_icon_class(),
+            Self::Error(details) => details.get_icon_class(),
+            Self::Notice(details) => details.get_icon_class(),
         }
     }
 
     fn get_confirm_button_text(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_confirm_button_text(),
-            AlertType::Notice(details) => details.get_confirm_button_text(),
+            Self::Error(details) => details.get_confirm_button_text(),
+            Self::Notice(details) => details.get_confirm_button_text(),
         }
     }
 
     fn get_cancel_button_text(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_cancel_button_text(),
-            AlertType::Notice(details) => details.get_cancel_button_text(),
+            Self::Error(details) => details.get_cancel_button_text(),
+            Self::Notice(details) => details.get_cancel_button_text(),
         }
     }
 
     fn get_icon_color(&self) -> &'static str {
         match self {
-            AlertType::Error(details) => details.get_icon_color(),
-            AlertType::Notice(details) => details.get_icon_color(),
+            Self::Error(details) => details.get_icon_color(),
+            Self::Notice(details) => details.get_icon_color(),
         }
     }
 }
@@ -125,7 +125,7 @@ pub struct ShAlertProps {
     pub on_confirm: Callback<()>,
     #[prop_or(Callback::noop())]
     pub on_cancel: Callback<()>,
-    #[prop_or(9875000)]
+    #[prop_or(5000)]
     pub timeout: u32,
     #[prop_or("button")]
     pub cancel_button_class: &'static str,
@@ -163,7 +163,7 @@ pub fn sh_alert(props: &ShAlertProps) -> Html {
     let icon_color = alert_type.get_icon_color();
 
     use_effect_with(props.show_alert, move |show_alert| {
-        show_alert_as_state.set(show_alert.clone());
+        show_alert_as_state.set(*show_alert);
     });
 
     if *new_show_alert != props.show_alert {

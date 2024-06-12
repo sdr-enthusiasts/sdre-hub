@@ -8,23 +8,23 @@
 use gloo::timers::callback::Timeout;
 use yew::prelude::*;
 
-const TITLE: &'static str = "Info";
-const ALERT_CLASS: &'static str = "w-96 h-48 text-white";
-const ICON_CLASS: &'static str = "flex justify-center";
-const CONFIRM_BUTTON_TEXT: &'static str = "Okay";
-const CANCEL_BUTTON_TEXT: &'static str = "Cancel";
-const CONFIRM_BUTTON_CLASS: &'static str =
+const TITLE: &str = "Info";
+const ALERT_CLASS: &str = "w-96 h-48 text-white";
+const ICON_CLASS: &str = "flex justify-center";
+const CONFIRM_BUTTON_TEXT: &str = "Okay";
+const CANCEL_BUTTON_TEXT: &str = "Cancel";
+const CONFIRM_BUTTON_CLASS: &str =
     "mt-2 mx-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200";
-const CANCEL_BUTTON_CLASS: &'static str =
+const CANCEL_BUTTON_CLASS: &str =
     "mt-2 mx-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-200";
-const CONTAINER_CLASS: &'static str =
+const CONTAINER_CLASS: &str =
     "flex items-center text-center justify-center bg-gray-800 text-white border border-gray-600";
-const TITLE_CLASS: &'static str = "dark:text-white";
-const MESSAGE_CLASS: &'static str = "dark:text-gray-300";
-const ICON_COLOR: &'static str = "";
-const ICON_WIDTH: &'static str = "50";
+const TITLE_CLASS: &str = "dark:text-white";
+const MESSAGE_CLASS: &str = "dark:text-gray-300";
+const ICON_COLOR: &str = "";
+const ICON_WIDTH: &str = "50";
 
-#[derive(Debug, PartialEq, Clone, Default)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub enum Position {
     TopLeft,
     TopRight,
@@ -37,20 +37,21 @@ pub enum Position {
 }
 
 impl Position {
-    pub fn get_class(&self) -> &'static str {
+    #[must_use]
+    pub const fn get_class(&self) -> &'static str {
         match self {
-            Position::TopLeft => "top-0 left-0",
-            Position::TopRight => "top-0 right-0",
-            Position::Middle => "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
-            Position::Bottom => "bottom-0 left-1/2 transform -translate-x-1/2",
-            Position::Top => "top-0 left-1/2 transform -translate-x-1/2",
-            Position::BottomRight => "bottom-0 right-0",
-            Position::BottomLeft => "bottom-0 left-0",
+            Self::TopLeft => "top-0 left-0",
+            Self::TopRight => "top-0 right-0",
+            Self::Middle => "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
+            Self::Bottom => "bottom-0 left-1/2 transform -translate-x-1/2",
+            Self::Top => "top-0 left-1/2 transform -translate-x-1/2",
+            Self::BottomRight => "bottom-0 right-0",
+            Self::BottomLeft => "bottom-0 left-0",
         }
     }
 }
 
-#[derive(Debug, PartialEq, Clone, Default)]
+#[derive(Debug, Eq, PartialEq, Clone, Default)]
 pub enum IconType {
     Warning,
     Error,
@@ -61,19 +62,20 @@ pub enum IconType {
 }
 
 impl IconType {
-    pub fn get_default_color(&self) -> &'static str {
+    #[must_use]
+    pub const fn get_default_color(&self) -> &'static str {
         match self {
-            IconType::Warning => "#CC5500", // Burnt Orange
-            IconType::Error => "#EE4B2B",   // Bright Red
-            IconType::Success => "lightgreen",
-            IconType::Info => "lightblue",
-            IconType::Question => "lightgray",
+            Self::Warning => "#CC5500", // Burnt Orange
+            Self::Error => "#EE4B2B",   // Bright Red
+            Self::Success => "lightgreen",
+            Self::Info => "lightblue",
+            Self::Question => "lightgray",
         }
     }
 
     pub fn get_icon(&self, icon_width: &'static str, icon_color: &'static str) -> Html {
         match self {
-            IconType::Warning => {
+            Self::Warning => {
                 html! {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +90,7 @@ impl IconType {
                     </svg>
                 }
             }
-            IconType::Error => {
+            Self::Error => {
                 html! {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +105,7 @@ impl IconType {
                     </svg>
                 }
             }
-            IconType::Success => {
+            Self::Success => {
                 html! {
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +120,7 @@ impl IconType {
                     </svg>
                 }
             }
-            IconType::Info => {
+            Self::Info => {
                 html! {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +138,7 @@ impl IconType {
                     </svg>
                 }
             }
-            IconType::Question => {
+            Self::Question => {
                 html! {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +255,7 @@ pub struct AlertProps {
 #[function_component]
 pub fn Alert(props: &AlertProps) -> Html {
     let show = *props.show_alert;
-    let timeout = props.timeout.clone();
+    let timeout = props.timeout;
     let show_alert = props.show_alert.clone();
 
     use_effect_with(show_alert.clone(), move |show_alert| {

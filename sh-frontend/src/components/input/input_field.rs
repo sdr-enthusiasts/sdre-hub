@@ -3,19 +3,21 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use std::fmt::Display;
+
 use yew::prelude::*;
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum InputFieldType {
     Text,
     Select,
 }
 
-impl ToString for InputFieldType {
-    fn to_string(&self) -> String {
+impl Display for InputFieldType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            InputFieldType::Text => "text".to_string(),
-            InputFieldType::Select => "select".to_string(),
+            Self::Text => write!(f, "text"),
+            Self::Select => write!(f, "select"),
         }
     }
 }
@@ -90,7 +92,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
                                 >
                                     {
                                         select_options.as_ref().unwrap().iter().map(|option| {
-                                            let selected = &option == &input_value;
+                                            let selected = option == input_value;
                                             html! {
                                                 <option value={option.clone()} {selected}>{ option }</option>
                                             }

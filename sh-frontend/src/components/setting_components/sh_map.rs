@@ -107,7 +107,7 @@ pub fn sh_map_config(props: &WssCommunicationProps) -> Html {
         <div class="collapsible-content">
           <div class="content-inner">
             {
-              if let Some(config) = config.as_ref() {
+              config.as_ref().as_ref().map_or_else(|| html! { "Loading..." }, |config| {
                   let map = config.map.clone();
                   let latitude = map.center_latitude.to_string();
                   let longitude = map.center_longitude.to_string();
@@ -122,9 +122,7 @@ pub fn sh_map_config(props: &WssCommunicationProps) -> Html {
                           </div>
                       </form>
                   }
-              } else {
-                  html!{ "Still loading!" }
-              }
+              })
           }
           </div>
         </div>

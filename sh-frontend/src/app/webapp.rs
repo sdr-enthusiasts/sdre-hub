@@ -52,7 +52,7 @@ pub struct App {
 
 impl App {
     fn handle_wsaction_connect(&mut self, ctx: &Context<Self>) {
-        let callback = ctx.link().callback(|data| Msg::WsReady(data));
+        let callback = ctx.link().callback(Msg::WsReady);
         let notification = ctx.link().batch_callback(|status| match status {
             WebSocketStatus::Opened => {
                 let initial_message =
@@ -75,7 +75,7 @@ impl App {
             .unwrap()
             .send(serde_json::to_string(&serialized_data).unwrap());
 
-        if self.fetching == false {
+        if !self.fetching {
             self.fetching = true;
             self.dispatch.reduce_mut(|state| {
                 state.websocket_connected = true;
@@ -188,7 +188,7 @@ impl App {
         }
     }
 
-    fn handle_msg_show_alert(&mut self, alert_box_type: AlertBoxToShow) {
+    fn handle_msg_show_alert(&mut self, alert_box_type: &AlertBoxToShow) {
         log::debug!("Showing alert box: {:?}", alert_box_type);
         match alert_box_type {
             AlertBoxToShow::ConfigWriteSuccess => {
@@ -252,7 +252,7 @@ impl Component for App {
             }
 
             Msg::ShowAlert(alert_box_type) => {
-                self.handle_msg_show_alert(alert_box_type);
+                self.handle_msg_show_alert(&alert_box_type);
                 true
             }
 
@@ -274,10 +274,8 @@ impl Component for App {
             Msg::WsAction(WsAction::SendData(input))
         });
 
-        let hide_alert_box = ctx.link().callback(|_| Msg::HideAlert);
-        let show_alert_box = ctx
-            .link()
-            .callback(|alert_box_type| Msg::ShowAlert(alert_box_type));
+        let hide_alert_box = ctx.link().callback(|()| Msg::HideAlert);
+        let show_alert_box = ctx.link().callback(Msg::ShowAlert);
 
         html! {
             <>

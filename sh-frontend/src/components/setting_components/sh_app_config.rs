@@ -64,9 +64,9 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
 
                     if let Some(config) = config.as_ref() {
                         let app = config.app.clone();
-                        let database_url_original = app.database_url.clone();
-                        let log_level_original = app.log_level.clone();
-                        let data_path_original = app.data_path.clone();
+                        let database_url_original = app.database_url;
+                        let log_level_original = app.log_level;
+                        let data_path_original = app.data_path;
 
                         if database_url != database_url_original
                             || log_level != log_level_original
@@ -97,9 +97,9 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     // set all the values back to the original values
                     if let Some(config) = config.as_ref() {
                         let app = config.clone().app;
-                        let database_url = app.database_url.clone();
-                        let log_level = app.log_level.clone();
-                        let data_path = app.data_path.clone();
+                        let database_url = app.database_url;
+                        let log_level = app.log_level;
+                        let data_path = app.data_path;
 
                         database_url_node
                             .cast::<HtmlInputElement>()
@@ -119,7 +119,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
         })
     };
 
-    let current_state = is_visible.clone();
+    let current_state = is_visible;
     let show_panel = {
         // lets see if the user has changed any of the values
         // if they have, we should prompt them to save the changes
@@ -135,9 +135,9 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
             // FIXME: Implement above logic to save literal nanoseconds of CPU time and memory lel
             if let Some(config) = config.as_ref() {
                 let app = config.app.clone();
-                let database_url = app.database_url.clone();
-                let log_level = app.log_level.clone();
-                let data_path = app.data_path.clone();
+                let database_url = app.database_url;
+                let log_level = app.log_level;
+                let data_path = app.data_path;
 
                 // verify none of the inputs are empty
 
@@ -170,7 +170,6 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     // prompt the user to save the changes
 
                     show_alert.emit(AlertBoxToShow::UnsavedChanges);
-                    return;
                 }
             }
         })
@@ -183,7 +182,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
         <div class="collapsible-content">
           <div class="content-inner">
                 {
-                    if let Some(config) = config.as_ref() {
+                    config.as_ref().as_ref().map_or_else(|| html! { "Still loading!" }, |config| {
                         let app = config.app.clone();
                         let database_url: String = app.database_url.clone();
                         let log_level: String = app.log_level.clone();
@@ -199,9 +198,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                                 </div>
                             </form>
                         }
-                    } else {
-                        html!{ "Still loading!" }
-                    }
+                    })
                 }
           </div>
         </div>

@@ -16,9 +16,8 @@ pub enum ButtonAction {
 impl From<String> for ButtonAction {
     fn from(action: String) -> Self {
         match action.to_lowercase().as_str() {
-            "update" => ButtonAction::Update,
-            "reset" => ButtonAction::Reset,
-            _ => ButtonAction::Update,
+            "reset" => Self::Reset,
+            _ => Self::Update,
         }
     }
 }

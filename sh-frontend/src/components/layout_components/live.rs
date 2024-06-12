@@ -73,7 +73,7 @@ pub fn live(props: &WssCommunicationProps) -> Html {
     let right_panel_clone = right_panel.clone();
     let right_panel_dispatch = dispatch.clone();
     let left_panel_clone = left_panel.clone();
-    let left_panel_dispatch = dispatch.clone();
+    let left_panel_dispatch = dispatch;
 
     use_event_with_window("keydown", move |e: KeyboardEvent| {
         // if control is pressed, with left arrow, go to the previous panel

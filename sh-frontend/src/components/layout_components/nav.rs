@@ -80,7 +80,7 @@ impl MenuItemState {
             menu_state,
             panel_side,
             panel,
-            state: state,
+            state,
             dispatch,
         }
     }
