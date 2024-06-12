@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::components::footer_components::connected::Connected;
+use crate::components::footer::connected::Connected;
 use yew::prelude::*;
 
 #[function_component(Footer)]

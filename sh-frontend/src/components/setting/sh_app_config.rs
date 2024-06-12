@@ -5,8 +5,8 @@
 
 use crate::common::alert_boxes::AlertBoxToShow;
 use crate::common::wssprops::WssCommunicationProps;
-use crate::components::input::input_field::{InputField, InputFieldType};
-use crate::components::setting_components::ButtonAction;
+use crate::components::input::field::{InputField, InputFieldType};
+use crate::components::setting::ButtonAction;
 use crate::services::temp_state::WebAppStateTemp;
 use serde::{Deserialize, Serialize};
 use sh_common::{MessageData, UserMessageTypes, UserWssMessage};

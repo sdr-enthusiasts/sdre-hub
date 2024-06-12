@@ -4,10 +4,10 @@
 // https://opensource.org/licenses/MIT.
 
 pub mod alerts;
-pub mod footer_components;
+pub mod footer;
 pub mod input;
-pub mod layout_components;
-pub mod map_components;
-pub mod nav_components;
+pub mod layout;
+pub mod map;
+pub mod nav;
 pub mod pages;
-pub mod setting_components;
+pub mod setting;

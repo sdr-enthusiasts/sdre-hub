@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::common::panels::Panels;
-use crate::components::nav_components::search::Search;
+use crate::components::nav::search::Search;
 use crate::services::saved_state::WebAppState;
 use crate::services::temp_state::WebAppStateTemp;
 use std::rc::Rc;

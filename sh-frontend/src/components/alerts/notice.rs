@@ -7,9 +7,9 @@ use super::base::{IconType, Position};
 use super::AlertPropsTrait;
 
 #[derive(Default, Clone, Eq, PartialEq)]
-pub struct AlertNotice {}
+pub struct ShAlertNoticeBox {}
 
-impl AlertPropsTrait for AlertNotice {
+impl AlertPropsTrait for ShAlertNoticeBox {
     fn new() -> Self {
         Self {}
     }

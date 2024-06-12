@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::components::map_components::map_display::ShMap;
+use crate::components::map::map_display::ShMap;
 use crate::components::pages::acars_messages::AcarsMessages;
 use crate::components::pages::help::ShHelp;
 use crate::components::pages::settings::ShSettings;

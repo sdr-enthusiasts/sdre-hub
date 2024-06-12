@@ -4,12 +4,12 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::common::alert_boxes::AlertBoxToShow;
-use crate::components::alerts::error::AlertError;
+use crate::components::alerts::error::ShAlertErrorBox;
 use crate::components::alerts::AlertPropsTrait;
 use crate::components::alerts::{AlertType, ShAlert};
-use crate::components::layout_components::footer::Footer;
-use crate::components::layout_components::live::Live;
-use crate::components::layout_components::nav::Nav;
+use crate::components::layout::footer::Footer;
+use crate::components::layout::live::Live;
+use crate::components::layout::nav::Nav;
 use crate::services::temp_state::WebAppStateTemp;
 use anyhow::Error;
 use sh_common::{
@@ -294,7 +294,7 @@ impl Component for App {
                         }
                         AlertBoxToShow::UnsavedChanges => {
                             html! {
-                                <ShAlert show_alert={true} message={"You have unsaved changes. Please save changes, or reset, before continuing."} title={"Unsaved Changes"} on_confirm={hide_alert_box} alert_type={AlertType::Error(AlertError::new())}/>
+                                <ShAlert show_alert={true} message={"You have unsaved changes. Please save changes, or reset, before continuing."} title={"Unsaved Changes"} on_confirm={hide_alert_box} alert_type={AlertType::Error(ShAlertErrorBox::new())}/>
                             }
                         }
                         AlertBoxToShow::None => {

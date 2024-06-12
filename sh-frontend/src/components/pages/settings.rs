@@ -5,7 +5,7 @@
 
 use crate::{
     common::wssprops::WssCommunicationProps,
-    components::setting_components::{
+    components::setting::{
         sh_app_config::ShAppConfig, sh_data_sources::ShDataSourcesConfig,
         sh_enabled_data_sources::ShEnabledDataSourcesConfig, sh_map::ShMapConfig,
     },

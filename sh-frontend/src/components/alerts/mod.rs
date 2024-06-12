@@ -12,27 +12,27 @@ pub mod notice;
 use crate::components::alerts::base::Alert;
 use base::IconType;
 use base::Position;
-use error::AlertError;
-use notice::AlertNotice;
+use error::ShAlertErrorBox;
+use notice::ShAlertNoticeBox;
 use yew::prelude::*;
 
 // FIXME: Before ridding of tailwind the "position" part of this prop needs us to implement some more CSS classes. See: https://github.com/next-rs/yew-alert/blob/37da6d37d10cb32dc778d4f7a642800eb8188175/src/lib.rs#L233
 
 #[derive(Clone, PartialEq, Eq)]
 pub enum AlertType {
-    Error(AlertError),
-    Notice(AlertNotice),
+    Error(ShAlertErrorBox),
+    Notice(ShAlertNoticeBox),
 }
 
 impl Default for AlertType {
     fn default() -> Self {
-        Self::Notice(AlertNotice::new())
+        Self::Notice(ShAlertNoticeBox::new())
     }
 }
 
 impl AlertPropsTrait for AlertType {
     fn new() -> Self {
-        Self::Notice(AlertNotice::new())
+        Self::Notice(ShAlertNoticeBox::new())
     }
 
     fn get_position(&self) -> Position {
