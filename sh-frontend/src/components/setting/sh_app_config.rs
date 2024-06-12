@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use std::env::current_exe;
+
 use crate::common::alert_boxes::AlertBoxToShow;
 use crate::common::wssprops::WssCommunicationProps;
 use crate::components::input::field::{InputField, InputFieldType};
@@ -153,6 +155,7 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     || data_path_node.is_empty()
                 {
                     log::debug!("One of the fields is empty");
+                    dispatch.reduce_mut(move |state| state.is_visible = true);
                     return;
                 }
 
@@ -162,7 +165,13 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                     && log_level_node == log_level
                     && data_path_node == data_path
                 {
-                    log::debug!("None of the fields have changed");
+                    if *current_state {
+                        current_state.set(false);
+                        dispatch.reduce_mut(move |state| state.is_visible = false);
+                    } else {
+                        current_state.set(true);
+                        dispatch.reduce_mut(move |state| state.is_visible = true);
+                    }
                 } else {
                     log::debug!("One of the fields has changed");
                     current_state.set(true);
