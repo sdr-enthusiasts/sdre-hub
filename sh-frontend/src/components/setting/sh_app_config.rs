@@ -3,8 +3,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use std::env::current_exe;
-
 use crate::common::alert_boxes::AlertBoxToShow;
 use crate::common::wssprops::WssCommunicationProps;
 use crate::components::input::field::{InputField, InputFieldType};
