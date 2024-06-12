@@ -50,6 +50,167 @@ pub struct App {
     pub alert_box_type: AlertBoxToShow,
 }
 
+impl App {
+    fn handle_wsaction_connect(&mut self, ctx: &Context<Self>) {
+        let callback = ctx.link().callback(|data| Msg::WsReady(data));
+        let notification = ctx.link().batch_callback(|status| match status {
+            WebSocketStatus::Opened => {
+                let initial_message =
+                    UserWssMessage::new(UserMessageTypes::UserRequestConfig, MessageData::NoData);
+                Some(WsAction::SendData(initial_message).into())
+            }
+            WebSocketStatus::Closed | WebSocketStatus::Error => Some(WsAction::Lost.into()),
+        });
+        let task =
+            WebSocketService::connect_text("ws://127.0.0.1:3000/sdre-hub", callback, notification)
+                .unwrap();
+        self.ws = Some(task);
+    }
+
+    fn handle_wsaction_send_data(&mut self, data: &UserWssMessage) {
+        log::debug!("Sending data: {:?}", data);
+        let serialized_data = serde_json::to_string(&data).unwrap();
+        self.ws
+            .as_mut()
+            .unwrap()
+            .send(serde_json::to_string(&serialized_data).unwrap());
+
+        if self.fetching == false {
+            self.fetching = true;
+            self.dispatch.reduce_mut(|state| {
+                state.websocket_connected = true;
+            });
+        }
+    }
+
+    fn handle_wsaction_disconnect(&mut self) {
+        self.ws.take();
+        log::info!("WebSocket connection disconnected. Why? This should be unreachable");
+        self.fetching = false;
+        self.dispatch.reduce_mut(|state| {
+            state.config = None;
+            state.websocket_connected = false;
+        });
+    }
+
+    fn handle_wsaction_lost(&mut self, ctx: &Context<Self>) {
+        self.ws = None;
+        log::error!("WebSocket connection lost. Reconnecting");
+        self.fetching = false;
+        // reconnect
+        ctx.link().send_message(WsAction::Connect);
+        self.dispatch.reduce_mut(|state| {
+            state.config = None;
+            state.websocket_connected = false;
+        });
+    }
+
+    fn handle_wsaction_ready(&mut self, ctx: &Context<Self>, response: Result<String, Error>) {
+        log::trace!("Received data: {:?}", response);
+
+        if response.is_err() {
+            log::error!("Error: {:?}", response.err().unwrap());
+            return;
+        }
+
+        let data = response.unwrap();
+        // remove the first and last characters
+
+        let data_deserialized: ServerWssMessage = match serde_json::from_str(&data) {
+            Ok(message) => message,
+            Err(e) => {
+                log::error!("Error deserializing message: {:?}", e);
+                return;
+            }
+        };
+
+        match data_deserialized.get_message_type() {
+            ServerMessageTypes::ServerResponseConfig => {
+                log::debug!("Received config message");
+                self.dispatch
+                    .reduce_mut(|state| match data_deserialized.get_data() {
+                        MessageData::ShConfig(config) => {
+                            state.config = Some(config.clone());
+                        }
+                        _ => {
+                            log::error!("Received invalid data type");
+                        }
+                    });
+            }
+
+            ServerMessageTypes::ServerWriteConfigFailure => {
+                match data_deserialized.get_data() {
+                    MessageData::ShConfigFailure(data) => {
+                        log::error!("Failed to write config: {}", data);
+                    }
+                    _ => {
+                        log::error!("Invalid response type");
+                    }
+                }
+                log::error!("Failed to write config");
+
+                // lets regrab the config
+
+                let initial_message =
+                    UserWssMessage::new(UserMessageTypes::UserRequestConfig, MessageData::NoData);
+
+                ctx.link().send_message(WsAction::SendData(initial_message));
+
+                // show alert
+                ctx.link()
+                    .send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteFailure));
+            }
+
+            ServerMessageTypes::ServerWriteConfigSuccess => {
+                // see if there is any data
+                match data_deserialized.get_data() {
+                    MessageData::ShConfigSuccess(data) => {
+                        log::info!("Config written successfully: {}", data);
+                    }
+                    MessageData::ShConfigFailure(_) => {
+                        log::error!("Invalid response type");
+                    }
+                    _ => (),
+                }
+                log::info!("Config written successfully");
+
+                // lets regrab the config
+
+                let initial_message =
+                    UserWssMessage::new(UserMessageTypes::UserRequestConfig, MessageData::NoData);
+
+                ctx.link().send_message(WsAction::SendData(initial_message));
+
+                // show alert
+                ctx.link()
+                    .send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteSuccess));
+            }
+        }
+    }
+
+    fn handle_msg_show_alert(&mut self, alert_box_type: AlertBoxToShow) {
+        log::debug!("Showing alert box: {:?}", alert_box_type);
+        match alert_box_type {
+            AlertBoxToShow::ConfigWriteSuccess => {
+                self.alert_box_type = AlertBoxToShow::ConfigWriteSuccess;
+            }
+            AlertBoxToShow::ConfigWriteFailure => {
+                self.alert_box_type = AlertBoxToShow::ConfigWriteFailure;
+            }
+            AlertBoxToShow::UnsavedChanges => {
+                self.alert_box_type = AlertBoxToShow::UnsavedChanges;
+            }
+            AlertBoxToShow::None => {
+                self.alert_box_type = AlertBoxToShow::None;
+            }
+        }
+    }
+
+    fn handle_msg_hide_alert(&mut self) {
+        self.alert_box_type = AlertBoxToShow::None;
+    }
+}
+
 impl Component for App {
     type Message = Msg;
     type Properties = ();
@@ -69,182 +230,34 @@ impl Component for App {
         match msg {
             Msg::WsAction(action) => match action {
                 WsAction::Connect => {
-                    let callback = ctx.link().callback(|data| Msg::WsReady(data));
-                    let notification = ctx.link().batch_callback(|status| match status {
-                        WebSocketStatus::Opened => {
-                            let initial_message = UserWssMessage::new(
-                                UserMessageTypes::UserRequestConfig,
-                                MessageData::NoData,
-                            );
-                            Some(WsAction::SendData(initial_message).into())
-                        }
-                        WebSocketStatus::Closed | WebSocketStatus::Error => {
-                            Some(WsAction::Lost.into())
-                        }
-                    });
-                    let task = WebSocketService::connect_text(
-                        "ws://127.0.0.1:3000/sdre-hub",
-                        callback,
-                        notification,
-                    )
-                    .unwrap();
-                    self.ws = Some(task);
+                    self.handle_wsaction_connect(ctx);
                     false
                 }
                 WsAction::SendData(data) => {
-                    log::debug!("Sending data: {:?}", data);
-                    log::debug!("Sending data: {:?}", serde_json::to_string(&data).unwrap());
-                    let serialized_data = serde_json::to_string(&data).unwrap();
-                    self.ws
-                        .as_mut()
-                        .unwrap()
-                        .send(serde_json::to_string(&serialized_data).unwrap());
-
-                    if self.fetching == false {
-                        self.fetching = true;
-                        self.dispatch.reduce_mut(|state| {
-                            state.websocket_connected = true;
-                        });
-                    }
+                    self.handle_wsaction_send_data(&data);
                     false
                 }
                 WsAction::Disconnect => {
-                    self.ws.take();
-                    log::info!(
-                        "WebSocket connection disconnected. Why? This should be unreachable"
-                    );
-                    self.fetching = false;
-                    self.dispatch.reduce_mut(|state| {
-                        state.config = None;
-                        state.websocket_connected = false;
-                    });
-
+                    self.handle_wsaction_disconnect();
                     false
                 }
                 WsAction::Lost => {
-                    self.ws = None;
-                    log::error!("WebSocket connection lost. Reconnecting");
-                    self.fetching = false;
-                    // reconnect
-                    ctx.link().send_message(WsAction::Connect);
-                    self.dispatch.reduce_mut(|state| {
-                        state.config = None;
-                        state.websocket_connected = false;
-                    });
-
+                    self.handle_wsaction_lost(ctx);
                     false
                 }
             },
             Msg::WsReady(response) => {
-                log::trace!("Received data: {:?}", response);
-
-                if response.is_err() {
-                    log::error!("Error: {:?}", response.err().unwrap());
-                    return false;
-                }
-
-                let data = response.unwrap();
-                // remove the first and last characters
-
-                let data_deserialized: ServerWssMessage = match serde_json::from_str(&data) {
-                    Ok(message) => message,
-                    Err(e) => {
-                        log::error!("Error deserializing message: {:?}", e);
-                        return false;
-                    }
-                };
-
-                match data_deserialized.get_message_type() {
-                    ServerMessageTypes::ServerResponseConfig => {
-                        log::debug!("Received config message");
-                        self.dispatch
-                            .reduce_mut(|state| match data_deserialized.get_data() {
-                                MessageData::ShConfig(config) => {
-                                    state.config = Some(config.clone());
-                                }
-                                _ => {
-                                    log::error!("Received invalid data type");
-                                }
-                            });
-                    }
-
-                    ServerMessageTypes::ServerWriteConfigFailure => {
-                        match data_deserialized.get_data() {
-                            MessageData::ShConfigFailure(data) => {
-                                log::error!("Failed to write config: {}", data);
-                            }
-                            _ => {
-                                log::error!("Invalid response type");
-                            }
-                        }
-                        log::error!("Failed to write config");
-
-                        // lets regrab the config
-
-                        let initial_message = UserWssMessage::new(
-                            UserMessageTypes::UserRequestConfig,
-                            MessageData::NoData,
-                        );
-
-                        ctx.link().send_message(WsAction::SendData(initial_message));
-
-                        // show alert
-                        ctx.link()
-                            .send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteFailure));
-                    }
-
-                    ServerMessageTypes::ServerWriteConfigSuccess => {
-                        // see if there is any data
-                        match data_deserialized.get_data() {
-                            MessageData::ShConfigSuccess(data) => {
-                                log::info!("Config written successfully: {}", data);
-                            }
-                            MessageData::ShConfigFailure(_) => {
-                                log::error!("Invalid response type");
-                            }
-                            _ => (),
-                        }
-                        log::info!("Config written successfully");
-
-                        // lets regrab the config
-
-                        let initial_message = UserWssMessage::new(
-                            UserMessageTypes::UserRequestConfig,
-                            MessageData::NoData,
-                        );
-
-                        ctx.link().send_message(WsAction::SendData(initial_message));
-
-                        // show alert
-                        ctx.link()
-                            .send_message(Msg::ShowAlert(AlertBoxToShow::ConfigWriteSuccess));
-                    }
-                }
-
+                self.handle_wsaction_ready(ctx, response);
                 false
             }
 
             Msg::ShowAlert(alert_box_type) => {
-                log::debug!("Showing alert box: {:?}", alert_box_type);
-                match alert_box_type {
-                    AlertBoxToShow::ConfigWriteSuccess => {
-                        self.alert_box_type = AlertBoxToShow::ConfigWriteSuccess;
-                    }
-                    AlertBoxToShow::ConfigWriteFailure => {
-                        self.alert_box_type = AlertBoxToShow::ConfigWriteFailure;
-                    }
-                    AlertBoxToShow::UnsavedChanges => {
-                        self.alert_box_type = AlertBoxToShow::UnsavedChanges;
-                    }
-                    AlertBoxToShow::None => {
-                        self.alert_box_type = AlertBoxToShow::None;
-                    }
-                }
+                self.handle_msg_show_alert(alert_box_type);
                 true
             }
 
             Msg::HideAlert => {
-                self.alert_box_type = AlertBoxToShow::None;
+                self.handle_msg_hide_alert();
                 true
             }
         }
