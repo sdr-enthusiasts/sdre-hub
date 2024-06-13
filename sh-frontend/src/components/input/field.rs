@@ -3,9 +3,10 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use std::fmt::Display;
+use heck::ToTitleCase;
+use std::{f64, fmt::Display};
 use wasm_bindgen::JsCast;
-use web_sys::{js_sys::eval, HtmlInputElement};
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
 #[derive(Clone, PartialEq, Eq)]
@@ -76,12 +77,9 @@ impl Default for NumberProperties {
 
 #[must_use]
 pub fn make_sure_string_has_five_digits(value: &String) -> String {
-    let value = match value.parse::<f64>() {
-        Ok(value) => value,
-        Err(_) => {
-            log::error!("Could not parse value as f64: {}", value);
-            return "0.0".to_string();
-        }
+    let Ok(value) = value.parse::<f64>() else {
+        log::error!("Could not parse value as f64: {}", value);
+        return "0.0".to_string();
     };
 
     format!("{value:.5}")
@@ -158,12 +156,9 @@ pub fn input_field(props: &InputFieldProps) -> Html {
 
             let current_value = input_node_ref.cast::<HtmlInputElement>().unwrap().value();
 
-            let current_value = match current_value.parse::<f64>() {
-                Ok(value) => value,
-                Err(_) => {
-                    log::error!("Could not parse value as f64: {}", current_value);
-                    return;
-                }
+            let Ok(current_value) = current_value.parse::<f64>() else {
+                log::error!("Could not parse value as f64: {}", current_value);
+                return;
             };
 
             let new_value = current_value + step;
@@ -193,12 +188,9 @@ pub fn input_field(props: &InputFieldProps) -> Html {
 
             let current_value = input_node_ref.cast::<HtmlInputElement>().unwrap().value();
 
-            let current_value = match current_value.parse::<f64>() {
-                Ok(value) => value,
-                Err(_) => {
-                    log::error!("Could not parse value as f64: {}", current_value);
-                    return;
-                }
+            let Ok(current_value) = current_value.parse::<f64>() else {
+                log::error!("Could not parse value as f64: {}", current_value);
+                return;
             };
 
             let new_value = current_value - step;
@@ -259,6 +251,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
                                     readonly={*read_only}
                                     max={number_properties.max.clone()}
                                     min={number_properties.min.clone()}
+                                    onchange={onchange}
                                 />
                                 <button class="add" onclick={on_increase}>{"+"}</button>
                                 </>
@@ -286,7 +279,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
                                         select_options.as_ref().unwrap().iter().map(|option| {
                                             let selected = option == input_value;
                                             html! {
-                                                <option value={option.clone()} {selected}>{ option }</option>
+                                                <option value={option.clone()} {selected}>{ option.to_title_case() }</option>
                                             }
                                         }).collect::<Html>()
                                     }

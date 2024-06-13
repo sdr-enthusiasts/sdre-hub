@@ -141,6 +141,11 @@
           box-sizing: border-box;
         }
 
+        .data-quantity select,
+        .data-quantity select option {
+          text-transform: capitalize;
+        }
+
         .data-quantity input:focus {
           outline: none;
           box-shadow: 0 5px 55px -10px rgba(0, 0, 0, 0.2), 0 0 4px #3fb0ff; /* Allows border radius on focus */
