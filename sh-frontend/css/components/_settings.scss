@@ -105,8 +105,8 @@
           padding-left: config.$normal-padding;
         }
 
-        input:read-only,
-        select:disabled {
+        .data-quantity input:read-only,
+        .data-quantity select:disabled {
           background: colors.$grey;
         }
 
@@ -126,7 +126,8 @@
           display: none;
         }
 
-        .data-quantity input {
+        .data-quantity input,
+        .data-quantity select {
           font-size: 18px;
           height: 100%;
           padding: 0rem;
