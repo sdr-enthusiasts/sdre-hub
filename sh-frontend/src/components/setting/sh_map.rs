@@ -86,9 +86,9 @@ pub fn sh_map_config(props: &WssCommunicationProps) -> Html {
                     if let Some(config) = config.as_ref() {
                         let map = config.clone().map;
                         let center_latitude_original =
-                            make_sure_string_has_five_digits(map.center_latitude.to_string());
+                            make_sure_string_has_five_digits(&map.center_latitude.to_string());
                         let center_longitude_original =
-                            make_sure_string_has_five_digits(map.center_longitude.to_string());
+                            make_sure_string_has_five_digits(&map.center_longitude.to_string());
 
                         latitude_node
                             .cast::<HtmlInputElement>()
@@ -121,9 +121,9 @@ pub fn sh_map_config(props: &WssCommunicationProps) -> Html {
             if let Some(config) = config.as_ref() {
                 let map = config.clone().map;
                 let center_latitude_original =
-                    make_sure_string_has_five_digits(map.center_latitude.to_string());
+                    make_sure_string_has_five_digits(&map.center_latitude.to_string());
                 let center_longitude_original =
-                    make_sure_string_has_five_digits(map.center_longitude.to_string());
+                    make_sure_string_has_five_digits(&map.center_longitude.to_string());
 
                 // verify none of the inputs are empty
 
@@ -170,8 +170,8 @@ pub fn sh_map_config(props: &WssCommunicationProps) -> Html {
               config.as_ref().as_ref().map_or_else(|| html! { "Loading..." }, |config| {
                   let map = config.map.clone();
 
-                  let latitude = make_sure_string_has_five_digits(map.center_latitude.to_string());
-                  let longitude = make_sure_string_has_five_digits(map.center_longitude.to_string());
+                  let latitude = make_sure_string_has_five_digits(&map.center_latitude.to_string());
+                  let longitude = make_sure_string_has_five_digits(&map.center_longitude.to_string());
 
                   let longitude_options = NumberProperties::new(&CoordinateType::Longitude, longitude.clone());
                   let latitude_options = NumberProperties::new(&CoordinateType::Latitude, latitude.clone());

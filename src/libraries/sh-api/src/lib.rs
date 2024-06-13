@@ -264,8 +264,11 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                                     // tell the user that the config write was successful and they need to restart
                                     // because the map config changed
 
-                                    let response_type = ServerMessageTypes::ServerWriteConfigSuccess;
-                                    let data = MessageData::ShConfigSuccess("Map config has been updated.".to_string());
+                                    let response_type =
+                                        ServerMessageTypes::ServerWriteConfigSuccess;
+                                    let data = MessageData::ShConfigSuccess(
+                                        "Map config has been updated.".to_string(),
+                                    );
 
                                     let message = ServerWssMessage::new(response_type, data);
 
@@ -276,7 +279,8 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                                 Err(e) => {
                                     // tell the user that the config write failed
-                                    let response_type = ServerMessageTypes::ServerWriteConfigFailure;
+                                    let response_type =
+                                        ServerMessageTypes::ServerWriteConfigFailure;
                                     let data = MessageData::ShConfigFailure(format!(
                                         "Error writing config file: {e}"
                                     ));

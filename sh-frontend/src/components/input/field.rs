@@ -4,8 +4,8 @@
 // https://opensource.org/licenses/MIT.
 
 use std::fmt::Display;
-use web_sys::HtmlInputElement;
 use wasm_bindgen::JsCast;
+use web_sys::{js_sys::eval, HtmlInputElement};
 use yew::prelude::*;
 
 #[derive(Clone, PartialEq, Eq)]
@@ -74,9 +74,17 @@ impl Default for NumberProperties {
     }
 }
 
-pub fn make_sure_string_has_five_digits(value: String) -> String {
-    let value = value.parse::<f64>().unwrap();
-    format!("{:.5}", value)
+#[must_use]
+pub fn make_sure_string_has_five_digits(value: &String) -> String {
+    let value = match value.parse::<f64>() {
+        Ok(value) => value,
+        Err(_) => {
+            log::error!("Could not parse value as f64: {}", value);
+            return "0.0".to_string();
+        }
+    };
+
+    format!("{value:.5}")
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -124,13 +132,81 @@ pub fn input_field(props: &InputFieldProps) -> Html {
 
             let value = target.value();
             let value = match field_type {
-                InputFieldType::Number => {
-                    make_sure_string_has_five_digits(value)
-                },
-                _ => value
+                InputFieldType::Number => make_sure_string_has_five_digits(&value),
+                _ => value,
             };
 
             target.set_value(&value);
+        })
+    };
+
+    let on_increase = {
+        let input_node_ref = input_node_ref.clone();
+        let number_properties = number_properties.clone();
+        let step = number_properties
+            .as_ref()
+            .unwrap_or(&NumberProperties::default())
+            .step
+            .clone()
+            .parse::<f64>()
+            .unwrap();
+
+        Callback::from(move |event: MouseEvent| {
+            event.prevent_default();
+
+            // get the value from input_node_ref
+
+            let current_value = input_node_ref.cast::<HtmlInputElement>().unwrap().value();
+
+            let current_value = match current_value.parse::<f64>() {
+                Ok(value) => value,
+                Err(_) => {
+                    log::error!("Could not parse value as f64: {}", current_value);
+                    return;
+                }
+            };
+
+            let new_value = current_value + step;
+            let formatted_new_value = make_sure_string_has_five_digits(&new_value.to_string());
+            input_node_ref
+                .cast::<HtmlInputElement>()
+                .unwrap()
+                .set_value(&formatted_new_value);
+        })
+    };
+
+    let on_decrease = {
+        let input_node_ref = input_node_ref.clone();
+        let number_properties = number_properties.clone();
+        let step = number_properties
+            .as_ref()
+            .unwrap_or(&NumberProperties::default())
+            .step
+            .clone()
+            .parse::<f64>()
+            .unwrap();
+
+        Callback::from(move |event: MouseEvent| {
+            event.prevent_default();
+
+            // get the value from input_node_ref
+
+            let current_value = input_node_ref.cast::<HtmlInputElement>().unwrap().value();
+
+            let current_value = match current_value.parse::<f64>() {
+                Ok(value) => value,
+                Err(_) => {
+                    log::error!("Could not parse value as f64: {}", current_value);
+                    return;
+                }
+            };
+
+            let new_value = current_value - step;
+            let formatted_new_value = make_sure_string_has_five_digits(&new_value.to_string());
+            input_node_ref
+                .cast::<HtmlInputElement>()
+                .unwrap()
+                .set_value(&formatted_new_value);
         })
     };
 
@@ -138,7 +214,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
         <>
         <div><label for={name.clone()}>
         { label }</label></div>
-            <div>
+            <div class="data-quantity">
                 {
                     match field_type {
                         InputFieldType::Text => {
@@ -171,6 +247,8 @@ pub fn input_field(props: &InputFieldProps) -> Html {
                             let number_properties = number_properties.as_ref().unwrap();
 
                             html! {
+                                <>
+                                <button class="subtract" onclick={on_decrease}>{"-"}</button>
                                 <input
                                     /* onchange={on_cautious_change} */
                                     type={field_type.to_string()}
@@ -181,9 +259,9 @@ pub fn input_field(props: &InputFieldProps) -> Html {
                                     readonly={*read_only}
                                     max={number_properties.max.clone()}
                                     min={number_properties.min.clone()}
-                                    step={number_properties.step.clone()}
-                                    onchange={onchange}
                                 />
+                                <button class="add" onclick={on_increase}>{"+"}</button>
+                                </>
                             }
                         },
                         InputFieldType::Select => {
