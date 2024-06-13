@@ -237,6 +237,59 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                         debug!("Received app config: {:?}", data);
                         debug!("Current app state: {:?}", config);
                     }
+                    UserMessageTypes::UserUpdateMapConfig => {
+                        // check the data
+                        if message.data == MessageData::NoData {
+                            error!("Received UserUpdateMapConfig message without data");
+                            continue;
+                        }
+
+                        let MessageData::ShMapConfig(data) = message.data else {
+                            error!("Received UserUpdateMapConfig message with incorrect data type");
+                            continue;
+                        };
+
+                        debug!("Received UserUpdateMapConfig message with data");
+
+                        let mut config = state.config.lock().await;
+
+                        if config.map != data {
+                            debug!("New map config: {:?}", data);
+
+                            let new_map_config = data.clone();
+
+                            config.map = new_map_config;
+                            match config.write_config() {
+                                Ok(()) => {
+                                    // tell the user that the config write was successful and they need to restart
+                                    // because the map config changed
+
+                                    let response_type = ServerMessageTypes::ServerWriteConfigSuccess;
+                                    let data = MessageData::ShConfigSuccess("Map config has been updated.".to_string());
+
+                                    let message = ServerWssMessage::new(response_type, data);
+
+                                    let config = serde_json::to_string(&message).unwrap();
+
+                                    socket.send(Message::Text(config)).await.unwrap();
+                                }
+
+                                Err(e) => {
+                                    // tell the user that the config write failed
+                                    let response_type = ServerMessageTypes::ServerWriteConfigFailure;
+                                    let data = MessageData::ShConfigFailure(format!(
+                                        "Error writing config file: {e}"
+                                    ));
+
+                                    let message = ServerWssMessage::new(response_type, data);
+
+                                    let config = serde_json::to_string(&message).unwrap();
+
+                                    socket.send(Message::Text(config)).await.unwrap();
+                                }
+                            }
+                        }
+                    }
                 }
             }
             Message::Binary(_) => {

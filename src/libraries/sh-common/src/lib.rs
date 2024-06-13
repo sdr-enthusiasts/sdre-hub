@@ -15,12 +15,14 @@
 // This is the main loop of the SDRE Hub.
 
 use serde::{Deserialize, Serialize};
+use sh_config::map::ShMapConfig;
 use sh_config::web::{sh_web_config::ShWebConfig, sh_web_sdrehub::ShWebSDREHub};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum UserMessageTypes {
     UserRequestConfig,
     UserUpdateAppConfig,
+    UserUpdateMapConfig,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -34,6 +36,7 @@ pub enum ServerMessageTypes {
 pub enum MessageData {
     ShConfig(ShWebConfig),
     ShAppConfig(ShWebSDREHub),
+    ShMapConfig(ShMapConfig),
     ShConfigSuccess(String),
     ShConfigFailure(String),
     NoData,
