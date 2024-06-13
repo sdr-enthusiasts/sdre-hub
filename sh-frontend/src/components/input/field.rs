@@ -4,13 +4,21 @@
 // https://opensource.org/licenses/MIT.
 
 use std::fmt::Display;
-
+use web_sys::HtmlInputElement;
+use wasm_bindgen::JsCast;
 use yew::prelude::*;
 
 #[derive(Clone, PartialEq, Eq)]
 pub enum InputFieldType {
     Text,
+    Number,
     Select,
+}
+
+#[derive(Clone, PartialEq, Eq)]
+pub enum CoordinateType {
+    Latitude,
+    Longitude,
 }
 
 impl Display for InputFieldType {
@@ -18,8 +26,57 @@ impl Display for InputFieldType {
         match self {
             Self::Text => write!(f, "text"),
             Self::Select => write!(f, "select"),
+            Self::Number => write!(f, "number"),
         }
     }
+}
+
+#[derive(Clone, PartialEq, Eq)]
+pub struct NumberProperties {
+    pub max: String,
+    pub min: String,
+    pub step: String,
+    pub value: String,
+}
+
+impl NumberProperties {
+    #[must_use]
+    pub fn new(coordinate_type: &CoordinateType, initial_value: String) -> Self {
+        let max = match coordinate_type {
+            CoordinateType::Latitude => "90",
+            CoordinateType::Longitude => "180",
+        }
+        .to_string();
+
+        let min = match coordinate_type {
+            CoordinateType::Latitude => "-90",
+            CoordinateType::Longitude => "-180",
+        }
+        .to_string();
+
+        Self {
+            max,
+            min,
+            step: "0.00001".to_string(),
+            value: initial_value,
+        }
+    }
+}
+
+impl Default for NumberProperties {
+    fn default() -> Self {
+        Self {
+            max: "180".to_string(),
+            min: "180".to_string(),
+            step: "0.00001".to_string(),
+            value: "0.0".to_string(),
+        }
+    }
+}
+
+pub fn make_sure_string_has_five_digits(value: String) -> String {
+    let value = value.parse::<f64>().unwrap();
+    format!("{:.5}", value)
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -28,7 +85,10 @@ pub struct InputFieldProps {
     // pub on_cautious_change: Callback<ChangeData>,
     pub label: String,
     pub field_type: InputFieldType,
+    #[prop_or_default]
     pub select_options: Option<Vec<String>>,
+    #[prop_or_default]
+    pub number_properties: Option<NumberProperties>,
     pub name: String,
     pub input_node_ref: NodeRef,
     #[prop_or(false)]
@@ -46,7 +106,33 @@ pub fn input_field(props: &InputFieldProps) -> Html {
         name,
         input_node_ref,
         read_only,
+        number_properties,
     } = props;
+
+    let onchange = {
+        // format the number to always have 5 decimal places
+        let field_type = field_type.clone();
+
+        Callback::from(move |event: Event| {
+            event.prevent_default();
+
+            let target = event
+                .target()
+                .unwrap()
+                .dyn_into::<HtmlInputElement>()
+                .unwrap();
+
+            let value = target.value();
+            let value = match field_type {
+                InputFieldType::Number => {
+                    make_sure_string_has_five_digits(value)
+                },
+                _ => value
+            };
+
+            target.set_value(&value);
+        })
+    };
 
     html! {
         <>
@@ -69,6 +155,34 @@ pub fn input_field(props: &InputFieldProps) -> Html {
                                     ref={input_node_ref.clone()}
                                     class="text-black"
                                     readonly={*read_only}
+                                    onchange={onchange}
+                                />
+                            }
+                        },
+                        InputFieldType::Number => {
+                            if number_properties.is_none() {
+                                log::error!("Number properties must be provided for a number field");
+
+                                return html! {
+                                    { "Field type is number but no number properties were provided" }
+                                }
+                            }
+
+                            let number_properties = number_properties.as_ref().unwrap();
+
+                            html! {
+                                <input
+                                    /* onchange={on_cautious_change} */
+                                    type={field_type.to_string()}
+                                    value={input_value.clone()}
+                                    name={name.clone()}
+                                    ref={input_node_ref.clone()}
+                                    class="text-black"
+                                    readonly={*read_only}
+                                    max={number_properties.max.clone()}
+                                    min={number_properties.min.clone()}
+                                    step={number_properties.step.clone()}
+                                    onchange={onchange}
                                 />
                             }
                         },

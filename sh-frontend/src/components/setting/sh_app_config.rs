@@ -196,9 +196,9 @@ pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
                         let data_path: String = app.data_path.clone();
                         html! {
                             <form onsubmit={onsubmit}>
-                                <div class="settings-item"><InputField input_node_ref={database_url_node} label={"Database URL"} name={"databaseurl"} field_type={InputFieldType::Text} input_value={database_url} select_options={None} read_only={true} /></div>
+                                <div class="settings-item"><InputField input_node_ref={database_url_node} label={"Database URL"} name={"databaseurl"} field_type={InputFieldType::Text} input_value={database_url} read_only={true} /></div>
                                 <div class="settings-item"><InputField input_node_ref={log_level_node} label={"Log Level"} name={"loglevel"} field_type={InputFieldType::Select} input_value={log_level} select_options={Some(log_levels)} /></div>
-                                <div class="settings-item"><InputField input_node_ref={data_path_node} label={"Data Path"} name={"datapath"} field_type={InputFieldType::Text} input_value={data_path} select_options={None} read_only={true}/></div>
+                                <div class="settings-item"><InputField input_node_ref={data_path_node} label={"Data Path"} name={"datapath"} field_type={InputFieldType::Text} input_value={data_path} read_only={true}/></div>
                                 <div class="settings-item buttons">
                                 <div><button type="submit" class="button" id="update">{"Update Configuration"}</button></div>
                                 <div><button type="submit" class="button" id="reset">{"Reset Configuration"}</button></div>
