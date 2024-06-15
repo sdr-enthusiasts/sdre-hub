@@ -3,13 +3,16 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-use crate::components::map_components::map_display::ShMap;
+use crate::components::map::map_display::ShMap;
 use crate::components::pages::acars_messages::AcarsMessages;
 use crate::components::pages::help::ShHelp;
 use crate::components::pages::settings::ShSettings;
 use crate::components::pages::stats::ShStatistics;
 use crate::services::saved_state::WebAppState;
-use crate::{common::panels::Panels, services::temp_state::WebAppStateTemp};
+use crate::{
+    common::panels::Panels, common::wssprops::WssCommunicationProps,
+    services::temp_state::WebAppStateTemp,
+};
 use yew::prelude::*;
 use yew_hooks::{use_event_with_window, use_visible};
 use yewdux::prelude::*;
@@ -18,7 +21,7 @@ use yewdux::prelude::*;
 // checking the old value vs the new one and setting the panel state if it's changed. This flags a re-render
 /// Home page
 #[function_component(Live)]
-pub fn live() -> Html {
+pub fn live(props: &WssCommunicationProps) -> Html {
     let (_state_local, dispatch_local) = use_store::<WebAppStateTemp>();
     let (_state, dispatch) = use_store::<WebAppState>();
     log::debug!("Re-rendering live page");
@@ -45,7 +48,9 @@ pub fn live() -> Html {
         match *right_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <ShSettings />},
+            Panels::Settings => {
+                html! { <ShSettings send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()}/>}
+            }
             Panels::Help => html! { <ShHelp /> },
             Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Right Panel is none!!!"),
@@ -56,7 +61,9 @@ pub fn live() -> Html {
         match *left_panel {
             Panels::Messages => html! { <AcarsMessages /> },
             Panels::Map => html! { <ShMap /> },
-            Panels::Settings => html! { <ShSettings />},
+            Panels::Settings => {
+                html! { <ShSettings send_message={props.send_message.clone()} request_alert_box={props.request_alert_box.clone()} />}
+            }
             Panels::Help => html! { <ShHelp /> },
             Panels::Stats => html! { <ShStatistics /> },
             Panels::None => panic!("Left Panel is none!!!"),
@@ -66,7 +73,7 @@ pub fn live() -> Html {
     let right_panel_clone = right_panel.clone();
     let right_panel_dispatch = dispatch.clone();
     let left_panel_clone = left_panel.clone();
-    let left_panel_dispatch = dispatch.clone();
+    let left_panel_dispatch = dispatch;
 
     use_event_with_window("keydown", move |e: KeyboardEvent| {
         // if control is pressed, with left arrow, go to the previous panel

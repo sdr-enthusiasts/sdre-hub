@@ -7,6 +7,8 @@ use yew::prelude::*;
 
 #[function_component(AcarsMessages)]
 pub fn acars_messages() -> Html {
+    log::debug!("Rendering ACARS messages page.");
+
     html! {
         <div>
             <h1>{"ACARS Messages"}</h1>

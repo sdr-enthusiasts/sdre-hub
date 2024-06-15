@@ -3,6 +3,11 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-pub mod alert_boxes;
-pub mod panels;
-pub mod wssprops;
+#[derive(Debug, Default)]
+pub enum AlertBoxToShow {
+    ConfigWriteSuccess,
+    ConfigWriteFailure,
+    UnsavedChanges,
+    #[default]
+    None,
+}

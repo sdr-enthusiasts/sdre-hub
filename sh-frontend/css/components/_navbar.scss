@@ -28,7 +28,7 @@ $menu-offset: 2rem;
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: colors.$text-color;
   padding: config.$double-padding;
-  z-index: 1000;
+  z-index: 9;
   border-radius: config.$border-radius;
 
   .menu-right {

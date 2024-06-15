@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::components::{
-    map_components::control::Cities,
+    map::control::Cities,
     pages::adsb::{City, Point, ShMapComponent},
 };
 use yew::prelude::*;
@@ -54,6 +54,8 @@ impl Component for ShMap {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
+        log::debug!("Rendering map.");
+
         html! {
             <>
                 <ShMapComponent city={&self.city}  />

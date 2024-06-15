@@ -23,7 +23,7 @@ jobs:
     name: "Linting: hadolint"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: Pull hadolint/hadolint:latest Image
         run: docker pull hadolint/hadolint:latest
       - name: Run hadolint against Dockerfiles
@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
@@ -77,7 +77,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build armv7
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           push: false
@@ -99,7 +99,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
@@ -117,7 +117,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build arm64
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           push: false
@@ -139,7 +139,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
@@ -157,7 +157,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build amd64
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           push: false
@@ -178,7 +178,7 @@ jobs:
     needs: [test_rust_functionality]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
@@ -196,7 +196,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.3.0
 
       - name: Build amd64
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           context: .
           push: false
@@ -283,7 +283,7 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
 
       - name: setup node
         uses: actions/setup-node@v4.0.2
@@ -312,7 +312,7 @@ jobs:
       # - name: install frontend dependencies
       #   run: yarn install # change this to npm, pnpm or bun depending on which one you use.
 
-      - uses: tauri-apps/tauri-action@v0.5.5
+      - uses: tauri-apps/tauri-action@v0.5.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

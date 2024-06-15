@@ -5,12 +5,14 @@
 
 use yew::prelude::*;
 
-#[function_component(ShMapConfig)]
-pub fn sh_map_config() -> Html {
+#[function_component(ShDataSourcesConfig)]
+pub fn sh_data_sources_config() -> Html {
+    log::debug!("Rendering data sources configuration page.");
+
     html! {
         <>
-        <input id="collapsible_map_config" class="toggle" type="checkbox" />
-        <label for="collapsible_map_config" class="lbl-toggle">{"Map Configuration"}</label>
+        <input id="collapsible_data_sources" class="toggle" type="checkbox" />
+        <label for="collapsible_data_sources" class="lbl-toggle">{"Data Sources"}</label>
         <div class="collapsible-content">
           <div class="content-inner">
             <p>

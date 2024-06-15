@@ -9,7 +9,9 @@ use yewdux::prelude::*;
 
 #[function_component(Connected)]
 pub fn connected() -> Html {
-    let connected = use_selector(|state: &WebAppStateTemp| state.websocket_connected.clone());
+    log::debug!("Connected component rendered");
+
+    let connected = use_selector(|state: &WebAppStateTemp| state.websocket_connected);
 
     html! {
         <div> {

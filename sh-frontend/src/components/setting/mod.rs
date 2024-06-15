@@ -7,3 +7,17 @@ pub mod sh_app_config;
 pub mod sh_data_sources;
 pub mod sh_enabled_data_sources;
 pub mod sh_map;
+
+pub enum ButtonAction {
+    Update,
+    Reset,
+}
+
+impl From<String> for ButtonAction {
+    fn from(action: String) -> Self {
+        match action.to_lowercase().as_str() {
+            "reset" => Self::Reset,
+            _ => Self::Update,
+        }
+    }
+}

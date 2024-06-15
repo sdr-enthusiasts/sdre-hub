@@ -45,13 +45,10 @@ pub struct ShConfig {
     #[serde_inline_default(SDREHub::default())]
     pub app: SDREHub,
     #[serde_inline_default(EnabledDataSources::default())]
-    #[serde(skip_serializing)]
     pub enabled_data_sources: EnabledDataSources,
     #[serde_inline_default(DataSources::default())]
-    #[serde(skip_serializing)]
     pub data_sources: DataSources,
     #[serde_inline_default(ShMapConfig::default())]
-    #[serde(skip_serializing)]
     pub map: ShMapConfig,
 }
 
@@ -167,17 +164,17 @@ impl ShConfig {
         toml::to_string(&self).unwrap()
     }
 
-    pub fn write_config(&self) {
+    pub fn write_config(&self) -> Result<(), std::io::Error> {
         let file_path = Self::get_config_file_path();
         let config = self.get_config_as_toml_string();
         println!("Writing config file to: {file_path}");
+        println!("Config: {config}");
 
         match std::fs::write(file_path, config) {
-            Ok(()) => (),
+            Ok(()) => Ok(()),
             Err(e) => {
                 println!("Error writing config file: {e}");
-                println!("Exiting");
-                std::process::exit(1);
+                Err(e)
             }
         }
     }

@@ -30,6 +30,7 @@ Sorry, there is no migration path from ACARS Hub to SDR-E Hub. The data that ACA
   - [x] Application build
   - [ ] Manage settings from the web interface
   - [x] GitHub CI
+  - [ ] Custom Error handling
   - [ ] FIXME/TODO Cleanup
   - [ ] Code documentation
   - [ ] Unit Tests

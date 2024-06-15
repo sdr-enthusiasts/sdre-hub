@@ -3,14 +3,16 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+use crate::components::footer::connected::Connected;
 use yew::prelude::*;
 
-// Search component
-#[function_component(Search)]
-pub fn search() -> Html {
+#[function_component(Footer)]
+pub fn footer() -> Html {
+    log::debug!("Rendering footer.");
+
     html! {
-        <div class="search-bar">
-            <input type="text" placeholder="Search..." />
-        </div>
+        <footer class="footer">
+            <Connected />
+        </footer>
     }
 }

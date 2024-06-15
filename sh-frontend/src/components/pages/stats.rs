@@ -8,6 +8,8 @@ use yew::prelude::*;
 /// Home page
 #[function_component(ShStatistics)]
 pub fn statistics() -> Html {
+    log::debug!("Rendering statistics page.");
+
     html! {
         {
             "Stats"

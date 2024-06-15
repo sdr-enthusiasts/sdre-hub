@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT.
 
 use crate::common::panels::Panels;
-use crate::components::nav_components::search::Search;
+use crate::components::nav::search::Search;
 use crate::services::saved_state::WebAppState;
 use crate::services::temp_state::WebAppStateTemp;
 use std::rc::Rc;
@@ -80,7 +80,7 @@ impl MenuItemState {
             menu_state,
             panel_side,
             panel,
-            state: state,
+            state,
             dispatch,
         }
     }
@@ -123,6 +123,8 @@ impl MenuItemState {
 /// Nav component
 #[function_component(Nav)]
 pub fn nav() -> Html {
+    log::debug!("Rendering nav.");
+
     let menu_state_right = use_state_eq(|| Checked::False);
     let menu_state_left = use_state_eq(|| Checked::False);
     let (state_local, dispatch_local) = use_store::<WebAppState>();

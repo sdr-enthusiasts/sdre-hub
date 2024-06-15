@@ -8,6 +8,8 @@ use yew::prelude::*;
 /// Help page
 #[function_component(ShHelp)]
 pub fn help() -> Html {
+    log::debug!("Rendering help page.");
+
     html! {
         <div class="m-1">
             <h1 class="pb-1">{"SDR-E Hub Help"}</h1>
