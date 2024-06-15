@@ -254,6 +254,8 @@ pub struct AlertProps {
 /// Alert Component
 #[function_component]
 pub fn Alert(props: &AlertProps) -> Html {
+    log::debug!("Rendering Alert component");
+
     let show = *props.show_alert;
     let timeout = props.timeout;
     let show_alert = props.show_alert.clone();

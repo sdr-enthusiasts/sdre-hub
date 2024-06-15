@@ -8,6 +8,8 @@ use yew::prelude::*;
 
 #[function_component(Footer)]
 pub fn footer() -> Html {
+    log::debug!("Rendering footer.");
+
     html! {
         <footer class="footer">
             <Connected />

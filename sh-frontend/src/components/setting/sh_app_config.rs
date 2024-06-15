@@ -24,6 +24,8 @@ struct ConfigAppState {
 
 #[function_component(ShAppConfig)]
 pub fn sh_app_config(props: &WssCommunicationProps) -> Html {
+    log::debug!("Rendering app config settings.");
+
     let config = use_selector(|state: &WebAppStateTemp| state.config.clone());
     let (state, dispatch) = use_store::<ConfigAppState>();
     let is_visible = use_state(|| state.is_visible);

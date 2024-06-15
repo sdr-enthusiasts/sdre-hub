@@ -106,7 +106,7 @@ impl App {
     }
 
     fn handle_wsaction_ready(&mut self, ctx: &Context<Self>, response: Result<String, Error>) {
-        log::trace!("Received data: {:?}", response);
+        log::debug!("Received data: {:?}", response);
 
         if response.is_err() {
             log::error!("Error: {:?}", response.err().unwrap());
@@ -270,7 +270,7 @@ impl Component for App {
         }
 
         let send_data_to_wss = ctx.link().callback(move |input: UserWssMessage| {
-            log::trace!("Got a message. Sending up the chain to the websocket!");
+            log::debug!("Got a message. Sending up the chain to the websocket!");
             Msg::WsAction(WsAction::SendData(input))
         });
 

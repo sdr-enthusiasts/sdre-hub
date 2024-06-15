@@ -103,6 +103,8 @@ pub struct InputFieldProps {
 
 #[function_component(InputField)]
 pub fn input_field(props: &InputFieldProps) -> Html {
+    log::debug!("Rendering input field");
+
     let InputFieldProps {
         input_value,
         // on_cautious_change,

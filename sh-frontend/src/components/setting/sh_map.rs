@@ -27,6 +27,8 @@ struct ConfigMapState {
 
 #[function_component(ShMapConfig)]
 pub fn sh_map_config(props: &WssCommunicationProps) -> Html {
+    log::debug!("Rendering map config settings.");
+
     let config = use_selector(|state: &WebAppStateTemp| state.config.clone());
     let (state, dispatch) = use_store::<ConfigMapState>();
     let is_visible = use_state(|| state.is_visible);

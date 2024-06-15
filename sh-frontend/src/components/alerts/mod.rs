@@ -139,6 +139,8 @@ pub struct ShAlertProps {
 
 #[function_component(ShAlert)]
 pub fn sh_alert(props: &ShAlertProps) -> Html {
+    log::debug!("Rendering ShAlert");
+
     let show_alert_as_state = use_state_eq(|| props.show_alert);
     let on_confirm = props.on_confirm.clone();
     let on_cancel = props.on_cancel.clone();

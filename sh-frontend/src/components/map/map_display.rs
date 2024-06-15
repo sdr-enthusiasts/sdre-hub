@@ -54,6 +54,8 @@ impl Component for ShMap {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
+        log::debug!("Rendering map.");
+
         html! {
             <>
                 <ShMapComponent city={&self.city}  />

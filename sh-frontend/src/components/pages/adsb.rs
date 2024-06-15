@@ -84,6 +84,8 @@ impl Component for ShMapComponent {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
+        log::debug!("Rendering map.");
+
         html! {
             <div class="map-container component-container h-full w-full">
                 {self.render_map()}

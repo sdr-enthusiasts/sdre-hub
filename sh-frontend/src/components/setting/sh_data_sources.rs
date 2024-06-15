@@ -7,6 +7,8 @@ use yew::prelude::*;
 
 #[function_component(ShDataSourcesConfig)]
 pub fn sh_data_sources_config() -> Html {
+    log::debug!("Rendering data sources configuration page.");
+
     html! {
         <>
         <input id="collapsible_data_sources" class="toggle" type="checkbox" />

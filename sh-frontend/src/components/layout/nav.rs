@@ -123,6 +123,8 @@ impl MenuItemState {
 /// Nav component
 #[function_component(Nav)]
 pub fn nav() -> Html {
+    log::debug!("Rendering nav.");
+
     let menu_state_right = use_state_eq(|| Checked::False);
     let menu_state_left = use_state_eq(|| Checked::False);
     let (state_local, dispatch_local) = use_store::<WebAppState>();

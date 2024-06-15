@@ -15,6 +15,8 @@ use yew::prelude::*;
 /// Home page
 #[function_component(ShSettings)]
 pub fn settings(props: &WssCommunicationProps) -> Html {
+    log::debug!("Rendering settings page.");
+
     html! {
         <>
             <div class="settings">
