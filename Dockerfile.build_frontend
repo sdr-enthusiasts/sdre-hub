@@ -1,4 +1,4 @@
-FROM rust:1.78.0 as builder
+FROM rust:1.79.0 as builder
 WORKDIR /tmp/sdre-hub
 # hadolint ignore=DL3008,DL3003,SC1091,DL4006,DL3009
 RUN set -x && \
