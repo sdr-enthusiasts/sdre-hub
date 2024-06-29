@@ -17,7 +17,7 @@ keywords.workspace = true
 
 [dependencies]
 tokio = { version = "1.38.0", features = ["full", "tracing"] }
-log = "0.4.21"
+log = "0.4.22"
 sh-config = { path = "../sh-config" }
 sh-api = { path = "../sh-api" }
 sh-common = { path = "../sh-common" }
