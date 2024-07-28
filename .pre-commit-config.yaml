@@ -41,7 +41,7 @@ repos:
           # - "prettier-plugin-sh"
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.7.0
+    rev: v9.8.0
     hooks:
       - id: eslint
         files: \.[j]sx?$ # *.js, *.jsx, *.ts and *.tsx
@@ -65,7 +65,7 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.29.0
+    rev: 0.29.1
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
