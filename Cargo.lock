@@ -3406,9 +3406,9 @@ dependencies = [
 
 [[package]]
 name = "sdre-rust-logging"
-version = "0.3.2"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30b3028f94704eb1ca2606a3dff00e9bb97b82f43f13aeda1d0a50b827bc4ac0"
+checksum = "0de98316dbb4ba28a87384ebb6b7168afd63a1725359825979471a2ccb291d70"
 dependencies = [
  "anstyle",
  "chrono",
