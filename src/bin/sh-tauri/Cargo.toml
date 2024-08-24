@@ -24,7 +24,7 @@ serde = { version = "1.0.208", features = ["derive"] }
 sdrehub = { path = "../../libraries/sdrehub" }
 sh-config = { path = "../../libraries/sh-config" }
 tauri = { version = "1.7.1", features = ["api-all"] }
-tokio = { version = "1.39.2", features = ["full", "tracing"] }
+tokio = { version = "1.39.3", features = ["full", "tracing"] }
 
 [features]
 default = ["custom-protocol"]
