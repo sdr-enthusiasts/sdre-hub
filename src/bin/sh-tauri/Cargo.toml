@@ -19,7 +19,7 @@ keywords.workspace = true
 tauri-build = { version = "1.5.3", features = [] }
 
 [dependencies]
-serde_json = "1.0.125"
+serde_json = "1.0.127"
 serde = { version = "1.0.208", features = ["derive"] }
 sdrehub = { path = "../../libraries/sdrehub" }
 sh-config = { path = "../../libraries/sh-config" }
