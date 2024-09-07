@@ -24,4 +24,4 @@ serde_json = "1.0.125"
 sh-common = { path = "../sh-common" }
 sh-common-server = { path = "../sh-common-server" }
 sh-config = { path = "../sh-config" }
-tokio = { version = "1.39.2", features = ["full", "tracing"] }
+tokio = { version = "1.40.0", features = ["full", "tracing"] }
