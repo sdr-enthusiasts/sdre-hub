@@ -16,7 +16,7 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.81"
+async-trait = "0.1.82"
 axum = { version = "0.7.5", features = ["ws"] }
 log = "0.4.22"
 serde = { version = "1.0.210", features = ["derive"] }
