@@ -1,7 +1,7 @@
 repos:
   # lint yaml, line and whitespace
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -13,13 +13,13 @@ repos:
 
   # lint the dockerfiles
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.13.0-beta
+    rev: v2.13.1-beta
     hooks:
       - id: hadolint
 
   # lint python formatting
   - repo: https://github.com/psf/black
-    rev: 24.8.0
+    rev: 24.10.0
     hooks:
       - id: black
 
@@ -41,7 +41,7 @@ repos:
           # - "prettier-plugin-sh"
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.11.0
+    rev: v9.13.0
     hooks:
       - id: eslint
         files: \.[j]sx?$ # *.js, *.jsx, *.ts and *.tsx
@@ -65,7 +65,7 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.29.2
+    rev: 0.29.4
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
