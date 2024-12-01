@@ -17,11 +17,11 @@ keywords.workspace = true
 
 [dependencies]
 async-trait = "0.1.83"
-axum = { version = "0.7.7", features = ["ws"] }
+axum = { version = "0.7.9", features = ["ws"] }
 log = "0.4.22"
-serde = { version = "1.0.213", features = ["derive"] }
-serde_json = "1.0.132"
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.133"
 sh-common = { path = "../sh-common" }
 sh-common-server = { path = "../sh-common-server" }
 sh-config = { path = "../sh-config" }
-tokio = { version = "1.41.0", features = ["full", "tracing"] }
+tokio = { version = "1.41.1", features = ["full", "tracing"] }

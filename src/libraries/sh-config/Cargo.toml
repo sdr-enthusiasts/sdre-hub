@@ -17,10 +17,10 @@ keywords.workspace = true
 
 [dependencies]
 figment = { version = "0.10.19", features = ["toml", "env"] }
-sdre-rust-logging = "0.3.4"
+sdre-rust-logging = "0.3.6"
 log = "0.4.22"
-serde = { version = "1.0.213", features = ["derive"] }
+serde = { version = "1.0.215", features = ["derive"] }
 serde-inline-default = "0.2.2"
-toml = "0.8.15"
+toml = "0.8.19"
 void = "1.0.2"
 directories = "5.0.1"
