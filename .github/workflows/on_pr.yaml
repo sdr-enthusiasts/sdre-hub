@@ -87,7 +87,7 @@ jobs:
           outputs: type=local,dest=./image_armv7/
 
       - name: Upload artifact armv7 binary
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: sdre-hub.armv7
           path: ./image_armv7/sdre-hub
@@ -127,7 +127,7 @@ jobs:
           outputs: type=local,dest=./image_arm64/
 
       - name: Upload artifact arm64 binary
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: sdre-hub.arm64
           path: ./image_arm64/sdre-hub
@@ -167,7 +167,7 @@ jobs:
           outputs: type=local,dest=./image_amd64/
 
       - name: Upload artifact amd64 binary
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: sdre-hub.amd64
           path: ./image_amd64/sdre-hub
@@ -206,7 +206,7 @@ jobs:
           outputs: type=local,dest=./frontend
 
       - name: Upload artifact amd64 binary
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: frontend
           path: ./frontend/sh-frontend
