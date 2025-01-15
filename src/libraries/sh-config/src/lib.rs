@@ -164,6 +164,8 @@ impl ShConfig {
         toml::to_string(&self).unwrap()
     }
 
+    /// # Errors
+    /// Will return error if there is an issue writing the config file
     pub fn write_config(&self) -> Result<(), std::io::Error> {
         let file_path = Self::get_config_file_path();
         let config = self.get_config_as_toml_string();

@@ -16,7 +16,6 @@ impl ShAcarsRouterConfig {
     /// Create a new `AcarsRouterAddress` from a string
     /// Input should be in the format "address:port"
     /// Returns an Option containing the `AcarsRouterAddress` if successful
-
     #[must_use]
     pub fn new(input: &str) -> Option<Self> {
         let parts: Vec<&str> = input.split(':').collect();
@@ -53,7 +52,6 @@ impl SHAdsbConfig {
     /// Create a new `AcarsRouterAddress` from a string
     /// Input should be in the format "address:port"
     /// Returns an Option containing the `AcarsRouterAddress` if successful
-
     #[must_use]
     pub fn new(input: &str) -> Option<Self> {
         let parts: Vec<&str> = input.split(':').collect();

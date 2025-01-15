@@ -16,12 +16,12 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.83"
+async-trait = "0.1.85"
 axum = { version = "0.8.1", features = ["ws"] }
-log = "0.4.22"
+log = "0.4.25"
 serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.134"
+serde_json = "1.0.135"
 sh-common = { path = "../sh-common" }
 sh-common-server = { path = "../sh-common-server" }
 sh-config = { path = "../sh-config" }
-tokio = { version = "1.42.0", features = ["full", "tracing"] }
+tokio = { version = "1.43.0", features = ["full", "tracing"] }

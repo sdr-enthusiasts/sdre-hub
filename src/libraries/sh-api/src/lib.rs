@@ -133,6 +133,7 @@ async fn ws_handler(ws: WebSocketUpgrade, State(server): State<Arc<ShAPIServerSt
     ws.on_upgrade(|socket| ws_handle_socket(socket, server))
 }
 
+#[allow(clippy::too_many_lines)]
 async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
     // send the initial message
     // let response_type = ServerMessageTypes::ServerResponseConfig;
@@ -173,7 +174,10 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                         let message = ServerWssMessage::new(response_type, data);
                         let config_serialized = serde_json::to_string(&message).unwrap();
                         debug!("Sending config message: {config_serialized}");
-                        socket.send(Message::Text(config_serialized)).await.unwrap();
+                        socket
+                            .send(Message::Text(config_serialized.into()))
+                            .await
+                            .unwrap();
                     }
                     UserMessageTypes::UserUpdateAppConfig => {
                         // check the data
@@ -214,7 +218,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                                     let config = serde_json::to_string(&message).unwrap();
 
-                                    socket.send(Message::Text(config)).await.unwrap();
+                                    socket.send(Message::Text(config.into())).await.unwrap();
                                 }
 
                                 Err(e) => {
@@ -229,7 +233,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                                     let config = serde_json::to_string(&message).unwrap();
 
-                                    socket.send(Message::Text(config)).await.unwrap();
+                                    socket.send(Message::Text(config.into())).await.unwrap();
                                 }
                             }
                         }
@@ -274,7 +278,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                                     let config = serde_json::to_string(&message).unwrap();
 
-                                    socket.send(Message::Text(config)).await.unwrap();
+                                    socket.send(Message::Text(config.into())).await.unwrap();
                                 }
 
                                 Err(e) => {
@@ -289,7 +293,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
                                     let config = serde_json::to_string(&message).unwrap();
 
-                                    socket.send(Message::Text(config)).await.unwrap();
+                                    socket.send(Message::Text(config.into())).await.unwrap();
                                 }
                             }
                         }
@@ -302,7 +306,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
             Message::Ping(_) => {
                 // respond with a pong
                 log::debug!("Received ping, responding with pong");
-                socket.send(Message::Pong(vec![])).await.unwrap();
+                socket.send(Message::Pong(vec![].into())).await.unwrap();
             }
             Message::Pong(_) => {
                 debug!("Received pong");
