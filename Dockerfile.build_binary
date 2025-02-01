@@ -1,4 +1,4 @@
-FROM rust:1.84.0 as builder
+FROM rust:1.84.1 as builder
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 WORKDIR /tmp/sdre-hub
 # hadolint ignore=DL3008,DL3003,SC1091,DL4006,DL3009
