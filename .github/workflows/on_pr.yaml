@@ -21,7 +21,7 @@ on:
 jobs:
   hadolint:
     name: "Linting: hadolint"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Pull hadolint/hadolint:latest Image
@@ -31,7 +31,7 @@ jobs:
 
   test_rust_functionality:
     name: Build and test rust functionality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -54,7 +54,7 @@ jobs:
 
   binary_build_armv7:
     name: Build Binary - armv7
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     # needs: test_rust_functionality
 
     steps:
@@ -94,7 +94,7 @@ jobs:
 
   binary_build_arm64:
     name: Build Binary - arm64
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     # needs: test_rust_functionality
 
     steps:
@@ -134,7 +134,7 @@ jobs:
 
   binary_build_amd64:
     name: Build Binary - amd64
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: test_rust_functionality
 
     steps:
@@ -174,7 +174,7 @@ jobs:
 
   frontend_build:
     name: Build Frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [test_rust_functionality]
     steps:
       - name: Checkout
@@ -213,7 +213,7 @@ jobs:
 
   consolidate_binaries:
     name: Consolidate & Cache Binaries
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs:
       [
         binary_build_amd64,
