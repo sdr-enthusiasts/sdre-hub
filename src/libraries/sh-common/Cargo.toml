@@ -17,5 +17,5 @@ keywords.workspace = true
 
 [dependencies]
 serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.137"
+serde_json = "1.0.138"
 sh-config = { path = "../sh-config" }
