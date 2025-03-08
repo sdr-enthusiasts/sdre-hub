@@ -20,7 +20,7 @@ async-trait = "0.1.86"
 axum = { version = "0.8.1", features = ["ws"] }
 log = "0.4.26"
 serde = { version = "1.0.218", features = ["derive"] }
-serde_json = "1.0.139"
+serde_json = "1.0.140"
 sh-common = { path = "../sh-common" }
 sh-common-server = { path = "../sh-common-server" }
 sh-config = { path = "../sh-config" }
