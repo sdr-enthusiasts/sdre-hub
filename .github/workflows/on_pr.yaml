@@ -224,22 +224,22 @@ jobs:
     steps:
       - run: mkdir -p ./bin
 
-      - uses: actions/download-artifact@v4.1.8
+      - uses: actions/download-artifact@v4.1.9
         with:
           name: sdre-hub.amd64
           path: ./bin/sdre-hub.amd64
 
-      - uses: actions/download-artifact@v4.1.8
+      - uses: actions/download-artifact@v4.1.9
         with:
           name: sdre-hub.armv7
           path: ./bin/sdre-hub.armv7
 
-      - uses: actions/download-artifact@v4.1.8
+      - uses: actions/download-artifact@v4.1.9
         with:
           name: sdre-hub.arm64
           path: ./bin/sdre-hub.arm64
 
-      - uses: actions/download-artifact@v4.1.8
+      - uses: actions/download-artifact@v4.1.9
         with:
           name: frontend
           path: ./bin/sh-frontend
