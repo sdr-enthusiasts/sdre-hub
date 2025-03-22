@@ -16,7 +16,7 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.86"
+async-trait = "0.1.88"
 sh-config = { path = "../sh-config" }
 sh-common = { path = "../sh-common" }
-tokio = { version = "1.43.0", features = ["full"] }
+tokio = { version = "1.44.1", features = ["full"] }
