@@ -152,7 +152,7 @@ impl ShConfig {
     }
 
     pub fn show_config(&self) {
-        debug!("Config: {:#?}", self);
+        debug!("Config: {self:#?}");
     }
 
     pub fn enable_logging(&self) {

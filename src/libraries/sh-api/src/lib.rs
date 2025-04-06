@@ -107,7 +107,7 @@ impl ShAPIServer {
 
         let server = Arc::new(ShAPIServerState { config });
 
-        info!("listening for websocket connections on {}", local_addr);
+        info!("listening for websocket connections on {local_addr}");
         if axum::serve(listener, app(server)).await.is_err() {
             error!("Error starting WebSocket server");
             return Err(Box::new(std::io::Error::new(
@@ -145,7 +145,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
 
     while let Some(Ok(msg)) = socket.recv().await {
         // deserialize the message and see if it's a request for config
-        debug!("Received message: {:?}", msg);
+        debug!("Received message: {msg:?}");
 
         match msg {
             Message::Text(text) => {
@@ -238,8 +238,8 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                             }
                         }
 
-                        debug!("Received app config: {:?}", data);
-                        debug!("Current app state: {:?}", config);
+                        debug!("Received app config: {data:?}");
+                        debug!("Current app state: {config:?}");
                     }
                     UserMessageTypes::UserUpdateMapConfig => {
                         // check the data
@@ -258,7 +258,7 @@ async fn ws_handle_socket(mut socket: WebSocket, state: Arc<ShAPIServerState>) {
                         let mut config = state.config.lock().await;
 
                         if config.map != data {
-                            debug!("New map config: {:?}", data);
+                            debug!("New map config: {data:?}");
 
                             let new_map_config = data.clone();
 
