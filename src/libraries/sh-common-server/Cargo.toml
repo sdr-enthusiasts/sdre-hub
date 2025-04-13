@@ -19,4 +19,4 @@ keywords.workspace = true
 async-trait = "0.1.88"
 sh-config = { path = "../sh-config" }
 sh-common = { path = "../sh-common" }
-tokio = { version = "1.44.1", features = ["full"] }
+tokio = { version = "1.44.2", features = ["full"] }
