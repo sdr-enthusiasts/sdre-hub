@@ -151,20 +151,20 @@
           box-shadow: 0 5px 55px -10px rgba(0, 0, 0, 0.2), 0 0 4px #3fb0ff; /* Allows border radius on focus */
         }
 
-        .data-quantity input[type=number]::-webkit-inner-spin-button,
-        .data-quantity input[type=number]::-webkit-outer-spin-button {
+        .data-quantity input[type="number"]::-webkit-inner-spin-button,
+        .data-quantity input[type="number"]::-webkit-outer-spin-button {
           -webkit-appearance: none;
           margin: 0;
         }
 
-        .data-quantity input[type=number] {
+        .data-quantity input[type="number"] {
           -moz-appearance: textfield;
           appearance: textfield;
         }
 
         .data-quantity button {
           position: absolute;
-          width: 3.0rem;
+          width: 3rem;
           height: 100%;
           top: 0rem;
           display: block;
@@ -199,7 +199,7 @@
         }
 
         .data-quantity button.sub {
-          left: 0.0rem;
+          left: 0rem;
         }
 
         .data-quantity button.add {

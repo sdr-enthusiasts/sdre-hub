@@ -44,6 +44,7 @@ pub fn live(props: &WssCommunicationProps) -> Html {
     // and reset the panels to a default state.
 
     let right_panel_status = {
+        #[allow(clippy::redundant_clone)]
         let right_panel = right_panel.clone();
         match *right_panel {
             Panels::Messages => html! { <AcarsMessages /> },

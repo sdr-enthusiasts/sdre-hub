@@ -262,3 +262,5 @@ sh_config.toml
 sh_config.yaml
 data/
 sh-frontend/target
+.direnv
+src/bin/sh-tauri/gen

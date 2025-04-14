@@ -78,7 +78,7 @@ impl Default for NumberProperties {
 #[must_use]
 pub fn make_sure_string_has_five_digits(value: &String) -> String {
     let Ok(value) = value.parse::<f64>() else {
-        log::error!("Could not parse value as f64: {}", value);
+        log::error!("Could not parse value as f64: {value}");
         return "0.0".to_string();
     };
 
@@ -143,9 +143,10 @@ pub fn input_field(props: &InputFieldProps) -> Html {
     let on_increase = {
         let input_node_ref = input_node_ref.clone();
         let number_properties = number_properties.clone();
+        let default_number_properties = NumberProperties::default();
         let step = number_properties
             .as_ref()
-            .unwrap_or(&NumberProperties::default())
+            .unwrap_or(&default_number_properties)
             .step
             .clone()
             .parse::<f64>()
@@ -159,7 +160,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
             let current_value = input_node_ref.cast::<HtmlInputElement>().unwrap().value();
 
             let Ok(current_value) = current_value.parse::<f64>() else {
-                log::error!("Could not parse value as f64: {}", current_value);
+                log::error!("Could not parse value as f64: {current_value}");
                 return;
             };
 
@@ -175,9 +176,10 @@ pub fn input_field(props: &InputFieldProps) -> Html {
     let on_decrease = {
         let input_node_ref = input_node_ref.clone();
         let number_properties = number_properties.clone();
+        let default_number_properties = NumberProperties::default();
         let step = number_properties
             .as_ref()
-            .unwrap_or(&NumberProperties::default())
+            .unwrap_or(&default_number_properties)
             .step
             .clone()
             .parse::<f64>()
@@ -191,7 +193,7 @@ pub fn input_field(props: &InputFieldProps) -> Html {
             let current_value = input_node_ref.cast::<HtmlInputElement>().unwrap().value();
 
             let Ok(current_value) = current_value.parse::<f64>() else {
-                log::error!("Could not parse value as f64: {}", current_value);
+                log::error!("Could not parse value as f64: {current_value}");
                 return;
             };
 

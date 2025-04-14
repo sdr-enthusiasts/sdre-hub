@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+@use "sass:color";
+
 $background-color: #101110;
 $text-color: #fdfdff;
 $light-purple: #8963ba;
@@ -41,10 +43,10 @@ $colors: (
   // now create 50% darker and 50% lighter versions of the color
 
   .text-#{$name}-darker {
-    color: darken($value, 10%);
+    color: color.adjust($value, $lightness: 10%);
   }
 
   .text-#{$name}-lighter {
-    color: lighten($value, 10%);
+    color: color.adjust($value, $lightness: -10%);
   }
 }

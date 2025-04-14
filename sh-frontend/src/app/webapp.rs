@@ -68,7 +68,7 @@ impl App {
     }
 
     fn handle_wsaction_send_data(&mut self, data: &UserWssMessage) {
-        log::debug!("Sending data: {:?}", data);
+        log::debug!("Sending data: {data:?}");
         let serialized_data = serde_json::to_string(&data).unwrap();
         self.ws
             .as_mut()
@@ -105,8 +105,8 @@ impl App {
         });
     }
 
-    fn handle_wsaction_ready(&mut self, ctx: &Context<Self>, response: Result<String, Error>) {
-        log::debug!("Received data: {:?}", response);
+    fn handle_wsaction_ready(&self, ctx: &Context<Self>, response: Result<String, Error>) {
+        log::debug!("Received data: {response:?}");
 
         if response.is_err() {
             log::error!("Error: {:?}", response.err().unwrap());
@@ -119,7 +119,7 @@ impl App {
         let data_deserialized: ServerWssMessage = match serde_json::from_str(&data) {
             Ok(message) => message,
             Err(e) => {
-                log::error!("Error deserializing message: {:?}", e);
+                log::error!("Error deserializing message: {e:?}");
                 return;
             }
         };
@@ -141,7 +141,7 @@ impl App {
             ServerMessageTypes::ServerWriteConfigFailure => {
                 match data_deserialized.get_data() {
                     MessageData::ShConfigFailure(data) => {
-                        log::error!("Failed to write config: {}", data);
+                        log::error!("Failed to write config: {data}");
                     }
                     _ => {
                         log::error!("Invalid response type");
@@ -165,7 +165,7 @@ impl App {
                 // see if there is any data
                 match data_deserialized.get_data() {
                     MessageData::ShConfigSuccess(data) => {
-                        log::info!("Config written successfully: {}", data);
+                        log::info!("Config written successfully: {data}");
                     }
                     MessageData::ShConfigFailure(_) => {
                         log::error!("Invalid response type");
@@ -189,7 +189,7 @@ impl App {
     }
 
     fn handle_msg_show_alert(&mut self, alert_box_type: &AlertBoxToShow) {
-        log::debug!("Showing alert box: {:?}", alert_box_type);
+        log::debug!("Showing alert box: {alert_box_type:?}");
         match alert_box_type {
             AlertBoxToShow::ConfigWriteSuccess => {
                 self.alert_box_type = AlertBoxToShow::ConfigWriteSuccess;

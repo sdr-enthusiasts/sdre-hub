@@ -1,56 +1,52 @@
 {
-  "package": {
-    "productName": "SDR-E Hub",
-    "version": "4.0.0-1"
-  },
-  "build": {
-    "distDir": "../../../sh-frontend/dist",
-    "devPath": "http://localhost:8080",
-    "beforeDevCommand": "cd ../../sh-frontend && trunk serve",
-    "beforeBuildCommand": "cd ../../sh-frontend && trunk build",
-    "withGlobalTauri": true
-  },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.github.sdr-enthusiasts.sdr-e-hub",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "resources": [],
-      "externalBin": [],
-      "copyright": "",
-      "category": "utility",
-      "shortDescription": "",
-      "longDescription": "",
+  "productName": "SDR-E Hub",
+  "version": "4.0.0-1",
+  "identifier": "com.github.sdr-enthusiasts.sdr-e-hub",
+  "bundle": {
+    "active": true,
+    "targets": "all",
+
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "externalBin": [],
+    "copyright": "",
+    "category": "utility",
+    "shortDescription": "",
+    "longDescription": "",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "macOS": {
-        "frameworks": [],
-        "minimumSystemVersion": "",
-        "exceptionDomain": "localhost",
-        "signingIdentity": null,
-        "providerShortName": null,
-        "entitlements": null
-      },
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
       }
     },
-    "updater": {
-      "active": false
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "",
+      "exceptionDomain": "localhost",
+      "signingIdentity": null,
+      "providerShortName": null,
+      "entitlements": null
     },
-    "allowlist": {
-      "all": true
-    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  },
+  "build": {
+    "devUrl": "http://localhost:8080",
+    "beforeDevCommand": "cd ../../sh-frontend && trunk serve",
+    "beforeBuildCommand": "cd ../../sh-frontend && trunk build",
+    "frontendDist": "../../../sh-frontend/dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+
     "windows": [
       {
         "title": "SDR-E Hub",

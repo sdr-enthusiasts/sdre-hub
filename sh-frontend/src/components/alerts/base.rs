@@ -265,6 +265,7 @@ pub fn Alert(props: &AlertProps) -> Html {
             let show_alert = show_alert.clone();
             let handle = Timeout::new(timeout, move || show_alert.set(false)).forget();
             let clear_handle = move || {
+                #[allow(clippy::cast_possible_truncation)]
                 web_sys::Window::clear_timeout_with_handle(
                     &web_sys::window().unwrap(),
                     handle.as_f64().unwrap() as i32,

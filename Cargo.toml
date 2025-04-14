@@ -48,4 +48,20 @@ keywords = [
 ]
 categories = ["aerospace"]
 
+[workspace.dependencies]
+log = "0.4.27"
+tokio = { version = "1.44.2", features = ["full", "tracing"] }
+async-trait = "0.1.88"
+axum = { version = "0.8.3", features = ["ws"] }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+toml = "0.8.20"
+figment = { version = "0.10.19", features = ["toml", "env"] }
+sdre-rust-logging = "0.3.17"
+serde-inline-default = "0.2.3"
+void = "1.0.2"
+directories = "6.0.0"
+tauri = { version = "2.4.1" }
+
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

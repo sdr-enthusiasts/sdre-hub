@@ -7,36 +7,36 @@
 @use "../config/config";
 
 .alert-error {
-    text-align: center;
-    color: colors.$text-color;
-    background-color: colors.$sdre-red;
-    border-radius: config.$border-radius;
-    border-width: config.$border-size;
-    border-color: colors.$sdre-yellow;
-    padding: config.$double-padding;
-    min-width: 250px;
-    max-width: 400px;
-    width: fit-content;
-    height: fit-content;
-    position: absolute;
-    align-items: center;
+  text-align: center;
+  color: colors.$text-color;
+  background-color: colors.$sdre-red;
+  border-radius: config.$border-radius;
+  border-width: config.$border-size;
+  border-color: colors.$sdre-yellow;
+  padding: config.$double-padding;
+  min-width: 250px;
+  max-width: 400px;
+  width: fit-content;
+  height: fit-content;
+  position: absolute;
+  align-items: center;
 }
 
 .alert-notification {
-    text-align: center;
-    color: colors.$text-color;
-    background-color: colors.$sdre-yellow;
-    border-radius: config.$border-radius;
-    border-width: config.$border-size;
-    border-color: colors.$sdre-green;
-    padding: config.$double-padding;
-    min-width: 250px;
-    max-width: 400px;
-    width: fit-content;
-    height: fit-content;
+  text-align: center;
+  color: colors.$text-color;
+  background-color: colors.$sdre-yellow;
+  border-radius: config.$border-radius;
+  border-width: config.$border-size;
+  border-color: colors.$sdre-green;
+  padding: config.$double-padding;
+  min-width: 250px;
+  max-width: 400px;
+  width: fit-content;
+  height: fit-content;
 }
 
 .alert-icon {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }

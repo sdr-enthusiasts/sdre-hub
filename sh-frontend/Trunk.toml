@@ -7,4 +7,4 @@ dist = "dist"
 # fucking trunk hard codes 116 as the default. This should be fine but the docker build fails on
 # macs because.....*****reasons*****
 # https://github.com/trunk-rs/trunk/blob/c160ed3ff7c98a94ab00f14acbbd198268a92525/Trunk.toml#L67
-wasm_opt = "version_117"
+wasm_opt = "version_123"

@@ -74,15 +74,17 @@ repos:
     rev: v1.0
     hooks:
       - id: fmt
-      - id: cargo-check
       - id: clippy
 
-  - repo: https://github.com/doublify/pre-commit-rust
-    rev: v1.0
+  # - repo: https://github.com/doublify/pre-commit-rust
+  #   rev: v1.0
+  #   hooks:
+  #     - id: fmt
+  #       args: ["--manifest-path", "./sh-frontend/Cargo.toml", "--"]
+  #     - id: clippy
+  #       args: ["--manifest-path", "./sh-frontend/Cargo.toml"]
+
+  - repo: https://github.com/fredclausen/nixfmt
+    rev: 65af4b69133d19f534d97746c97c2d5b464f43b4 # frozen: v0.7.0
     hooks:
-      - id: fmt
-        args: ["--manifest-path", "./sh-frontend/Cargo.toml", "--"]
-      - id: cargo-check
-        args: ["--manifest-path", "./sh-frontend/Cargo.toml"]
-      - id: clippy
-        args: ["--manifest-path", "./sh-frontend/Cargo.toml"]
+      - id: nixfmt

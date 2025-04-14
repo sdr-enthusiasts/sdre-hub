@@ -67,7 +67,7 @@ struct MenuItemState {
 }
 
 impl MenuItemState {
-    fn new(
+    const fn new(
         right_panel_visible: Rc<bool>,
         menu_state: UseStateHandle<Checked>,
         panel_side: PanelSide,

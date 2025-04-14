@@ -16,8 +16,8 @@ keywords.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = { version = "1.44.2", features = ["full", "tracing"] }
-log = "0.4.27"
+tokio.workspace = true
+log.workspace = true
 sh-config = { path = "../sh-config" }
 sh-api = { path = "../sh-api" }
 sh-common = { path = "../sh-common" }

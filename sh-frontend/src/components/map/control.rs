@@ -28,7 +28,7 @@ pub struct Props {
 }
 
 impl Control {
-    fn button(&self, ctx: &Context<Self>, city: City) -> Html {
+    fn button(ctx: &Context<Self>, city: City) -> Html {
         let name = city.name.clone();
         let cb = ctx.link().callback(move |_| Msg::CityChosen(city.clone()));
         html! {
@@ -62,7 +62,7 @@ impl Component for Control {
             <div class="control component-container">
                 <h1>{"Choose a city"}</h1>
                 <div>
-                    {for self.cities.iter().map(|city| Self::button(self, ctx, city.clone()))}
+                    {for self.cities.iter().map(|city| Self::button(ctx, city.clone()))}
                     </div>
 
             </div>

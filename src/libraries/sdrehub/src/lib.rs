@@ -101,7 +101,7 @@ impl SdreHub {
                 Err(e) => {
                     error!("Error starting consumer: {e}");
                 }
-            };
+            }
         }
 
         Ok(())
