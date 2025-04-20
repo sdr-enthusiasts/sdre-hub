@@ -61,7 +61,7 @@ sdre-rust-logging = "0.3.17"
 serde-inline-default = "0.2.3"
 void = "1.0.2"
 directories = "6.0.0"
-tauri = { version = "2.4.1" }
+tauri = { version = "2.5.0" }
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
