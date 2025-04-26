@@ -55,7 +55,7 @@ async-trait = "0.1.88"
 axum = { version = "0.8.3", features = ["ws"] }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
-toml = "0.8.20"
+toml = "0.8.21"
 figment = { version = "0.10.19", features = ["toml", "env"] }
 sdre-rust-logging = "0.3.17"
 serde-inline-default = "0.2.3"
