@@ -50,7 +50,7 @@ categories = ["aerospace"]
 
 [workspace.dependencies]
 log = "0.4.27"
-tokio = { version = "1.44.2", features = ["full", "tracing"] }
+tokio = { version = "1.45.0", features = ["full", "tracing"] }
 async-trait = "0.1.88"
 axum = { version = "0.8.3", features = ["ws"] }
 serde = { version = "1.0.219", features = ["derive"] }
