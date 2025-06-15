@@ -41,7 +41,7 @@ repos:
           # - "prettier-plugin-sh"
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 73ba629e0ad0595ab6dd58d1d10b0c6b876142e5  # frozen: v9.27.0
+    rev: b831beaf1598bdb1e864fad8359d1b87bded8222  # frozen: v9.29.0
     hooks:
       - id: eslint
         files: \.[j]sx?$ # *.js, *.jsx, *.ts and *.tsx
