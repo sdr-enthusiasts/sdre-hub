@@ -41,7 +41,7 @@ repos:
           # - "prettier-plugin-sh"
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 1447d4adf25d1dcde23aa8adf7af25af93a79a27  # frozen: v9.30.0
+    rev: ed3f17e5aff0d02bba2331d3ad981bb035b50239  # frozen: v9.31.0
     hooks:
       - id: eslint
         files: \.[j]sx?$ # *.js, *.jsx, *.ts and *.tsx
@@ -65,7 +65,7 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: a1419a25b3ec6c91a963e044f03f6dc197930b10  # frozen: 0.33.1
+    rev: 54da05914997e6b04e4db33ed6757d744984c68b  # frozen: 0.33.2
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
@@ -85,6 +85,6 @@ repos:
   #       args: ["--manifest-path", "./sh-frontend/Cargo.toml"]
 
   - repo: https://github.com/fredclausen/nixfmt
-    rev: 89598649a2a04e3c3c48d7d6b83e745a6e0b3e94  # frozen: v0.7.2
+    rev: af5529a9e56b3429408c9d281518527d3a63cf33  # frozen: v0.7.3
     hooks:
       - id: nixfmt
